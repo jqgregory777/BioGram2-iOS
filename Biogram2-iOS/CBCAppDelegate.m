@@ -154,4 +154,11 @@
     self.medableAccount = account;
 }
 
+- (void)deleteMedableAccount
+{
+    // TO DO: actually delete the Medable account
+    
+    self.medableAccount = nil;
+}
+
 @end

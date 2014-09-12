@@ -25,5 +25,6 @@
 @property CBCMedableAccount *medableAccount;
 
 - (void)createMedableAccount:(CBCMedableAccount*)account;
+- (void)deleteMedableAccount;
 
 @end
