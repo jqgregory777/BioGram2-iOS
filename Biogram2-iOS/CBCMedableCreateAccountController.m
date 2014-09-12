@@ -8,6 +8,7 @@
 
 #import "CBCMedableCreateAccountController.h"
 #import "CBCAppDelegate.h"
+#import "EXTPhoneNumberFormatter.h"
 
 @interface CBCMedableCreateAccountController ()
 @property (weak, nonatomic) IBOutlet UITextField *firstNameTextField;
@@ -21,7 +22,11 @@
 
 @end
 
-@implementation CBCMedableCreateAccountController
+@implementation CBCMedableCreateAccountController {
+    int _phoneNumberTextSemaphore;
+    EXTPhoneNumberFormatter *_phoneNumberFormatter;
+    NSString *_locale; //@"us"
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -40,6 +45,11 @@
     self.lastNameTextField.delegate = self;
     self.emailTextField.delegate = self;
     self.phoneNumberTextField.delegate = self;
+    
+    _phoneNumberFormatter = [EXTPhoneNumberFormatter new];
+    _locale = [[NSLocale currentLocale] localeIdentifier];
+    _phoneNumberTextSemaphore = 0; // init semaphore
+    self.phoneNumberTextField.placeholder = [_phoneNumberFormatter placeholderStringForLocale:_locale];
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,13 +62,29 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    // make the keyboard disappear when the user hits the Done button
     [textField resignFirstResponder];
     return YES;
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    // make the phone number keyboard disappear when the list view is scrolled (since it has no Done button)
     [self.phoneNumberTextField resignFirstResponder];
+}
+
+- (IBAction)autoFormatTextField:(id)sender
+{
+    // auto-format phone number text field as the user types
+    if(_phoneNumberTextSemaphore)
+        return;
+    
+    _phoneNumberTextSemaphore = 1;
+    
+    self.phoneNumberTextField.text = [_phoneNumberFormatter format:self.phoneNumberTextField.text withLocale:_locale];
+    
+    _phoneNumberTextSemaphore = 0;
+    
 }
 
 #pragma mark - Selection
