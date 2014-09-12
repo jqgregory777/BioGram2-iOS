@@ -7,8 +7,12 @@
 //
 
 #import "CBCMedableMainTableViewController.h"
+#import "CBCAppDelegate.h"
+#import "CBCMedableAccount.h"
 
 @interface CBCMedableMainTableViewController ()
+
+@property (weak, nonatomic) IBOutlet UITableViewCell *accountCell;
 
 @end
 
@@ -27,8 +31,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self updateAccountDetailsButton];
+}
 
-    // Custom behavior...
+- (void)updateAccountDetailsButton
+{
+    // Grey out the Account cell if there's no account to view
+    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    CBCMedableAccount* account = appDelegate.medableAccount;
+    
+    BOOL enabled = (account != nil);
+
+    self.accountCell.userInteractionEnabled = enabled;
+    self.accountCell.textLabel.enabled = enabled;
+    self.accountCell.detailTextLabel.enabled = enabled;
 }
 
 - (void)didReceiveMemoryWarning
@@ -39,7 +55,30 @@
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.isMovingToParentViewController == NO)
+    {
+        // we're already on the navigation stack
+        // another controller must have been popped off
+        [self updateAccountDetailsButton];
+    }
+}
+
+// NOT NECESSARY - [updateAccountDetailsButton] sets userInteractionEnabled to NO which disallows the segue
+//- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+//{
+//    if ([identifier isEqualToString:@"medableAccountDetailsSegue"])
+//    {
+//        CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+//        CBCMedableAccount* account = appDelegate.medableAccount;
+//        return (account != nil);
+//    }
+//    return YES;
+//}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"medableCreateAccountSegue"])

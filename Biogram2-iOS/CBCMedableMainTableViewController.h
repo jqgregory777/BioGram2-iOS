@@ -10,4 +10,6 @@
 
 @interface CBCMedableMainTableViewController : UITableViewController
 
+- (void)updateAccountDetailsButton;
+
 @end

@@ -33,4 +33,23 @@
         &&  self.dateOfBirth != nil);
 }
 
+- (NSString*)dateOfBirthAsString
+{
+    return [_dateOfBirth descriptionWithLocale:[NSLocale currentLocale]];
+}
+
+- (NSString*)genderAsString
+{
+    switch (_gender)
+    {
+        case kGenderMale:
+            return @"Male";
+        case kGenderFemale:
+            return @"Female";
+        case kGenderUnspecified:
+        default:
+            return @"Unspecified";
+    }
+}
+
 @end

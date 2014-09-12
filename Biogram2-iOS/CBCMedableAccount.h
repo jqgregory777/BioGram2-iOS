@@ -23,7 +23,9 @@ typedef NS_ENUM(NSInteger, Gender)
 @property NSString *email;
 @property NSString *phoneNumber;
 @property NSDate *dateOfBirth;
+@property (readonly) NSString *dateOfBirthAsString;
 @property Gender gender;
+@property (readonly) NSString* genderAsString;
 
 - (id)init;
 - (BOOL)isValid;
