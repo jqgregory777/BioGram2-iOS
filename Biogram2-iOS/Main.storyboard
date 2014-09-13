@@ -1079,10 +1079,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1231" y="1701"/>
         </scene>
-        <!--View Controller - Photo-->
+        <!--Select Photo Controller - Photo-->
         <scene sceneID="cvp-uQ-GEo">
             <objects>
-                <viewController id="l3R-YC-rtF" sceneMemberID="viewController">
+                <viewController id="l3R-YC-rtF" customClass="CBCSelectPhotoController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8Vd-Hs-vRl"/>
                         <viewControllerLayoutGuide type="bottom" id="vnv-8c-Bym"/>
@@ -1108,6 +1108,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <state key="normal" title="Take a Photo">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="takePhoto:" destination="l3R-YC-rtF" eventType="touchUpInside" id="hbr-5o-53L"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ful-ZR-JM5">
                                 <rect key="frame" x="41" y="459" width="238" height="30"/>
@@ -1116,6 +1119,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <state key="normal" title="Choose Photo from Library">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="selectPhotoFromLibrary:" destination="l3R-YC-rtF" eventType="touchUpInside" id="tsF-4p-gkG"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -1123,6 +1129,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <navigationItem key="navigationItem" title="Photo" id="064-wf-oLI"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
+                        <outlet property="timeStampLabel" destination="qtK-FY-Q0y" id="9bY-Lq-Q1f"/>
                         <segue destination="zxF-Qw-ZDf" kind="push" identifier="editPhotoAndCaptionSegue" id="ACu-Zj-uOt"/>
                     </connections>
                 </viewController>

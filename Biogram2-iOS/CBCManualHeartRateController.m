@@ -48,6 +48,7 @@
     
     CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate beginCreatingHeartRateEvent];
+    appDelegate.pendingHeartRateEvent.timeStamp = [NSDate date]; // current date
 }
 
 - (void)didReceiveMemoryWarning
