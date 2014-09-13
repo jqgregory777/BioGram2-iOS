@@ -1,0 +1,15 @@
+/* 
+  Biogram2_iOS.strings
+  Biogram2-iOS
+
+  Created by Jason Gregory on 9/12/14.
+  Copyright (c) 2014 USC Center for Body Computing. All rights reserved.
+*/
+
+"Entity/MedableAccount" = "Medable Account";
+"Property/firstName" = "First Name";
+"Property/lastName" = "Last Name";
+"Property/email" = "Email";
+"Property/phoneNumber" = "Phone";
+"Property/dateOfBirth" = "Birth Date";
+"Property/gender" = "Gender";
