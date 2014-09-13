@@ -6,48 +6,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCSettingsNavigationController.m"
-            timestampString = "432249925.949612"
+            filePath = "Biogram2-iOS/CBCAppDelegate.m"
+            timestampString = "432342525.876033"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "-navigationController:didShowViewController:animated:"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "-beginCreatingHeartRateEvent"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCMedableMainTableViewController.m"
-            timestampString = "432250347.871225"
+            filePath = "Biogram2-iOS/CBCAppDelegate.m"
+            timestampString = "432342532.516266"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "-viewWillAppear:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCMedableCreateAccountController.m"
-            timestampString = "432250631.876833"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
-            landmarkName = "-done:"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
+            landmarkName = "-cancelPendingHeartRateEvent"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

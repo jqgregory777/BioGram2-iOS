@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CBCHeartRateEvent.h"
 #import "CBCMedableAccount.h"
 
 @interface CBCAppDelegate : UIResponder <UIApplicationDelegate>
@@ -19,6 +20,14 @@
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+
+#pragma mark - Heart Rate Event Creation
+
+@property (strong, nonatomic) CBCHeartRateEvent *pendingHeartRateEvent;
+
+- (CBCHeartRateEvent *)beginCreatingHeartRateEvent;
+- (void)cancelPendingHeartRateEvent;
+- (void)savePendingHeartRateEvent;
 
 #pragma mark - Medable
 

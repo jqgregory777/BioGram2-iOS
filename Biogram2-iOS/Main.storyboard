@@ -805,8 +805,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
-                                <rect key="frame" x="29" y="227" width="262" height="29"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
+                                <rect key="frame" x="54" y="227" width="212" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Me"/>
@@ -814,14 +814,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <segment title="Everyone"/>
                                 </segments>
                             </segmentedControl>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logo_biogram-2" translatesAutoresizingMaskIntoConstraints="NO" id="u3P-VY-IkX">
-                                <rect key="frame" x="54" y="66" width="213" height="160"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_biogram-2" translatesAutoresizingMaskIntoConstraints="NO" id="u3P-VY-IkX">
+                                <rect key="frame" x="54" y="66" width="212" height="160"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="160" id="Puf-bg-uPc"/>
+                                </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PtP-Or-cTL">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PtP-Or-cTL">
                                 <rect key="frame" x="0.0" y="263" width="320" height="255"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="255" id="DmV-CA-RHf"/>
+                                </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="feedProtoCell" textLabel="dvw-M4-0xM" imageView="qEX-KC-8bt" style="IBUITableViewCellStyleDefault" id="c8h-ZL-8yH">
                                         <rect key="frame" x="0.0" y="22" width="320" height="44"/>
@@ -856,14 +862,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="2fj-rs-q9k" firstAttribute="top" secondItem="PtP-Or-cTL" secondAttribute="bottom" constant="1" id="11E-TW-zGm"/>
-                            <constraint firstAttribute="trailing" secondItem="PtP-Or-cTL" secondAttribute="trailing" id="A4f-2G-c63"/>
-                            <constraint firstItem="u3P-VY-IkX" firstAttribute="top" secondItem="PfO-48-XtL" secondAttribute="bottom" constant="2" id="LdQ-eK-xME"/>
-                            <constraint firstAttribute="centerX" secondItem="u3P-VY-IkX" secondAttribute="centerX" id="Zsk-Le-3DS"/>
-                            <constraint firstItem="PtP-Or-cTL" firstAttribute="top" secondItem="uZQ-D2-eX5" secondAttribute="bottom" constant="8" id="aDd-lV-HeY"/>
-                            <constraint firstItem="uZQ-D2-eX5" firstAttribute="top" secondItem="u3P-VY-IkX" secondAttribute="bottom" constant="2" id="bG2-ks-ili"/>
+                            <constraint firstItem="u3P-VY-IkX" firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="0WJ-vW-juh"/>
+                            <constraint firstItem="PtP-Or-cTL" firstAttribute="top" secondItem="uZQ-D2-eX5" secondAttribute="bottom" constant="8" symbolic="YES" id="4DR-Xd-kcS"/>
+                            <constraint firstItem="u3P-VY-IkX" firstAttribute="leading" secondItem="S3u-x7-TZw" secondAttribute="leading" constant="54" id="5yT-lt-Bla"/>
+                            <constraint firstItem="uZQ-D2-eX5" firstAttribute="top" secondItem="u3P-VY-IkX" secondAttribute="bottom" constant="1" id="PgF-fS-f5J"/>
+                            <constraint firstItem="PtP-Or-cTL" firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="gAZ-VB-jYe"/>
                             <constraint firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="nSN-R5-E4g"/>
-                            <constraint firstItem="PtP-Or-cTL" firstAttribute="leading" secondItem="S3u-x7-TZw" secondAttribute="leading" id="zbe-AM-r2u"/>
+                            <constraint firstItem="PtP-Or-cTL" firstAttribute="leading" secondItem="S3u-x7-TZw" secondAttribute="leading" id="ofg-mb-kqx"/>
+                            <constraint firstItem="2fj-rs-q9k" firstAttribute="top" secondItem="PtP-Or-cTL" secondAttribute="bottom" constant="1" id="zHp-rW-pY8"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Feed" id="vr4-Pa-ciX">
@@ -882,10 +888,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="735" y="306"/>
         </scene>
-        <!--Table View Controller - Create Event-->
+        <!--Create Heart Rate Event Controller - Create Event-->
         <scene sceneID="ooV-ya-6v2">
             <objects>
-                <tableViewController id="uBd-wk-R0G" sceneMemberID="viewController">
+                <tableViewController id="uBd-wk-R0G" customClass="CBCCreateHeartRateEventController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="irT-Ob-uRp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -893,8 +899,22 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <sections>
                             <tableViewSection id="tXr-dE-b6T">
                                 <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="251" id="MH2-V2-65z">
+                                        <rect key="frame" x="0.0" y="64" width="320" height="251"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MH2-V2-65z" id="df2-Tc-R1t">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_entry_method" translatesAutoresizingMaskIntoConstraints="NO" id="ppV-H6-aGs">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="cgU-je-qGP" detailTextLabel="NGs-Ya-ZZX" imageView="pr5-3s-6db" style="IBUITableViewCellStyleSubtitle" id="3Wd-Hu-Iur">
-                                        <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="315" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Wd-Hu-Iur" id="Zb1-aQ-bEy">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -925,7 +945,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="w5b-Bz-gMk" detailTextLabel="Jxc-z8-4tI" imageView="4Ah-J9-Qpu" style="IBUITableViewCellStyleSubtitle" id="hX0-jf-eem">
-                                        <rect key="frame" x="0.0" y="108" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="359" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hX0-jf-eem" id="Swu-l6-cgr">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -969,10 +989,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="735" y="1026"/>
         </scene>
-        <!--View Controller - Heart Rate-->
+        <!--Manual Heart Rate Controller - Heart Rate-->
         <scene sceneID="NkH-Sw-0gp">
             <objects>
-                <viewController id="jMW-ng-OLr" sceneMemberID="viewController">
+                <viewController id="jMW-ng-OLr" customClass="CBCManualHeartRateController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mfX-Cv-li9"/>
                         <viewControllerLayoutGuide type="bottom" id="38d-ym-P2g"/>
@@ -984,6 +1004,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9MT-v7-jlx">
                                 <rect key="frame" x="0.0" y="337" width="320" height="162"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="jMW-ng-OLr" id="2OG-Mn-VJf"/>
+                                    <outlet property="delegate" destination="jMW-ng-OLr" id="hhc-b3-zgR"/>
+                                </connections>
                             </pickerView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="heart_large" translatesAutoresizingMaskIntoConstraints="NO" id="iRM-EM-Po5">
                                 <rect key="frame" x="66" y="106" width="188" height="188"/>
@@ -1009,10 +1033,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <navigationItem key="navigationItem" title="Heart Rate" id="YD5-Qx-ueo">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="MPc-de-wuW">
                             <connections>
-                                <segue destination="l3R-YC-rtF" kind="push" id="C7n-Hc-6L0"/>
+                                <segue destination="l3R-YC-rtF" kind="push" identifier="manualHeartRateSegue" id="C7n-Hc-6L0"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="heartRateLabel" destination="2oW-jQ-IVH" id="kqC-KX-7Ru"/>
+                        <outlet property="heartRatePicker" destination="9MT-v7-jlx" id="Hw1-N5-wwJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MzX-rd-DXv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1114,23 +1142,15 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2QY-zH-bEp" userLabel="Image View - Background">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2QY-zH-bEp" userLabel="Image View - Background">
                                 <rect key="frame" x="7" y="119" width="306" height="306"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="306" id="8MB-Wm-KYK"/>
-                                    <constraint firstAttribute="width" constant="306" id="YaX-iu-zS2"/>
-                                </constraints>
                             </imageView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
                                 <rect key="frame" x="223" y="335" width="77" height="77"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="76.5" id="8rS-S3-ZHR"/>
-                                    <constraint firstAttribute="height" constant="76.5" id="Zpb-Mg-AsB"/>
-                                </constraints>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a caption here" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="85k-mv-ey0">
                                 <rect key="frame" x="61" y="440" width="199" height="30"/>
@@ -1299,6 +1319,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="logo_twitter" width="256" height="256"/>
         <image name="photo_placeholder" width="174" height="174"/>
         <image name="photo_template" width="174" height="171"/>
+        <image name="select_entry_method" width="400" height="311"/>
         <image name="tabbar_feed" width="30" height="30"/>
         <image name="tabbar_heartrate" width="30" height="30"/>
         <image name="tabbar_settings" width="30" height="30"/>
@@ -1309,6 +1330,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="wKO-gj-FVW"/>
+        <segue reference="C7n-Hc-6L0"/>
     </inferredMetricsTieBreakers>
 </document>
