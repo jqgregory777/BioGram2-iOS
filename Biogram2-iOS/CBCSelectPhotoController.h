@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CBCSelectPhotoController : UIViewController
+@interface CBCSelectPhotoController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 - (IBAction)takePhoto:(id)sender;
 - (IBAction)selectPhotoFromLibrary:(id)sender;

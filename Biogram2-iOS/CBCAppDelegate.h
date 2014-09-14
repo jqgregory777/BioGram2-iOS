@@ -24,10 +24,11 @@
 #pragma mark - Heart Rate Event Creation
 
 @property (strong, nonatomic) CBCHeartRateEvent *pendingHeartRateEvent;
+@property UIImage * pendingRawImage;
 
 - (CBCHeartRateEvent *)beginCreatingHeartRateEvent;
 - (void)cancelPendingHeartRateEvent;
-- (void)savePendingHeartRateEvent;
+- (BOOL)savePendingHeartRateEvent;
 
 #pragma mark - Medable
 

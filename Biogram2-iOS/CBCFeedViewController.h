@@ -11,5 +11,6 @@
 @interface CBCFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 - (IBAction)editList:(id)sender;
+- (IBAction)unwindToFeedView:(UIStoryboardSegue *)unwindSegue;
 
 @end
