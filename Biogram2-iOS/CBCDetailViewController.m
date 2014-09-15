@@ -10,6 +10,10 @@
 
 @interface CBCDetailViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+
 @end
 
 @implementation CBCDetailViewController
@@ -26,7 +30,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    self.timeStampLabel.text = [NSDateFormatter localizedStringFromDate:self.displayedEvent.timeStamp
+                                                         dateStyle:NSDateFormatterMediumStyle
+                                                         timeStyle:NSDateFormatterShortStyle];
+    self.descriptionLabel.text = self.displayedEvent.eventDescription;
+    
+    UIImage* image = [UIImage imageWithData:self.displayedEvent.photo];
+    if (image != nil)
+    {
+        self.imageView.image = image;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,18 +49,17 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (IBAction)shareToFacebook:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    
 }
-*/
 
-- (IBAction)unwindToList:(UIStoryboardSegue *)segue
+- (IBAction)shareToTwitter:(id)sender
+{
+    
+}
+
+- (IBAction)shareToMedable:(id)sender
 {
     
 }

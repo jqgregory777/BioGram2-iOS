@@ -159,17 +159,6 @@
 }
 
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - Keyboard/View Management
 
 - (void)keyboardWasShown:(NSNotification*)notification
@@ -202,12 +191,12 @@
     self.scrollView.scrollIndicatorInsets = contentInsets;
 }
 
-#pragma mark - Done Button
-
 - (IBAction)keyboardDoneButtonTouched:(id)sender
 {
     [sender resignFirstResponder];
 }
+
+#pragma mark - Save Button
 
 - (IBAction)saveButtonTouched:(id)sender
 {
@@ -231,6 +220,7 @@
 
     NSData * photoData = UIImagePNGRepresentation(self.backgroundImageView.image);
     pendingEvent.photo = photoData;
+    pendingEvent.thumbnail = nil; // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out! but this is the ONLY place we set the photo, so screw it - just do it here
     
     if ([appDelegate savePendingHeartRateEvent])
     {

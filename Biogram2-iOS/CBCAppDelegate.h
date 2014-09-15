@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CBCHeartRateEvent.h"
 #import "CBCMedableAccount.h"
+#import "AliveHMViewController.h"
 
 @interface CBCAppDelegate : UIResponder <UIApplicationDelegate>
 

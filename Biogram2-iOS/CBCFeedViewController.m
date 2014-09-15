@@ -10,6 +10,7 @@
 #import "CBCAppDelegate.h"
 #import "CBCHeartRateEvent.h"
 #import "CBCImageUtilities.h"
+#import "CBCDetailViewController.h"
 
 @interface CBCFeedViewController ()
 
@@ -110,7 +111,7 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    NSLog(@"controllerWillChangeContent:\n");
+    //NSLog(@"controllerWillChangeContent:\n");
     [self.tableView beginUpdates];
 }
 
@@ -119,7 +120,7 @@
            atIndex:(NSUInteger)sectionIndex
      forChangeType:(NSFetchedResultsChangeType)type
 {
-    NSLog(@"controller:didChangeSection:\n");
+    //NSLog(@"controller:didChangeSection:\n");
 
     switch(type)
     {
@@ -141,7 +142,7 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    NSLog(@"controller:didChangeObject:\n");
+    //NSLog(@"controller:didChangeObject:\n");
     
     UITableView *tableView = self.tableView;
     
@@ -173,7 +174,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    NSLog(@"controllerDidChangeContent:\n");
+    //NSLog(@"controllerDidChangeContent:\n");
     [self.tableView endUpdates];
     [self updateEditButton];
 }
@@ -207,15 +208,25 @@
     cell.textLabel.text = [NSDateFormatter localizedStringFromDate:event.timeStamp
                                                          dateStyle:NSDateFormatterMediumStyle
                                                          timeStyle:NSDateFormatterShortStyle];
-    UIImage* image = [UIImage imageWithData:event.photo];
-    if (image != nil)
+    
+    UIImage * thumbnail = event.thumbnail;
+    if (thumbnail == nil)
     {
-        CGRect cellBounds = cell.bounds;
-        CGSize size;
-        size.width = size.height = cellBounds.size.height - 2;
-        UIImage *scaledImage = [CBCImageUtilities scaleImage:image toSize:size];
-        cell.imageView.image = scaledImage;
+        UIImage* image = [UIImage imageWithData:event.photo];
+        if (image != nil)
+        {
+            CGRect cellBounds = cell.bounds;
+            CGSize size;
+            size.width = size.height = cellBounds.size.height - 2;
+            
+            thumbnail = [CBCImageUtilities scaleImage:image toSize:size];
+
+            event.thumbnail = thumbnail;
+        }
     }
+
+    if (thumbnail != nil)
+        cell.imageView.image = thumbnail;
 }
 
 #pragma mark - Table view editing
@@ -288,15 +299,16 @@
  }
  */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    CBCDetailViewController *detailController = [segue destinationViewController];
+    NSIndexPath * indexPath = [self.tableView indexPathForSelectedRow];
+    CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    detailController.displayedEvent = event;
 }
-*/
 
 @end

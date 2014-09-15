@@ -7,7 +7,7 @@
 //
 
 #import "CBCHeartRateEvent.h"
-
+#import "CBCImageUtilities.h"
 
 @implementation CBCHeartRateEvent
 
@@ -17,6 +17,8 @@
 @dynamic timeStamp;
 @dynamic backgroundImage;
 @dynamic overlayImage;
+
+@synthesize thumbnail = _thumbnail;
 
 - (NSString *)timeStampAsString
 {

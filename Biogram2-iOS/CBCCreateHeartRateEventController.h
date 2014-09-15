@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AliveHMViewController.h"
 
-@interface CBCCreateHeartRateEventController : UITableViewController
+@interface CBCCreateHeartRateEventController : UITableViewController <AliveHMDelegate>
 
 @end

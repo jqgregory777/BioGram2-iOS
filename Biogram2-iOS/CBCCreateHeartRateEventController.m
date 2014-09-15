@@ -9,6 +9,7 @@
 #import "CBCCreateHeartRateEventController.h"
 #import "CBCAppDelegate.h"
 #import "CBCHeartRateEvent.h"
+#import "AliveHMViewController.h"
 
 @interface CBCCreateHeartRateEventController ()
 
@@ -52,10 +53,41 @@
     }
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"aliveCorSegue"])
+    {
+        AliveHMViewController * aliveController = [segue destinationViewController];
+        aliveController.delegate = self;
+
+        //
+        // Create a new pending heart rate event (for manual entry)
+        //
+        
+        CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate beginCreatingHeartRateEvent];
+        appDelegate.pendingHeartRateEvent.timeStamp = [NSDate date]; // current date
+    }
+}
+
 - (IBAction)unwindToCreateHeartRateEvent:(UIStoryboardSegue *)unwindSegue
 {
     // Destination for unwind segue that resets the UINavigationController to the start of the
     // "create new heart rate event" page sequence (viz., this page).
+    
+    // Also jump back to the "Feed" view in the tab bar.
+    self.tabBarController.selectedIndex = 0;
+}
+
+#pragma mark - AliveHMDelegate
+
+-(void)didCloseAliveViewWithHeartRate:(NSString*)heartRate
+{
+    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if (appDelegate.pendingHeartRateEvent != nil)
+    {
+        appDelegate.pendingHeartRateEvent.heartRate = heartRate;
+    }
 }
 
 @end

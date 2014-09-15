@@ -19,6 +19,9 @@
 @property (nonatomic, strong) NSData * backgroundImage;
 @property (nonatomic, strong) NSData * overlayImage;
 
+// transient properties (not even part of the data model actually)
+@property (nonatomic, strong) UIImage * thumbnail;
+
 - (NSString *)timeStampAsString;
 
 @end

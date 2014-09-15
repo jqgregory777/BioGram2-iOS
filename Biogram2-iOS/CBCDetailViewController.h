@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CBCHeartRateEvent.h"
 
 @interface CBCDetailViewController : UIViewController
 
-- (IBAction)unwindToList:(UIStoryboardSegue *)segue;
+@property (weak, nonatomic) CBCHeartRateEvent * displayedEvent;
 
 @end

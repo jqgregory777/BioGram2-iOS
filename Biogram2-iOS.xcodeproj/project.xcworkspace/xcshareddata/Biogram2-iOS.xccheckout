@@ -12,6 +12,8 @@
 	<dict>
 		<key>1900B9CD-3B90-4C2B-A0A8-FFE8A1CA5796</key>
 		<string>https://github.com/jqgregory777/BioGram2-iOS.git</string>
+		<key>D311C289-C273-4B19-8BF5-E28D08AFB011</key>
+		<string>https://github.com/trinagregory/BioGram-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Biogram2-iOS.xcodeproj/project.xcworkspace</string>
@@ -19,6 +21,8 @@
 	<dict>
 		<key>1900B9CD-3B90-4C2B-A0A8-FFE8A1CA5796</key>
 		<string>../..</string>
+		<key>D311C289-C273-4B19-8BF5-E28D08AFB011</key>
+		<string>../../../BioGram-iOS</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/jqgregory777/BioGram2-iOS.git</string>
@@ -28,6 +32,14 @@
 	<string>1900B9CD-3B90-4C2B-A0A8-FFE8A1CA5796</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D311C289-C273-4B19-8BF5-E28D08AFB011</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BioGram-iOS</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
