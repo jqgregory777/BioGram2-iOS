@@ -18,4 +18,15 @@
 @dynamic backgroundImage;
 @dynamic overlayImage;
 
+- (NSString *)timeStampAsString
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setLocale:[NSLocale currentLocale]];
+    
+    //return [self.timeStamp descriptionWithLocale:[NSLocale currentLocale]];
+    return [dateFormatter stringFromDate:self.timeStamp];
+}
+
 @end

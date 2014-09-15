@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CBCFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface CBCFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate>
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 - (IBAction)editList:(id)sender;
-- (IBAction)unwindToFeedView:(UIStoryboardSegue *)unwindSegue;
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:indexPath;
 
 @end

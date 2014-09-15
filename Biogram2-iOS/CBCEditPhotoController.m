@@ -74,7 +74,7 @@
     self.overlayImageView.image = watermarkImage;
     self.backgroundImageView.image = backgroundImage;
 
-    self.timeStampLabel.text = [pendingEvent.timeStamp descriptionWithLocale:[NSLocale currentLocale]];
+    self.timeStampLabel.text = [pendingEvent timeStampAsString];
 }
 
 - (void)didReceiveMemoryWarning
@@ -172,9 +172,9 @@
 
 #pragma mark - Keyboard/View Management
 
-- (void)keyboardWasShown:(NSNotification*)aNotification
+- (void)keyboardWasShown:(NSNotification*)notification
 {
-    NSDictionary* info = [aNotification userInfo];
+    NSDictionary* info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
@@ -182,7 +182,6 @@
     self.scrollView.scrollIndicatorInsets = contentInsets;
     
     // If active text field is hidden by keyboard, scroll it so it's visible
-    // Your application might not need or want this behavior.
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
     if (!CGRectContainsPoint(aRect, self.captionTextField.frame.origin) )
@@ -192,7 +191,7 @@
     }
 }
 
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+- (void)keyboardWillBeHidden:(NSNotification*)notification
 {
     // How do I get it to animate back into position?
     //CGPoint scrollPoint = CGPointMake(0.0, 0.0);
@@ -230,7 +229,8 @@
                                                             watermark:overlayImage
                                                        watermarkFrame:self.overlayImageView.frame];
 
-    pendingEvent.photo = UIImagePNGRepresentation(self.backgroundImageView.image);
+    NSData * photoData = UIImagePNGRepresentation(self.backgroundImageView.image);
+    pendingEvent.photo = photoData;
     
     if ([appDelegate savePendingHeartRateEvent])
     {
@@ -261,7 +261,7 @@
 //        }
     }
 
-    [self performSegueWithIdentifier:@"unwindToFeedViewSegue" sender:self];
+    [self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
 }
 
 @end

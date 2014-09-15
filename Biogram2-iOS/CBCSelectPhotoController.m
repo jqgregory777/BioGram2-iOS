@@ -33,7 +33,7 @@
 
     CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    self.timeStampLabel.text = [appDelegate.pendingHeartRateEvent.timeStamp descriptionWithLocale:[NSLocale currentLocale]];
+    self.timeStampLabel.text = [appDelegate.pendingHeartRateEvent timeStampAsString];
 }
 
 - (void)didReceiveMemoryWarning

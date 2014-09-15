@@ -1191,8 +1191,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <navigationItem key="navigationItem" title="Edit" id="t5n-Bd-TCt">
                         <barButtonItem key="rightBarButtonItem" title="Save" id="tWq-My-fp9">
                             <connections>
-                                <action selector="saveButtonTouched:" destination="zxF-Qw-ZDf" id="ShZ-bC-W35"/>
-                                <segue destination="Fb1-fe-rON" kind="unwind" identifier="unwindToFeedViewSegue" unwindAction="unwindToFeedView:" id="thk-QE-5Yo"/>
+                                <action selector="saveButtonTouched:" destination="zxF-Qw-ZDf" id="BGv-zT-pvC"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1202,6 +1201,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="overlayImageView" destination="4ec-IW-9dL" id="dqX-gY-s9f"/>
                         <outlet property="scrollView" destination="Akc-3V-7Zv" id="F8R-gb-ATA"/>
                         <outlet property="timeStampLabel" destination="nOa-c3-2hN" id="ExA-3U-16w"/>
+                        <segue destination="Fb1-fe-rON" kind="unwind" identifier="unwindToCreateHeartRateEventSegue" unwindAction="unwindToCreateHeartRateEvent:" id="fSi-iM-HtI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zwE-Xa-4qX" userLabel="First Responder" sceneMemberID="firstResponder"/>

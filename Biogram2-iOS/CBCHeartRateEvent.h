@@ -12,11 +12,13 @@
 
 @interface CBCHeartRateEvent : NSManagedObject
 
-@property (nonatomic, retain) NSString * eventDescription;
-@property (nonatomic, retain) NSString * heartRate;
-@property (nonatomic, retain) NSData * photo;
-@property (nonatomic, retain) NSDate * timeStamp;
-@property (nonatomic, retain) NSData * backgroundImage;
-@property (nonatomic, retain) NSData * overlayImage;
+@property (nonatomic, strong) NSString * eventDescription;
+@property (nonatomic, strong) NSString * heartRate;
+@property (nonatomic, strong) NSData * photo;
+@property (nonatomic, strong) NSDate * timeStamp;
+@property (nonatomic, strong) NSData * backgroundImage;
+@property (nonatomic, strong) NSData * overlayImage;
+
+- (NSString *)timeStampAsString;
 
 @end

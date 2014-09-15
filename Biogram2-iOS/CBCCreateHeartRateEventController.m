@@ -52,4 +52,10 @@
     }
 }
 
+- (IBAction)unwindToCreateHeartRateEvent:(UIStoryboardSegue *)unwindSegue
+{
+    // Destination for unwind segue that resets the UINavigationController to the start of the
+    // "create new heart rate event" page sequence (viz., this page).
+}
+
 @end
