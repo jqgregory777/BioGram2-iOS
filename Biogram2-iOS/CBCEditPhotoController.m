@@ -258,14 +258,22 @@
 
 - (IBAction)postToMedableTouched:(id)sender
 {
-    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
-    
-    // toggle the posted state
-    BOOL wantPost = !pendingEvent.postedToMedable.boolValue;
-    pendingEvent.postedToMedable = [NSNumber numberWithBool:wantPost];
-    
-    [self updateUI];
+    // Check if the user is logged in to Medable
+    if ([[MDAPIClient sharedClient] localUser])
+    {
+        CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
+        
+        // toggle the posted state
+        BOOL wantPost = !pendingEvent.postedToMedable.boolValue;
+        pendingEvent.postedToMedable = [NSNumber numberWithBool:wantPost];
+        
+        [self updateUI];
+    }
+    else
+    {
+        [[CBCAppDelegate appDelegate] showMedableLoginDialog];
+    }
 }
 
 - (BOOL)postToMedable:(CBCHeartRateEvent *)pendingEvent
@@ -283,23 +291,27 @@
         NSString* biogramId = [currentAccount biogramId];
 
         [[MDAPIClient sharedClient]
-            postHeartbeatWithBiogramId:biogramId
-                             heartbeat:[pendingEvent.heartRate integerValue]
-                                 image:backgroundImage
-                               overlay:overlayImage
-                            progress:nil
-                         finishBlock:^(MDPost *post, MDFault *fault)
-                                    {
-                                        if (fault)
-                                        {
-                                            CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
-                                            [appDelegate displayAlertWithMedableFault:fault];
-                                        }
-                                    }
-         ];
+         postHeartbeatWithBiogramId:biogramId
+         heartbeat:[pendingEvent.heartRate integerValue]
+         image:backgroundImage
+         overlay:overlayImage
+         progress:nil
+         finishBlock:^(MDPost *post, MDFault *fault)
+         {
+             if (fault)
+             {
+                 CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+                 [appDelegate displayAlertWithMedableFault:fault];
+             }
+
+             pendingEvent.postedToMedable = [NSNumber numberWithBool:(fault == nil)];
+         }];
+        
+        return YES;
     }
     
-    return YES;
+    pendingEvent.postedToMedable = @(0);
+    return NO;
 }
 
 #pragma mark - Save Button
@@ -347,8 +359,7 @@
     }
     if (pendingEvent.postedToMedable.boolValue)
     {
-        //BOOL postedSuccessfully = [self postToMedable:pendingEvent];
-        //pendingEvent.postedToMedable = [NSNumber numberWithBool:postedSuccessfully];
+        [self postToMedable:pendingEvent];  // setting post result inside the method
     }
     
     pendingEvent.thumbnail = nil; // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out! but this is the ONLY place we set the photo, so screw it - just do it here

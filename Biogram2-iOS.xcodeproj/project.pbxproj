@@ -45,7 +45,6 @@
 		549727B919C7FAAC00DAF814 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727B819C7FAAC00DAF814 /* SystemConfiguration.framework */; };
 		54A266D019C2B1A300BE5834 /* CBCMedableCreateAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */; };
 		54A266D419C2B69F00BE5834 /* CBCMedableMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */; };
-		54A266D719C2BBF000BE5834 /* CBCMedableAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */; };
 		54C7FFA919C5E0B4008BB7AE /* CBCEditPhotoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C7FFA819C5E0B4008BB7AE /* CBCEditPhotoController.m */; };
 		54C7FFAC19C5E3B7008BB7AE /* CBCImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C7FFAB19C5E3B7008BB7AE /* CBCImageUtilities.m */; };
 		54D1803D19C6CC0600196BE9 /* AliveHMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 54D1803C19C6CC0600196BE9 /* AliveHMViewController.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -118,8 +117,6 @@
 		54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableCreateAccountController.m; sourceTree = "<group>"; };
 		54A266D219C2B69F00BE5834 /* CBCMedableMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedableMainTableViewController.h; sourceTree = "<group>"; };
 		54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableMainTableViewController.m; sourceTree = "<group>"; };
-		54A266D519C2BBF000BE5834 /* CBCMedableAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedableAccount.h; sourceTree = "<group>"; };
-		54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableAccount.m; sourceTree = "<group>"; };
 		54C7FFA719C5E0B4008BB7AE /* CBCEditPhotoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCEditPhotoController.h; sourceTree = "<group>"; };
 		54C7FFA819C5E0B4008BB7AE /* CBCEditPhotoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCEditPhotoController.m; sourceTree = "<group>"; };
 		54C7FFAA19C5E3B7008BB7AE /* CBCImageUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCImageUtilities.h; sourceTree = "<group>"; };
@@ -320,8 +317,6 @@
 				54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */,
 				54A266D219C2B69F00BE5834 /* CBCMedableMainTableViewController.h */,
 				54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */,
-				54A266D519C2BBF000BE5834 /* CBCMedableAccount.h */,
-				54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */,
 				C13622C719C8BEA700B31E82 /* Environments.plist */,
 			);
 			name = Medable;
@@ -443,7 +438,6 @@
 				5495F86C19C2779E00E5937E /* CBCDetailViewController.m in Sources */,
 				545C5B8619C4F7B200FC704D /* CBCManualHeartRateController.m in Sources */,
 				545C5B7919C3A00A00FC704D /* EXTPhoneNumberFormatter.m in Sources */,
-				54A266D719C2BBF000BE5834 /* CBCMedableAccount.m in Sources */,
 				541AD55A19C21A840083FDD1 /* CBCAppDelegate.m in Sources */,
 				54A266D019C2B1A300BE5834 /* CBCMedableCreateAccountController.m in Sources */,
 			);

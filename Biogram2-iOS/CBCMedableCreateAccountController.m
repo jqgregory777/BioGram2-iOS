@@ -132,28 +132,86 @@
 - (IBAction)done:(id)sender
 {
     // Actually create the account...
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    MDInfoValidator* accountValidator = [[MDInfoValidator alloc] initWithType:MDInfoValidatorBundleTypePatientSignup];
     
-    CBCMedableAccount* account = [CBCMedableAccount new];
-    account.firstName = self.firstNameTextField.text;
-    account.lastName = self.lastNameTextField.text;
-    account.phoneNumber = self.phoneNumberTextField.text;
-    account.email = self.emailTextField.text;
-    account.dateOfBirth = self.birthDatePicker.date;
+    accountValidator.firstName = self.firstNameTextField.text;
+    accountValidator.lastName = self.lastNameTextField.text;
+    accountValidator.phone = [MDDataFriendly plainPhoneNumberFromMaskedPhoneNumber:self.phoneNumberTextField.text];
+    accountValidator.email = self.emailTextField.text;
+    accountValidator.dateOfBirth = [MDDateUtilities formattedDayOfBirthFromDate:self.birthDatePicker.date];
     
     if (self.genderMaleCell.accessoryType == UITableViewCellAccessoryCheckmark)
-        account.gender = kGenderMale;
-    else if (self.genderFemaleCell.accessoryType == UITableViewCellAccessoryCheckmark)
-        account.gender = kGenderFemale;
-    else
-        account.gender = kGenderUnspecified;
-    
-    if ([account isValid])
     {
-        [appDelegate createMedableAccount:account];
+        accountValidator.gender = [MDDataFriendly genderShortStringFromGender:MDGenderMale];
+    }
+    else if (self.genderFemaleCell.accessoryType == UITableViewCellAccessoryCheckmark)
+    {
+        accountValidator.gender = [MDDataFriendly genderShortStringFromGender:MDGenderFemale];
+    }
+    else
+    {
+        accountValidator.gender = [MDDataFriendly genderShortStringFromGender:MDGenderUnspecified];
+    }
+    
+    BOOL accountInfoIsValid = [accountValidator isValidWithInvalidMessagesCallback:^(NSArray* invalidMessages)
+                               {
+                                   [self displayValidationErrorsWithArray:invalidMessages];
+                               }];
+    
+    if (accountInfoIsValid)
+    {
+        MDProfileInfo* profileInfo = [MDProfileInfo
+                                      patientProfileWithGender:accountValidator.gender
+                                      dob:accountValidator.dateOfBirth];
+        
+        [[MDAPIClient sharedClient]
+         registerAccountWithFirstName:accountValidator.firstName
+         lastName:accountValidator.lastName
+         email:accountValidator.email
+         mobile:accountValidator.phone
+         password:accountValidator.password
+         role:kRolePatient
+         profileInfo:profileInfo
+         thumbImage:nil
+         progressCallback:nil
+         callback:^(NSDictionary *result, MDFault *fault)
+         {
+             if (fault)
+             {
+                 [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Signup Failed", nil)
+                                             message:fault.text
+                                            delegate:nil
+                                   cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                   otherButtonTitles:nil, nil] show];
+             }
+         }];
+
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)displayValidationErrorsWithArray:(NSArray*)invalidMessages
+{
+    ASSERT_CLASS(invalidMessages, NSArray);
+    
+    NSMutableString* errorMsg = [[NSMutableString alloc] init];
+    for (NSString* invalidFieldMsg in invalidMessages)
+    {
+        ASSERT_STRING(invalidFieldMsg);
+        [errorMsg appendFormat:@"\n- %@", invalidFieldMsg];
+    }
+    
+    if ([invalidMessages count])
+    {
+        [[[UIAlertView alloc]
+          initWithTitle:NSLocalizedString(@"validation_error_title", nil)
+          message:errorMsg
+          delegate:nil
+          cancelButtonTitle:NSLocalizedString(@"ok", nil)
+          otherButtonTitles:nil]
+         show];
+    }
 }
 
 @end

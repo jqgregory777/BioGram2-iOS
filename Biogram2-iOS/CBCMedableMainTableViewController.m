@@ -8,7 +8,6 @@
 
 #import "CBCMedableMainTableViewController.h"
 #import "CBCAppDelegate.h"
-#import "CBCMedableAccount.h"
 
 @interface CBCMedableMainTableViewController ()
 
@@ -37,10 +36,7 @@
 - (void)updateAccountDetailsButton
 {
     // Grey out the Account cell if there's no account to view
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
-    CBCMedableAccount* account = appDelegate.medableAccount;
-    
-    BOOL enabled = (account != nil);
+    BOOL enabled = ([[MDAPIClient sharedClient] localUser] != nil);
 
     self.accountCell.userInteractionEnabled = enabled;
     self.accountCell.textLabel.enabled = enabled;
@@ -87,6 +83,14 @@
         //UINavigationController *navigationController = segue.destinationViewController;
         //CBCMedableCreateAccountController *controller = [navigationController viewControllers][0];
         //controller.delegate = self;
+    }
+    else if ([segue.identifier isEqualToString:NSLocalizedString(@"Segue/login", nil)])
+    {
+        [[CBCAppDelegate appDelegate] showMedableLoginDialog];
+    }
+    else if ([segue.identifier isEqualToString:NSLocalizedString(@"Segue/logout", nil)])
+    {
+        [[CBCAppDelegate appDelegate] logoutMedable];
     }
 }
 
