@@ -51,6 +51,8 @@
 		54D1803D19C6CC0600196BE9 /* AliveHMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 54D1803C19C6CC0600196BE9 /* AliveHMViewController.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		54D1804D19C6D19500196BE9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54D1804C19C6D19500196BE9 /* AudioToolbox.framework */; };
 		54FDF7CE19C7B1EC001928AF /* CBCTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FDF7CD19C7B1EC001928AF /* CBCTabBarController.m */; };
+		C13622C819C8BEA700B31E82 /* Environments.plist in Resources */ = {isa = PBXBuildFile; fileRef = C13622C719C8BEA700B31E82 /* Environments.plist */; };
+		C13622C919C8BEA700B31E82 /* Environments.plist in Resources */ = {isa = PBXBuildFile; fileRef = C13622C719C8BEA700B31E82 /* Environments.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +129,7 @@
 		54D1804C19C6D19500196BE9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		54FDF7CC19C7B1EC001928AF /* CBCTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCTabBarController.h; sourceTree = "<group>"; };
 		54FDF7CD19C7B1EC001928AF /* CBCTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCTabBarController.m; sourceTree = "<group>"; };
+		C13622C719C8BEA700B31E82 /* Environments.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Environments.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -319,6 +322,7 @@
 				54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */,
 				54A266D519C2BBF000BE5834 /* CBCMedableAccount.h */,
 				54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */,
+				C13622C719C8BEA700B31E82 /* Environments.plist */,
 			);
 			name = Medable;
 			sourceTree = "<group>";
@@ -402,6 +406,7 @@
 				541AD57D19C21B310083FDD1 /* Main.storyboard in Resources */,
 				545C5B7B19C3E7C200FC704D /* Biogram2_iOSModel.strings in Resources */,
 				541AD55419C21A840083FDD1 /* InfoPlist.strings in Resources */,
+				C13622C819C8BEA700B31E82 /* Environments.plist in Resources */,
 				541AD55F19C21A840083FDD1 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +415,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C13622C919C8BEA700B31E82 /* Environments.plist in Resources */,
 				541AD57119C21A850083FDD1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -516,6 +522,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -548,6 +555,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

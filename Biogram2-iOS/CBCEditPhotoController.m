@@ -269,10 +269,7 @@
 }
 
 - (BOOL)postToMedable:(CBCHeartRateEvent *)pendingEvent
-{
-/* THIS CRASHES RIGHT NOW -- LEAVING TO FER TO FIGURE OUT...
-    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
+{   
     // Post to Medable
     MDAPIClient* apiClient = [MDAPIClient sharedClient];
 
@@ -301,7 +298,7 @@
                                     }
          ];
     }
-*/
+    
     return YES;
 }
 

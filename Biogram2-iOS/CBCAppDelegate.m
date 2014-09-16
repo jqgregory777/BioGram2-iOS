@@ -20,7 +20,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-/* MEDABLE CURRENTLY CRASHES DURING POSTING, SO I'M LEAVING THIS TO FER TO FIGURE OUT...
     // Setup network calls. Log to console in debug builds.
 #ifdef DEBUG
     [[AFNetworkActivityLogger sharedLogger] startLogging];
@@ -31,7 +30,6 @@
 
     // Initialize Medable's assets manager
     [MDAssetManager sharedManager];
-*/
 
     return YES;
 }

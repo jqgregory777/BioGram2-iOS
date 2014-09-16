@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <iOSMedableSDK/MDFault.h>
+
 #import "CBCHeartRateEvent.h"
 #import "CBCMedableAccount.h"
 #import "AliveHMViewController.h"
+
 
 @interface CBCAppDelegate : UIResponder <UIApplicationDelegate>
 
