@@ -222,34 +222,13 @@
     pendingEvent.photo = photoData;
     pendingEvent.thumbnail = nil; // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out! but this is the ONLY place we set the photo, so screw it - just do it here
     
-    if ([appDelegate savePendingHeartRateEvent:self])
+    if ([appDelegate savePendingHeartRateEvent])
     {
-// NO -- post to medable only from the Details view page via the PostToMedable button, just like posting to Facebook (right?)
-//        // ----------------------------------------------------------------------------------------------------
-//        // Post to Medable
-//        MDAPIClient* apiClient = [MDAPIClient sharedClient];
-//        
-//        // Current account
-//        MDAccount* currentAccount = apiClient.localUser;
-//        if (currentAccount) // logged in?
-//        {
-//            NSString* biogramId = [currentAccount biogramId];
-//            
-//            [[MDAPIClient sharedClient]
-//             postHeartbeatWithBiogramId:biogramId
-//             heartbeat:[self.heartRate integerValue]
-//             image:backgroundImage
-//             overlay:overlay
-//             progress:nil
-//             finishBlock:^(MDPost *post, MDFault *fault)
-//             {
-//                 if (fault)
-//                 {
-//                     [[JSDAppDelegate appDelegate] displayAlertWithFault:fault];
-//                 }
-//             }];
-//        }
+        // success! nothing special to do, at least not yet
     }
+
+    // Also activate the feed view in the tab bar.
+    self.tabBarController.selectedIndex = 0;
 
     // Jump back to start of the "create heart rate event" page sequence.
     [self.navigationController popToRootViewControllerAnimated:NO];

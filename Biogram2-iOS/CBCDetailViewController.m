@@ -7,12 +7,16 @@
 //
 
 #import "CBCDetailViewController.h"
+#import "CBCAppDelegate.h"
+#import <Social/Social.h>
 
 @interface CBCDetailViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+
+@property (strong, nonatomic) SLComposeViewController *slComposeViewController;
 
 @end
 
@@ -51,17 +55,72 @@
 
 - (IBAction)shareToFacebook:(id)sender
 {
-    
+    NSString *tempString = [NSString stringWithFormat:@"%@", _descriptionLabel.text];
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+    {
+        self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        [self.slComposeViewController addImage:self.imageView.image];
+        [self.slComposeViewController setInitialText:tempString];
+        [self presentViewController:self.slComposeViewController animated:YES completion:NULL];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"No Account Found" message:@"Configure a Facebook account in setting" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil,nil];
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        [alert show];
+    }
 }
 
 - (IBAction)shareToTwitter:(id)sender
 {
-    
+    NSString *tempString = [NSString stringWithFormat:@"%@", _descriptionLabel.text];
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    {
+        self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        [self.slComposeViewController addImage:self.imageView.image];
+        [self.slComposeViewController setInitialText:tempString];
+        [self presentViewController:self.slComposeViewController animated:YES completion:NULL];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"No Account Found" message:@"Configure a Twitter account in setting" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil,nil];
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        [alert show];
+    }
 }
 
 - (IBAction)shareToMedable:(id)sender
 {
-    
+/* THIS CRASHES RIGHT NOW - LEAVING TO FER SINCE HE KNOWS THIS SDK BETTER THAN I DO...
+ 
+    // Post to Medable
+    MDAPIClient* apiClient = [MDAPIClient sharedClient];
+
+    // Current account
+    MDAccount* currentAccount = apiClient.localUser;
+    if (currentAccount) // logged in?
+    {
+        UIImage* backgroundImage = [UIImage imageWithData:self.displayedEvent.backgroundImage];
+        UIImage* overlayImage = [UIImage imageWithData:self.displayedEvent.overlayImage];
+
+        NSString* biogramId = [currentAccount biogramId];
+
+        [[MDAPIClient sharedClient]
+         postHeartbeatWithBiogramId:biogramId
+         heartbeat:[self.displayedEvent.heartRate integerValue]
+         image:backgroundImage
+         overlay:overlayImage
+         progress:nil
+         finishBlock:^(MDPost *post, MDFault *fault)
+         {
+             if (fault)
+             {
+                 CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+                 [appDelegate displayAlertWithMedableFault:fault];
+             }
+         }];
+    }
+*/
 }
 
 @end

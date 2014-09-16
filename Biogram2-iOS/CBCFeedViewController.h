@@ -14,7 +14,6 @@
 
 - (IBAction)editList:(id)sender;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:indexPath;
-- (void)requestAutoSegueToDetails;
 - (void)stopEditingTableView;
 
 @end

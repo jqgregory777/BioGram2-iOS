@@ -195,7 +195,7 @@ void statusCallback(void *clientData, AliveHMStatus status)
 //
 //
 //- (IBAction)backButtonPressed:(id)sender {
-//    [_delegate closingAliveViewWithoutHeartRate];
+//    [_delegate didCloseAliveViewWithoutHeartRate];
 //}
 
 - (void)setup {

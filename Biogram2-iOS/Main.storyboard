@@ -882,7 +882,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <connections>
                         <outlet property="editButton" destination="6AN-4Q-orO" id="NUX-lF-MnF"/>
                         <outlet property="tableView" destination="PtP-Or-cTL" id="nGX-Z4-xDP"/>
-                        <segue destination="yeV-0U-bxB" kind="push" identifier="programaticDetailSegue" id="zmf-YO-MuC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kiw-JF-piq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1432,7 +1431,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="zmf-YO-MuC"/>
         <segue reference="wKO-gj-FVW"/>
     </inferredMetricsTieBreakers>
 </document>

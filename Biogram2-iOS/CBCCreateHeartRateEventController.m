@@ -65,7 +65,7 @@
         //
         
         CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appDelegate beginCreatingHeartRateEvent];
+        [appDelegate createPendingHeartRateEvent];
         appDelegate.pendingHeartRateEvent.timeStamp = [NSDate date]; // current date
     }
 }

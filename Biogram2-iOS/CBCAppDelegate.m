@@ -9,6 +9,9 @@
 #import "CBCAppDelegate.h"
 #import "CBCFeedViewController.h"
 
+#import <iOSMedableSDK/AFNetworkActivityLogger.h>
+#import <iOSMedableSDK/AFNetworkActivityIndicatorManager.h>
+
 @implementation CBCAppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -17,6 +20,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    /*
+    // Setup network calls. Log to console in debug builds.
+#ifdef DEBUG
+    [[AFNetworkActivityLogger sharedLogger] startLogging];
+    [[AFNetworkActivityLogger sharedLogger] setLevel:AFLoggerLevelDebug];
+#endif
+    
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+
+    // Initialize Medable's assets manager
+    [MDAssetManager sharedManager];
+*/
+
     return YES;
 }
 
@@ -160,7 +176,7 @@
 
 #pragma mark - Heart Rate Event Creation
 
-- (CBCHeartRateEvent *)beginCreatingHeartRateEvent;
+- (CBCHeartRateEvent *)createPendingHeartRateEvent;
 {
     // cancel any pending event
     [self cancelPendingHeartRateEvent];
@@ -181,22 +197,10 @@
     }
 }
 
-- (BOOL)savePendingHeartRateEvent:(UIViewController *)sender
+- (BOOL)savePendingHeartRateEvent
 {
     if (self.pendingHeartRateEvent != nil)
-    {
-        if (sender != nil)
-        {
-            // Set up the CBCFeedViewController to automatically segue to the details view after inserting the UITableViewCell for the new event.
-            NSArray * tabBarViewControllers = sender.tabBarController.viewControllers;
-            UINavigationController * navController = [tabBarViewControllers objectAtIndex:0];
-            CBCFeedViewController * feedController = (CBCFeedViewController *)navController.topViewController;
-            [feedController requestAutoSegueToDetails];
-        }
-        
-        // Also perform a segue to the newly-created item's details page.
-        //[self.tabBarController.viewControllers[0] performSegueWithIdentifier:@"programaticDetailSegue" sender:self];
-
+    {        
         NSManagedObjectContext *context = [self managedObjectContext];
         NSError *error = nil;
         if (![context save:&error])
@@ -230,6 +234,18 @@
     // TO DO: actually delete the Medable account
     
     self.medableAccount = nil;
+}
+
+- (void)displayAlertWithMedableFault:(MDFault*)fault
+{
+    UIAlertView* alert = [[UIAlertView alloc]
+                          initWithTitle:[@"Error: " stringByAppendingString:fault.code]
+                          message:fault.text
+                          delegate:self
+                          cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                          otherButtonTitles:nil];
+    
+    [alert show];
 }
 
 @end

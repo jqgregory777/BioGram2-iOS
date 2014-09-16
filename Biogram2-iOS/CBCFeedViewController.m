@@ -17,8 +17,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 
-@property BOOL autoSegueToDetails;
-
 @end
 
 @implementation CBCFeedViewController
@@ -38,7 +36,6 @@
 
 - (void)viewDidLoad
 {
-    self.autoSegueToDetails = NO;
     [super viewDidLoad];
     [self updateEditButton];
 }
@@ -180,20 +177,6 @@
     //NSLog(@"controllerDidChangeContent:\n");
     [self.tableView endUpdates];
     [self updateEditButton];
-    
-    // If an auto-segue to the details view was requested, perform it now.
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (self.autoSegueToDetails && appDelegate.pendingHeartRateEvent != nil)
-    {
-        self.autoSegueToDetails = NO;
-        self.tabBarController.selectedIndex = 0;
-        [self performSegueWithIdentifier:@"programaticDetailSegue" sender:appDelegate.pendingHeartRateEvent];
-    }
-}
-
-- (void)requestAutoSegueToDetails
-{
-    self.autoSegueToDetails = YES;
 }
 
 #pragma mark - Table view data source

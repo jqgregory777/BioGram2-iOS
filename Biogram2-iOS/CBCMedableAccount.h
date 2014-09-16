@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+// THIS IS A FAKE MEDABLE ACCOUNT INTERFACE, USED ONLY TO SKETCH THE UI.
+// The real Medable account is represented by <iOSMedable/MDAccount.h>.
+// TO DO: convert this to use MDAccount.
+
 @interface CBCMedableAccount : NSObject
 
 typedef NS_ENUM(NSInteger, Gender)

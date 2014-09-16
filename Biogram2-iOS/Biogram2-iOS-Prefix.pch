@@ -14,4 +14,10 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
+
+    // Facebook SDK
+    #import <FacebookSDK/FacebookSDK.h>
+
+    // Medable iOS SDK general import
+    #import <iOSMedableSDK/MDCommonImports.h>
 #endif

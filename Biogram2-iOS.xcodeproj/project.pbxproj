@@ -32,15 +32,22 @@
 		545C5B8A19C504D100FC704D /* CBCCreateHeartRateEventController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545C5B8919C504D100FC704D /* CBCCreateHeartRateEventController.m */; };
 		545C5B8E19C5096600FC704D /* CBCSelectPhotoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545C5B8D19C5096600FC704D /* CBCSelectPhotoController.m */; };
 		5495F86C19C2779E00E5937E /* CBCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5495F86B19C2779E00E5937E /* CBCDetailViewController.m */; };
+		549727A719C7F21C00DAF814 /* AliveHMLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727A619C7F21C00DAF814 /* AliveHMLibrary.framework */; };
+		549727A919C7F22D00DAF814 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727A819C7F22D00DAF814 /* FacebookSDK.framework */; };
+		549727AB19C7F23900DAF814 /* iOSMedableSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727AA19C7F23900DAF814 /* iOSMedableSDK.framework */; };
+		549727AD19C7F7A500DAF814 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727AC19C7F7A500DAF814 /* MessageUI.framework */; };
+		549727AF19C7F7B200DAF814 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727AE19C7F7B200DAF814 /* QuartzCore.framework */; };
+		549727B119C7F7C100DAF814 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727B019C7F7C100DAF814 /* Social.framework */; };
+		549727B319C7F82800DAF814 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727B219C7F82800DAF814 /* Accounts.framework */; };
+		549727B519C7F83300DAF814 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727B419C7F83300DAF814 /* AdSupport.framework */; };
+		549727B719C7F85700DAF814 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727B619C7F85700DAF814 /* MapKit.framework */; };
+		549727B919C7FAAC00DAF814 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727B819C7FAAC00DAF814 /* SystemConfiguration.framework */; };
 		54A266D019C2B1A300BE5834 /* CBCMedableCreateAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */; };
 		54A266D419C2B69F00BE5834 /* CBCMedableMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */; };
 		54A266D719C2BBF000BE5834 /* CBCMedableAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */; };
 		54C7FFA919C5E0B4008BB7AE /* CBCEditPhotoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C7FFA819C5E0B4008BB7AE /* CBCEditPhotoController.m */; };
 		54C7FFAC19C5E3B7008BB7AE /* CBCImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C7FFAB19C5E3B7008BB7AE /* CBCImageUtilities.m */; };
 		54D1803D19C6CC0600196BE9 /* AliveHMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 54D1803C19C6CC0600196BE9 /* AliveHMViewController.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		54D1804319C6CCE200196BE9 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54D1804219C6CCE200196BE9 /* FacebookSDK.framework */; };
-		54D1804519C6CCF100196BE9 /* iOSMedableSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54D1804419C6CCF100196BE9 /* iOSMedableSDK.framework */; };
-		54D1804B19C6D07D00196BE9 /* AliveHMLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54D1804819C6D06C00196BE9 /* AliveHMLibrary.framework */; };
 		54D1804D19C6D19500196BE9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54D1804C19C6D19500196BE9 /* AudioToolbox.framework */; };
 		54FDF7CE19C7B1EC001928AF /* CBCTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FDF7CD19C7B1EC001928AF /* CBCTabBarController.m */; };
 /* End PBXBuildFile section */
@@ -92,6 +99,16 @@
 		545C5B8D19C5096600FC704D /* CBCSelectPhotoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCSelectPhotoController.m; sourceTree = "<group>"; };
 		5495F86A19C2779E00E5937E /* CBCDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCDetailViewController.h; sourceTree = "<group>"; };
 		5495F86B19C2779E00E5937E /* CBCDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCDetailViewController.m; sourceTree = "<group>"; };
+		549727A619C7F21C00DAF814 /* AliveHMLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AliveHMLibrary.framework; path = "Biogram2-iOS/Frameworks/AliveHMLibrary.framework"; sourceTree = "<group>"; };
+		549727A819C7F22D00DAF814 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "Biogram2-iOS/Frameworks/FacebookSDK.framework"; sourceTree = "<group>"; };
+		549727AA19C7F23900DAF814 /* iOSMedableSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iOSMedableSDK.framework; path = "Biogram2-iOS/Frameworks/iOSMedableSDK.framework"; sourceTree = "<group>"; };
+		549727AC19C7F7A500DAF814 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		549727AE19C7F7B200DAF814 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		549727B019C7F7C100DAF814 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		549727B219C7F82800DAF814 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		549727B419C7F83300DAF814 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		549727B619C7F85700DAF814 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		549727B819C7FAAC00DAF814 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		54A266CE19C2B1A300BE5834 /* CBCMedableCreateAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedableCreateAccountController.h; sourceTree = "<group>"; };
 		54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableCreateAccountController.m; sourceTree = "<group>"; };
 		54A266D219C2B69F00BE5834 /* CBCMedableMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedableMainTableViewController.h; sourceTree = "<group>"; };
@@ -104,13 +121,6 @@
 		54C7FFAB19C5E3B7008BB7AE /* CBCImageUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCImageUtilities.m; sourceTree = "<group>"; };
 		54D1803B19C6CC0600196BE9 /* AliveHMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AliveHMViewController.h; sourceTree = "<group>"; };
 		54D1803C19C6CC0600196BE9 /* AliveHMViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AliveHMViewController.mm; sourceTree = "<group>"; };
-		54D1803E19C6CC7A00196BE9 /* AliveHMLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AliveHMLibrary.framework; path = "../BioGram-iOS/biogram/AliveHMLibrary.framework"; sourceTree = "<group>"; };
-		54D1804019C6CCD500196BE9 /* AliveHMLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AliveHMLibrary.framework; path = "Biogram2-iOS/Frameworks/AliveHMLibrary.framework"; sourceTree = "<group>"; };
-		54D1804219C6CCE200196BE9 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "Biogram2-iOS/Frameworks/FacebookSDK.framework"; sourceTree = "<group>"; };
-		54D1804419C6CCF100196BE9 /* iOSMedableSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iOSMedableSDK.framework; path = "Biogram2-iOS/Frameworks/iOSMedableSDK.framework"; sourceTree = "<group>"; };
-		54D1804819C6D06C00196BE9 /* AliveHMLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliveHMLibrary.framework; sourceTree = "<group>"; };
-		54D1804919C6D06C00196BE9 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		54D1804A19C6D06C00196BE9 /* iOSMedableSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iOSMedableSDK.framework; sourceTree = "<group>"; };
 		54D1804C19C6D19500196BE9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		54FDF7CC19C7B1EC001928AF /* CBCTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCTabBarController.h; sourceTree = "<group>"; };
 		54FDF7CD19C7B1EC001928AF /* CBCTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCTabBarController.m; sourceTree = "<group>"; };
@@ -121,10 +131,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				549727B919C7FAAC00DAF814 /* SystemConfiguration.framework in Frameworks */,
+				549727B719C7F85700DAF814 /* MapKit.framework in Frameworks */,
+				549727B519C7F83300DAF814 /* AdSupport.framework in Frameworks */,
+				549727B319C7F82800DAF814 /* Accounts.framework in Frameworks */,
+				549727B119C7F7C100DAF814 /* Social.framework in Frameworks */,
+				549727AF19C7F7B200DAF814 /* QuartzCore.framework in Frameworks */,
+				549727AD19C7F7A500DAF814 /* MessageUI.framework in Frameworks */,
+				549727AB19C7F23900DAF814 /* iOSMedableSDK.framework in Frameworks */,
+				549727A919C7F22D00DAF814 /* FacebookSDK.framework in Frameworks */,
+				549727A719C7F21C00DAF814 /* AliveHMLibrary.framework in Frameworks */,
 				54D1804D19C6D19500196BE9 /* AudioToolbox.framework in Frameworks */,
-				54D1804B19C6D07D00196BE9 /* AliveHMLibrary.framework in Frameworks */,
-				54D1804519C6CCF100196BE9 /* iOSMedableSDK.framework in Frameworks */,
-				54D1804319C6CCE200196BE9 /* FacebookSDK.framework in Frameworks */,
 				541AD54A19C21A840083FDD1 /* CoreGraphics.framework in Frameworks */,
 				541AD54E19C21A840083FDD1 /* CoreData.framework in Frameworks */,
 				541AD54C19C21A840083FDD1 /* UIKit.framework in Frameworks */,
@@ -168,12 +185,17 @@
 		541AD54619C21A840083FDD1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				549727B819C7FAAC00DAF814 /* SystemConfiguration.framework */,
+				549727B619C7F85700DAF814 /* MapKit.framework */,
+				549727B419C7F83300DAF814 /* AdSupport.framework */,
+				549727B219C7F82800DAF814 /* Accounts.framework */,
+				549727B019C7F7C100DAF814 /* Social.framework */,
+				549727AE19C7F7B200DAF814 /* QuartzCore.framework */,
+				549727AC19C7F7A500DAF814 /* MessageUI.framework */,
+				549727AA19C7F23900DAF814 /* iOSMedableSDK.framework */,
+				549727A819C7F22D00DAF814 /* FacebookSDK.framework */,
+				549727A619C7F21C00DAF814 /* AliveHMLibrary.framework */,
 				54D1804C19C6D19500196BE9 /* AudioToolbox.framework */,
-				54D1804719C6D06C00196BE9 /* Frameworks */,
-				54D1804419C6CCF100196BE9 /* iOSMedableSDK.framework */,
-				54D1804219C6CCE200196BE9 /* FacebookSDK.framework */,
-				54D1804019C6CCD500196BE9 /* AliveHMLibrary.framework */,
-				54D1803E19C6CC7A00196BE9 /* AliveHMLibrary.framework */,
 				541AD54719C21A840083FDD1 /* Foundation.framework */,
 				541AD54919C21A840083FDD1 /* CoreGraphics.framework */,
 				541AD54B19C21A840083FDD1 /* UIKit.framework */,
@@ -197,8 +219,8 @@
 				54FDF7CC19C7B1EC001928AF /* CBCTabBarController.h */,
 				54FDF7CD19C7B1EC001928AF /* CBCTabBarController.m */,
 				545C5B7C19C4361300FC704D /* Data Model */,
-				545C5B8319C4F77E00FC704D /* Create Heart Rate Event */,
 				545C5B8B19C505C900FC704D /* Heart Rate Feed */,
+				545C5B8319C4F77E00FC704D /* Create Heart Rate Event */,
 				54A266D119C2B67200BE5834 /* Medable */,
 				545C5B8719C5041100FC704D /* External Utilities */,
 				541AD55019C21A840083FDD1 /* Supporting Files */,
@@ -294,17 +316,6 @@
 				54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */,
 			);
 			name = Medable;
-			sourceTree = "<group>";
-		};
-		54D1804719C6D06C00196BE9 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				54D1804819C6D06C00196BE9 /* AliveHMLibrary.framework */,
-				54D1804919C6D06C00196BE9 /* FacebookSDK.framework */,
-				54D1804A19C6D06C00196BE9 /* iOSMedableSDK.framework */,
-			);
-			name = Frameworks;
-			path = "Biogram2-iOS/Frameworks";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -548,6 +559,7 @@
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
 				INFOPLIST_FILE = "Biogram2-iOS/Biogram2-iOS-Info.plist";
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -568,6 +580,7 @@
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
 				INFOPLIST_FILE = "Biogram2-iOS/Biogram2-iOS-Info.plist";
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;

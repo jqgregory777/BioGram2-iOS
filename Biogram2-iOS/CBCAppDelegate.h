@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <iOSMedableSDK/MDFault.h>
 #import "CBCHeartRateEvent.h"
 #import "CBCMedableAccount.h"
 #import "AliveHMViewController.h"
@@ -24,12 +25,18 @@
 
 #pragma mark - Heart Rate Event Creation
 
+// The CBCAppDelegate manages creation of a new CBCHeartRateEvent.
+// Once created, its attributes are populated (via a sequence of UI pages).
+// If the user backs out, the pending event is canceled and destroyed.
+// If the user progresses to the end of the page sequence and hits Save,
+// the event is committed to the persistent store.
+
 @property (strong, nonatomic) CBCHeartRateEvent *pendingHeartRateEvent;
 @property UIImage * pendingRawImage;
 
-- (CBCHeartRateEvent *)beginCreatingHeartRateEvent;
+- (CBCHeartRateEvent *)createPendingHeartRateEvent;
 - (void)cancelPendingHeartRateEvent;
-- (BOOL)savePendingHeartRateEvent:(UIViewController *)sender;
+- (BOOL)savePendingHeartRateEvent;
 
 #pragma mark - Medable
 
@@ -37,5 +44,6 @@
 
 - (void)createMedableAccount:(CBCMedableAccount*)account;
 - (void)deleteMedableAccount;
+- (void)displayAlertWithMedableFault:(MDFault*)fault;
 
 @end

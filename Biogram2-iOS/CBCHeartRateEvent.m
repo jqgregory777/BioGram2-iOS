@@ -1,5 +1,5 @@
 //
-//  Event.m
+//  CBCHeartRateEvent.m
 //  biogram
 //
 //  Created by Yuxiao Li on 8/21/14.
