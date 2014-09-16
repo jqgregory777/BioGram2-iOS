@@ -7,6 +7,7 @@
 //
 
 #import "CBCAppDelegate.h"
+#import "CBCFeedViewController.h"
 
 @implementation CBCAppDelegate
 
@@ -180,10 +181,22 @@
     }
 }
 
-- (BOOL)savePendingHeartRateEvent
+- (BOOL)savePendingHeartRateEvent:(UIViewController *)sender
 {
     if (self.pendingHeartRateEvent != nil)
     {
+        if (sender != nil)
+        {
+            // Set up the CBCFeedViewController to automatically segue to the details view after inserting the UITableViewCell for the new event.
+            NSArray * tabBarViewControllers = sender.tabBarController.viewControllers;
+            UINavigationController * navController = [tabBarViewControllers objectAtIndex:0];
+            CBCFeedViewController * feedController = (CBCFeedViewController *)navController.topViewController;
+            [feedController requestAutoSegueToDetails];
+        }
+        
+        // Also perform a segue to the newly-created item's details page.
+        //[self.tabBarController.viewControllers[0] performSegueWithIdentifier:@"programaticDetailSegue" sender:self];
+
         NSManagedObjectContext *context = [self managedObjectContext];
         NSError *error = nil;
         if (![context save:&error])

@@ -74,9 +74,6 @@
 {
     // Destination for unwind segue that resets the UINavigationController to the start of the
     // "create new heart rate event" page sequence (viz., this page).
-    
-    // Also jump back to the "Feed" view in the tab bar.
-    self.tabBarController.selectedIndex = 0;
 }
 
 #pragma mark - AliveHMDelegate

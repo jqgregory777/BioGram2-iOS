@@ -17,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 
+@property BOOL autoSegueToDetails;
+
 @end
 
 @implementation CBCFeedViewController
@@ -36,6 +38,7 @@
 
 - (void)viewDidLoad
 {
+    self.autoSegueToDetails = NO;
     [super viewDidLoad];
     [self updateEditButton];
 }
@@ -177,6 +180,20 @@
     //NSLog(@"controllerDidChangeContent:\n");
     [self.tableView endUpdates];
     [self updateEditButton];
+    
+    // If an auto-segue to the details view was requested, perform it now.
+    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if (self.autoSegueToDetails && appDelegate.pendingHeartRateEvent != nil)
+    {
+        self.autoSegueToDetails = NO;
+        self.tabBarController.selectedIndex = 0;
+        [self performSegueWithIdentifier:@"programaticDetailSegue" sender:appDelegate.pendingHeartRateEvent];
+    }
+}
+
+- (void)requestAutoSegueToDetails
+{
+    self.autoSegueToDetails = YES;
 }
 
 #pragma mark - Table view data source
@@ -230,6 +247,15 @@
 }
 
 #pragma mark - Table view editing
+
+- (void)stopEditingTableView
+{
+    if (self.tabBarController.selectedIndex != 0)
+    {
+        [self.tableView setEditing:NO animated:NO];
+        [self updateEditButton];
+    }
+}
 
 - (IBAction)editList:(id)sender
 {
@@ -306,9 +332,21 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     CBCDetailViewController *detailController = [segue destinationViewController];
-    NSIndexPath * indexPath = [self.tableView indexPathForSelectedRow];
-    CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    detailController.displayedEvent = event;
+    if ([segue.identifier isEqualToString:@"programaticDetailSegue"]) // don't do this for programatic segues
+    {
+        if (![sender isKindOfClass:[CBCHeartRateEvent class]])
+        {
+            NSLog(@"programaticDetailSegue's sender should always be a CBCHeartRateEvent!");
+            abort();
+        }
+        detailController.displayedEvent = sender;
+    }
+    else
+    {
+        NSIndexPath * indexPath = [self.tableView indexPathForSelectedRow];
+        CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        detailController.displayedEvent = event;
+    }
 }
 
 @end

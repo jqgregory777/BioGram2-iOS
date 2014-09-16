@@ -222,7 +222,7 @@
     pendingEvent.photo = photoData;
     pendingEvent.thumbnail = nil; // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out! but this is the ONLY place we set the photo, so screw it - just do it here
     
-    if ([appDelegate savePendingHeartRateEvent])
+    if ([appDelegate savePendingHeartRateEvent:self])
     {
 // NO -- post to medable only from the Details view page via the PostToMedable button, just like posting to Facebook (right?)
 //        // ----------------------------------------------------------------------------------------------------
@@ -251,7 +251,9 @@
 //        }
     }
 
-    [self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
+    // Jump back to start of the "create heart rate event" page sequence.
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    //[self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
 }
 
 @end

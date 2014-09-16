@@ -29,7 +29,7 @@
 
 - (CBCHeartRateEvent *)beginCreatingHeartRateEvent;
 - (void)cancelPendingHeartRateEvent;
-- (BOOL)savePendingHeartRateEvent;
+- (BOOL)savePendingHeartRateEvent:(UIViewController *)sender;
 
 #pragma mark - Medable
 
