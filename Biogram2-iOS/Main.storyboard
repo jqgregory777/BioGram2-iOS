@@ -1238,7 +1238,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="shareToFacebook:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="LT8-C0-cNk"/>
+                                    <action selector="postToFacebookTouched:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="kdU-2J-0Ah"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukB-60-bR4">
@@ -1248,7 +1248,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="shareToTwitter:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="j2B-uL-2FT"/>
+                                    <action selector="postToTwitterTouched:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="y5y-Lb-Pig"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="deX-Ph-86s">
@@ -1258,7 +1258,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="shareToMedable:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="Q4A-l2-8Wc"/>
+                                    <action selector="postToMedableTouched:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="Rn8-H5-ULb"/>
                                 </connections>
                             </button>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="szJ-Lb-LTi">
@@ -1277,7 +1277,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Edit" id="t5n-Bd-TCt">
-                        <barButtonItem key="rightBarButtonItem" title="Share" id="tWq-My-fp9">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="tWq-My-fp9">
                             <connections>
                                 <action selector="saveButtonTouched:" destination="zxF-Qw-ZDf" id="BGv-zT-pvC"/>
                             </connections>
@@ -1287,13 +1287,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="backgroundImageView" destination="2QY-zH-bEp" id="WTk-t4-cAb"/>
                         <outlet property="captionTextField" destination="85k-mv-ey0" id="Ky5-qd-BxP"/>
                         <outlet property="overlayImageView" destination="4ec-IW-9dL" id="dqX-gY-s9f"/>
-                        <outlet property="postToFacebookImgView" destination="szJ-Lb-LTi" id="W4m-N5-nQc"/>
-                        <outlet property="postToMedableImgView" destination="D9K-Ae-0iJ" id="cTR-fM-O9O"/>
-                        <outlet property="postToTwitterImgView" destination="yE5-GM-Kdp" id="9aC-II-saC"/>
-                        <outlet property="postedToFacebookImgView" destination="szJ-Lb-LTi" id="AGh-fm-6ls"/>
-                        <outlet property="postedToMedableImgView" destination="D9K-Ae-0iJ" id="O9Z-Vu-j9l"/>
-                        <outlet property="postedToTwitterImgView" destination="yE5-GM-Kdp" id="zWe-zf-noB"/>
+                        <outlet property="postToFacebookButton" destination="dXk-3S-sta" id="8qS-Cq-Fo3"/>
+                        <outlet property="postToFacebookImgView" destination="szJ-Lb-LTi" id="9ao-Ji-Mam"/>
+                        <outlet property="postToMedableButton" destination="deX-Ph-86s" id="2de-Rt-Jd2"/>
+                        <outlet property="postToMedableImgView" destination="D9K-Ae-0iJ" id="6Vi-Wb-uVb"/>
+                        <outlet property="postToTwitterButton" destination="ukB-60-bR4" id="kp2-gl-MgH"/>
+                        <outlet property="postToTwitterImgView" destination="yE5-GM-Kdp" id="zz2-FZ-aC7"/>
                         <outlet property="scrollView" destination="Akc-3V-7Zv" id="F8R-gb-ATA"/>
+                        <outlet property="shareOrSaveButton" destination="tWq-My-fp9" id="WvR-fd-Sif"/>
                         <outlet property="timeStampLabel" destination="nOa-c3-2hN" id="ExA-3U-16w"/>
                         <segue destination="Fb1-fe-rON" kind="unwind" identifier="unwindToCreateHeartRateEventSegue" unwindAction="unwindToCreateHeartRateEvent:" id="fSi-iM-HtI"/>
                     </connections>
@@ -1470,7 +1471,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="heart_large" width="322" height="292"/>
         <image name="logo_biogram-2" width="166" height="125"/>
         <image name="logo_facebook" width="256" height="256"/>
-        <image name="logo_medable" width="256" height="256"/>
+        <image name="logo_medable" width="64" height="64"/>
         <image name="logo_medable_full" width="255" height="83"/>
         <image name="logo_twitter" width="256" height="256"/>
         <image name="photo_placeholder" width="174" height="174"/>
