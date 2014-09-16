@@ -140,9 +140,9 @@
 				549727B319C7F82800DAF814 /* Accounts.framework in Frameworks */,
 				549727B119C7F7C100DAF814 /* Social.framework in Frameworks */,
 				549727AF19C7F7B200DAF814 /* QuartzCore.framework in Frameworks */,
-				549727AD19C7F7A500DAF814 /* MessageUI.framework in Frameworks */,
 				549727AB19C7F23900DAF814 /* iOSMedableSDK.framework in Frameworks */,
 				549727A919C7F22D00DAF814 /* FacebookSDK.framework in Frameworks */,
+				549727AD19C7F7A500DAF814 /* MessageUI.framework in Frameworks */,
 				549727A719C7F21C00DAF814 /* AliveHMLibrary.framework in Frameworks */,
 				54D1804D19C6D19500196BE9 /* AudioToolbox.framework in Frameworks */,
 				541AD54A19C21A840083FDD1 /* CoreGraphics.framework in Frameworks */,
@@ -499,6 +499,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Biogram2-iOS/Frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -538,6 +539,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Biogram2-iOS/Frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -557,13 +559,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 					"$(inherited)",
 					"/Users/jason_gregory/GitHub/BioGram-iOS/biogram",
-					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
 				INFOPLIST_FILE = "Biogram2-iOS/Biogram2-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -578,13 +581,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 					"$(inherited)",
 					"/Users/jason_gregory/GitHub/BioGram-iOS/biogram",
-					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
 				INFOPLIST_FILE = "Biogram2-iOS/Biogram2-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -601,6 +605,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
@@ -623,6 +628,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
