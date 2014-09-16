@@ -17,6 +17,9 @@
 @dynamic timeStamp;
 @dynamic backgroundImage;
 @dynamic overlayImage;
+@dynamic postedToFacebook;
+@dynamic postedToTwitter;
+@dynamic postedToMedable;
 
 @synthesize thumbnail = _thumbnail;
 

@@ -315,21 +315,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     CBCDetailViewController *detailController = [segue destinationViewController];
-    if ([segue.identifier isEqualToString:@"programaticDetailSegue"]) // don't do this for programatic segues
-    {
-        if (![sender isKindOfClass:[CBCHeartRateEvent class]])
-        {
-            NSLog(@"programaticDetailSegue's sender should always be a CBCHeartRateEvent!");
-            abort();
-        }
-        detailController.displayedEvent = sender;
-    }
-    else
-    {
-        NSIndexPath * indexPath = [self.tableView indexPathForSelectedRow];
-        CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        detailController.displayedEvent = event;
-    }
+    NSIndexPath * indexPath = [self.tableView indexPathForSelectedRow];
+    CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    detailController.displayedEvent = event;
 }
 
 @end

@@ -269,12 +269,12 @@
 		545C5B8319C4F77E00FC704D /* Create Heart Rate Event */ = {
 			isa = PBXGroup;
 			children = (
-				54D1803B19C6CC0600196BE9 /* AliveHMViewController.h */,
-				54D1803C19C6CC0600196BE9 /* AliveHMViewController.mm */,
 				545C5B8819C504D100FC704D /* CBCCreateHeartRateEventController.h */,
 				545C5B8919C504D100FC704D /* CBCCreateHeartRateEventController.m */,
 				545C5B8419C4F7B200FC704D /* CBCManualHeartRateController.h */,
 				545C5B8519C4F7B200FC704D /* CBCManualHeartRateController.m */,
+				54D1803B19C6CC0600196BE9 /* AliveHMViewController.h */,
+				54D1803C19C6CC0600196BE9 /* AliveHMViewController.mm */,
 				545C5B8C19C5096600FC704D /* CBCSelectPhotoController.h */,
 				545C5B8D19C5096600FC704D /* CBCSelectPhotoController.m */,
 				54C7FFA719C5E0B4008BB7AE /* CBCEditPhotoController.h */,
@@ -295,10 +295,10 @@
 		545C5B8B19C505C900FC704D /* Heart Rate Feed */ = {
 			isa = PBXGroup;
 			children = (
-				5495F86A19C2779E00E5937E /* CBCDetailViewController.h */,
-				5495F86B19C2779E00E5937E /* CBCDetailViewController.m */,
 				545C5B8019C440B600FC704D /* CBCFeedViewController.h */,
 				545C5B8119C440B600FC704D /* CBCFeedViewController.m */,
+				5495F86A19C2779E00E5937E /* CBCDetailViewController.h */,
+				5495F86B19C2779E00E5937E /* CBCDetailViewController.m */,
 			);
 			name = "Heart Rate Feed";
 			sourceTree = "<group>";

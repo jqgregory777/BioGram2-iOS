@@ -9,29 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCFeedViewController.m"
-            timestampString = "432538896.862567"
+            filePath = "Biogram2-iOS/CBCEditPhotoController.m"
+            timestampString = "432545001.823844"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
-            landmarkName = "-prepareForSegue:sender:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCFeedViewController.m"
-            timestampString = "432538896.862567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "-stopEditingTableView"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "-shareToFacebook:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

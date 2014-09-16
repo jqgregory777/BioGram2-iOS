@@ -11,6 +11,8 @@
 #import "CBCHeartRateEvent.h"
 #import "CBCImageUtilities.h"
 
+#import <Social/Social.h>
+
 @interface CBCEditPhotoController ()
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -18,6 +20,11 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *overlayImageView;
 @property (weak, nonatomic) IBOutlet UITextField *captionTextField;
+@property (weak, nonatomic) IBOutlet UIImageView *postToFacebookImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *postToTwitterImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *postToMedableImgView;
+
+@property (strong, nonatomic) SLComposeViewController *slComposeViewController;
 
 @end
 
@@ -196,9 +203,114 @@
     [sender resignFirstResponder];
 }
 
+#pragma mark - Share
+
+- (IBAction)shareToFacebook:(id)sender
+{
+    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
+
+    [self updatePendingEventFromUI];
+
+    NSString *tempString = [NSString stringWithFormat:@"%@", pendingEvent.eventDescription];
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+    {
+        UIImage* image = [UIImage imageWithData:pendingEvent.photo];
+        
+        self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        [self.slComposeViewController addImage:image];
+        [self.slComposeViewController setInitialText:tempString];
+        self.slComposeViewController.completionHandler = ^(SLComposeViewControllerResult result){
+            if (result == SLComposeViewControllerResultDone)
+            {
+                CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                appDelegate.pendingHeartRateEvent.postedToFacebook = [NSNumber numberWithBool:YES];
+            }
+        };
+        [self presentViewController:self.slComposeViewController animated:YES completion:NULL];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"No Account Found" message:@"Configure a Facebook account in setting" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil,nil];
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        [alert show];
+    }
+}
+
+- (IBAction)shareToTwitter:(id)sender
+{
+    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
+
+    [self updatePendingEventFromUI];
+
+    NSString *tempString = [NSString stringWithFormat:@"%@", pendingEvent.eventDescription];
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    {
+        UIImage* image = [UIImage imageWithData:pendingEvent.photo];
+        
+        self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        [self.slComposeViewController addImage:image];
+        [self.slComposeViewController setInitialText:tempString];
+        self.slComposeViewController.completionHandler = ^(SLComposeViewControllerResult result){
+            if (result == SLComposeViewControllerResultDone)
+            {
+                CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                appDelegate.pendingHeartRateEvent.postedToTwitter = [NSNumber numberWithBool:YES];
+            }
+        };
+        [self presentViewController:self.slComposeViewController animated:YES completion:NULL];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"No Account Found" message:@"Configure a Twitter account in setting" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil,nil];
+        alert.alertViewStyle = UIAlertViewStyleDefault;
+        [alert show];
+    }
+}
+
+- (IBAction)shareToMedable:(id)sender
+{
+    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
+    
+/* THIS CRASHES RIGHT NOW -- LEAVING TO FER TO FIGURE OUT...
+    // Post to Medable
+    MDAPIClient* apiClient = [MDAPIClient sharedClient];
+
+    // Current account
+    MDAccount* currentAccount = apiClient.localUser;
+    if (currentAccount) // logged in?
+    {
+        UIImage* backgroundImage = [UIImage imageWithData:pendingEvent.backgroundImage];
+        UIImage* overlayImage = [UIImage imageWithData:pendingEvent.overlayImage];
+
+        NSString* biogramId = [currentAccount biogramId];
+*/
+        pendingEvent.postedToMedable = [NSNumber numberWithBool:YES];
+/*
+        [[MDAPIClient sharedClient]
+            postHeartbeatWithBiogramId:biogramId
+                             heartbeat:[pendingEvent.heartRate integerValue]
+                                 image:backgroundImage
+                               overlay:overlayImage
+                            progress:nil
+                         finishBlock:^(MDPost *post, MDFault *fault)
+                                    {
+                                        if (fault)
+                                        {
+                                            CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+                                            [appDelegate displayAlertWithMedableFault:fault];
+                                        }
+                                    }
+         ];
+    }
+*/
+}
+
 #pragma mark - Save Button
 
-- (IBAction)saveButtonTouched:(id)sender
+- (void)updatePendingEventFromUI
 {
     CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
@@ -211,15 +323,24 @@
     
     pendingEvent.backgroundImage = UIImagePNGRepresentation(backgroundImage);
     pendingEvent.overlayImage = UIImagePNGRepresentation(self.overlayImageView.image);
-
+    
     // present image
-    self.backgroundImageView.image = [CBCImageUtilities generatePhoto:backgroundImage
+    UIImage* compositedImage = [CBCImageUtilities generatePhoto:backgroundImage
                                                                 frame:self.backgroundImageView.frame
                                                             watermark:overlayImage
                                                        watermarkFrame:self.overlayImageView.frame];
-
-    NSData * photoData = UIImagePNGRepresentation(self.backgroundImageView.image);
+    
+    NSData * photoData = UIImagePNGRepresentation(compositedImage);
     pendingEvent.photo = photoData;
+}
+
+- (IBAction)saveButtonTouched:(id)sender
+{
+    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
+    
+    [self updatePendingEventFromUI];
+    
     pendingEvent.thumbnail = nil; // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out! but this is the ONLY place we set the photo, so screw it - just do it here
     
     if ([appDelegate savePendingHeartRateEvent])

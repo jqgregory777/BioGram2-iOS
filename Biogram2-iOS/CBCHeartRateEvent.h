@@ -18,6 +18,9 @@
 @property (nonatomic, strong) NSDate * timeStamp;
 @property (nonatomic, strong) NSData * backgroundImage;
 @property (nonatomic, strong) NSData * overlayImage;
+@property (nonatomic, strong) NSNumber * postedToFacebook;
+@property (nonatomic, strong) NSNumber * postedToTwitter;
+@property (nonatomic, strong) NSNumber * postedToMedable;
 
 // transient properties (not even part of the data model actually)
 @property (nonatomic, strong) UIImage * thumbnail;

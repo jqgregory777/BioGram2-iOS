@@ -20,7 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    /*
+/* MEDABLE CURRENTLY CRASHES DURING POSTING, SO I'M LEAVING THIS TO FER TO FIGURE OUT...
     // Setup network calls. Log to console in debug builds.
 #ifdef DEBUG
     [[AFNetworkActivityLogger sharedLogger] startLogging];
@@ -68,10 +68,13 @@
 {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges]) {
+    if (managedObjectContext != nil)
+    {
+        if ([managedObjectContext hasChanges])
+        {
             // Save the data to persistent store
-            if (![managedObjectContext save:&error]) {
+            if (![managedObjectContext save:&error])
+            {
                 // Replace this implementation with code to handle the error appropriately.
                 // abort() causes the application to generate a crash log and terminate. You
                 // should not use this function in a shipping application, although it may
@@ -89,12 +92,14 @@
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
 - (NSManagedObjectContext *)managedObjectContext
 {
-    if (_managedObjectContext != nil) {
+    if (_managedObjectContext != nil)
+    {
         return _managedObjectContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
+    if (coordinator != nil)
+    {
         _managedObjectContext = [[NSManagedObjectContext alloc] init];
         [_managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
@@ -183,6 +188,10 @@
 
     NSManagedObjectContext *context = [self managedObjectContext];
     self.pendingHeartRateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"HeartRateEvent" inManagedObjectContext:context];
+    self.pendingHeartRateEvent.timeStamp = [NSDate date]; // current date
+    self.pendingHeartRateEvent.postedToFacebook = [NSNumber numberWithBool:NO];
+    self.pendingHeartRateEvent.postedToTwitter = [NSNumber numberWithBool:NO];
+    self.pendingHeartRateEvent.postedToMedable = [NSNumber numberWithBool:NO];
 
     return self.pendingHeartRateEvent;
 }

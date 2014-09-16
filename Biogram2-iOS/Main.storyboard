@@ -1196,7 +1196,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2QY-zH-bEp" userLabel="Image View - Background">
-                                <rect key="frame" x="7" y="119" width="306" height="306"/>
+                                <rect key="frame" x="7" y="105" width="306" height="306"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -1205,7 +1205,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </constraints>
                             </imageView>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
-                                <rect key="frame" x="223" y="335" width="77" height="77"/>
+                                <rect key="frame" x="223" y="321" width="77" height="77"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -1217,7 +1217,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a caption here" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="85k-mv-ey0">
-                                <rect key="frame" x="61" y="440" width="199" height="30"/>
+                                <rect key="frame" x="61" y="421" width="199" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
@@ -1226,16 +1226,58 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time Stamp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOa-c3-2hN">
-                                <rect key="frame" x="43" y="90" width="235" height="21"/>
+                                <rect key="frame" x="43" y="77" width="235" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXk-3S-sta">
+                                <rect key="frame" x="61" y="460" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Facebook" image="logo_facebook">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareToFacebook:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="LT8-C0-cNk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukB-60-bR4">
+                                <rect key="frame" x="135" y="460" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="logo_twitter">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareToTwitter:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="j2B-uL-2FT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="deX-Ph-86s">
+                                <rect key="frame" x="210" y="460" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="logo_medable">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareToMedable:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="Q4A-l2-8Wc"/>
+                                </connections>
+                            </button>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="szJ-Lb-LTi">
+                                <rect key="frame" x="55" y="452" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="yE5-GM-Kdp">
+                                <rect key="frame" x="127" y="452" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="D9K-Ae-0iJ">
+                                <rect key="frame" x="202" y="452" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Edit" id="t5n-Bd-TCt">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="tWq-My-fp9">
+                        <barButtonItem key="rightBarButtonItem" title="Share" id="tWq-My-fp9">
                             <connections>
                                 <action selector="saveButtonTouched:" destination="zxF-Qw-ZDf" id="BGv-zT-pvC"/>
                             </connections>
@@ -1245,6 +1287,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="backgroundImageView" destination="2QY-zH-bEp" id="WTk-t4-cAb"/>
                         <outlet property="captionTextField" destination="85k-mv-ey0" id="Ky5-qd-BxP"/>
                         <outlet property="overlayImageView" destination="4ec-IW-9dL" id="dqX-gY-s9f"/>
+                        <outlet property="postToFacebookImgView" destination="szJ-Lb-LTi" id="W4m-N5-nQc"/>
+                        <outlet property="postToMedableImgView" destination="D9K-Ae-0iJ" id="cTR-fM-O9O"/>
+                        <outlet property="postToTwitterImgView" destination="yE5-GM-Kdp" id="9aC-II-saC"/>
+                        <outlet property="postedToFacebookImgView" destination="szJ-Lb-LTi" id="AGh-fm-6ls"/>
+                        <outlet property="postedToMedableImgView" destination="D9K-Ae-0iJ" id="O9Z-Vu-j9l"/>
+                        <outlet property="postedToTwitterImgView" destination="yE5-GM-Kdp" id="zWe-zf-noB"/>
                         <outlet property="scrollView" destination="Akc-3V-7Zv" id="F8R-gb-ATA"/>
                         <outlet property="timeStampLabel" destination="nOa-c3-2hN" id="ExA-3U-16w"/>
                         <segue destination="Fb1-fe-rON" kind="unwind" identifier="unwindToCreateHeartRateEventSegue" unwindAction="unwindToCreateHeartRateEvent:" id="fSi-iM-HtI"/>
@@ -1268,7 +1316,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <viewControllerLayoutGuide type="top" id="YQy-Kf-sNP"/>
                         <viewControllerLayoutGuide type="bottom" id="fhZ-uG-iVw"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="hGL-nm-eIr">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="hGL-nm-eIr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -1288,36 +1336,39 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jz4-We-Hez">
-                                <rect key="frame" x="62" y="435" width="55" height="55"/>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jz4-We-Hez">
+                                <rect key="frame" x="53" y="435" width="55" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Facebook" image="logo_facebook">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="shareToFacebook:" destination="yeV-0U-bxB" eventType="touchUpInside" id="CgU-Is-XHO"/>
-                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6h-c6-UjG">
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6h-c6-UjG">
                                 <rect key="frame" x="130" y="435" width="55" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button" image="logo_twitter">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="shareToTwitter:" destination="yeV-0U-bxB" eventType="touchUpInside" id="f1Y-N4-Kq4"/>
-                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58w-xz-iWR">
-                                <rect key="frame" x="203" y="435" width="55" height="55"/>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58w-xz-iWR">
+                                <rect key="frame" x="206" y="435" width="55" height="55"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button" image="logo_medable">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="shareToMedable:" destination="yeV-0U-bxB" eventType="touchUpInside" id="gYS-Zb-jdF"/>
-                                </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="n8e-QD-X97">
+                                <rect key="frame" x="48" y="428" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="tx0-sU-TME">
+                                <rect key="frame" x="123" y="428" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="yEY-O0-PIR">
+                                <rect key="frame" x="199" y="428" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1325,6 +1376,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <connections>
                         <outlet property="descriptionLabel" destination="7fZ-zG-ZX9" id="VWM-Ah-GMu"/>
                         <outlet property="imageView" destination="siU-y7-OHz" id="BqY-kr-h91"/>
+                        <outlet property="postedToFacebookImgView" destination="n8e-QD-X97" id="hQl-hF-8hf"/>
+                        <outlet property="postedToMedableImgView" destination="yEY-O0-PIR" id="7h4-wU-DwW"/>
+                        <outlet property="postedToTwitterImgView" destination="tx0-sU-TME" id="Y3p-Xb-qZB"/>
                         <outlet property="timeStampLabel" destination="vy9-lP-PfJ" id="0Uc-8j-ra1"/>
                     </connections>
                 </viewController>
@@ -1412,6 +1466,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="AliveCor_Instructions" width="568" height="256"/>
         <image name="alivecor_leads_off" width="42" height="7"/>
         <image name="alivecor_leads_on" width="42" height="7"/>
+        <image name="checkmark" width="32" height="32"/>
         <image name="heart_large" width="322" height="292"/>
         <image name="logo_biogram-2" width="166" height="125"/>
         <image name="logo_facebook" width="256" height="256"/>
