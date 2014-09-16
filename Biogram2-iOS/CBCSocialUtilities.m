@@ -30,9 +30,9 @@ const char * g_biogramTagLine = "Posted by BioGram(TM)";
         
         // Specify App ID and permissions
         NSDictionary * options = @{
-                                   ACFacebookAppIdKey: @"1234567899876543",
-                                   ACFacebookPermissionsKey: @[@"publish_stream"],
-                                   ACFacebookAudienceKey: ACFacebookAudienceFriends };
+                                   ACFacebookAppIdKey: @"1538350369730665", // app id matching the one in info.plist (could use 213546525407071 which is the iOS app id)
+                                   ACFacebookPermissionsKey: @[@"publish_actions"],
+                                   ACFacebookAudienceKey: ACFacebookAudienceOnlyMe }; // HACK FOR TESTING
         
         [facebookaccount requestAccessToAccountsWithType:facebookaccountType
                                                  options:options

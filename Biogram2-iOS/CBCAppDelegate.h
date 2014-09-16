@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <iOSMedableSDK/MDFault.h>
+
 #import "CBCHeartRateEvent.h"
-#import "CBCMedableAccount.h"
 #import "AliveHMViewController.h"
+
 
 @interface CBCAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -19,6 +19,8 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
++ (CBCAppDelegate*)appDelegate;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
@@ -40,10 +42,10 @@
 
 #pragma mark - Medable
 
-@property CBCMedableAccount *medableAccount;
-
-- (void)createMedableAccount:(CBCMedableAccount*)account;
 - (void)deleteMedableAccount;
+- (void)showMedableLoginDialog;
+- (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken;
+- (void)logoutMedable;
 - (void)displayAlertWithMedableFault:(MDFault*)fault;
 
 @end

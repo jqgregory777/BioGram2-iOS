@@ -55,11 +55,15 @@
 
 - (IBAction)takePhoto:(id)sender
 {
-    UIImagePickerController*  imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    imagePicker.allowsEditing = YES;
-    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera; // use camera
-    [self presentViewController: imagePicker animated:YES completion:nil];
+    // safe check - simulator doesn't like camera source
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIImagePickerController*  imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera; // use camera
+        [self presentViewController: imagePicker animated:YES completion:nil];
+    }
 }
 
 - (IBAction)selectPhotoFromLibrary:(id)sender

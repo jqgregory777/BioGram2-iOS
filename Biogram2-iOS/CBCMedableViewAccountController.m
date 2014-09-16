@@ -8,7 +8,6 @@
 
 #import "CBCMedableViewAccountController.h"
 #import "CBCAppDelegate.h"
-#import "CBCMedableAccount.h"
 
 @interface CBCMedableViewAccountController ()
 @property (weak, nonatomic) IBOutlet UITableViewCell *firstNameCell;
@@ -35,18 +34,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
-    CBCMedableAccount* account = appDelegate.medableAccount;
     
+    MDAccount* account = [[MDAPIClient sharedClient] localUser];
     if (account != nil)
     {
         self.firstNameCell.detailTextLabel.text = account.firstName;
         self.lastNameCell.detailTextLabel.text = account.lastName;
         self.emailCell.detailTextLabel.text = account.email;
-        self.phoneNumberCell.detailTextLabel.text = account.phoneNumber;
-        self.birthDateCell.detailTextLabel.text = account.dateOfBirthAsString;
-        self.genderCell.detailTextLabel.text = account.genderAsString;
+        self.phoneNumberCell.detailTextLabel.text = account.mobile;
+        self.birthDateCell.detailTextLabel.text = [[MDDateUtilities dateFromWapiDobString:account.dob] description];
+        self.genderCell.detailTextLabel.text = [MDDataFriendly genderLongStringFromShortString:[MDDataFriendly genderShortStringFromGender:account.gender]];
     }
 }
 
@@ -68,7 +65,7 @@
     }
 }
 
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1)
     {

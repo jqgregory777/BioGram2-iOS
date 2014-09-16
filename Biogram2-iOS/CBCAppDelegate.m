@@ -12,15 +12,41 @@
 #import <iOSMedableSDK/AFNetworkActivityLogger.h>
 #import <iOSMedableSDK/AFNetworkActivityIndicatorManager.h>
 
+@interface CBCAppDelegate ()
+<UIAlertViewDelegate>
+
+@property (nonatomic, strong) NSString* email;
+@property (nonatomic, strong) NSString* password;
+@property (nonatomic, strong) NSString* verificationToken;
+
+@end
+
 @implementation CBCAppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
++ (CBCAppDelegate*)appDelegate
+{
+    return (CBCAppDelegate*)[[UIApplication sharedApplication] delegate];
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    // attempt to extract a token from the url
+    return [FBAppCall handleOpenURL:url
+                  sourceApplication:sourceApplication
+                    fallbackHandler:^(FBAppCall *call) {
+                        NSLog(@"In fallback handler");
+                    }];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-/* MEDABLE CURRENTLY CRASHES DURING POSTING, SO I'M LEAVING THIS TO FER TO FIGURE OUT...
     // Setup network calls. Log to console in debug builds.
 #ifdef DEBUG
     [[AFNetworkActivityLogger sharedLogger] startLogging];
@@ -31,7 +57,6 @@
 
     // Initialize Medable's assets manager
     [MDAssetManager sharedManager];
-*/
 
     return YES;
 }
@@ -226,23 +251,108 @@
     return YES;
 }
 
-#pragma mark - Medable
 
-- (void)createMedableAccount:(CBCMedableAccount*)account
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    // TO DO: actually create Medable account here
-    
-    // TO DO: automatically log in to the new account
-    
-    // Cache logged in account details
-    self.medableAccount = account;
+    switch (alertView.alertViewStyle)
+    {
+        case UIAlertViewStyleLoginAndPasswordInput:
+        {
+            UITextField* emailTextField = [alertView textFieldAtIndex:0];
+            self.email = emailTextField.text;
+            
+            UITextField* passwordTextField = [alertView textFieldAtIndex:1];
+            self.password = passwordTextField.text;
+            
+            [self loginMedableWithEmail:self.email
+                               password:self.password
+                      verificationToken:self.verificationToken];
+            
+            break;
+        }
+            
+        case UIAlertViewStylePlainTextInput:
+        {
+            UITextField* codeTextField = [alertView textFieldAtIndex:0];
+            self.verificationToken = codeTextField.text;
+            
+            [self loginMedableWithEmail:self.email
+                               password:self.password
+                      verificationToken:self.verificationToken];
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
 }
+
+
+#pragma mark - Medable
 
 - (void)deleteMedableAccount
 {
     // TO DO: actually delete the Medable account
+        // Accounts can't be deleted
+}
+
+- (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken
+{
+    if (email.length && password.length)
+    {
+        __weak typeof (self) wSelf = self;
+        
+        [[MDAPIClient sharedClient]
+         authenticateSessionWithEmail:email
+         password:password
+         verificationToken:verificationToken
+         singleUse:NO
+         callback:^(MDAccount *localUser, MDFault *fault)
+         {
+             if (fault)
+             {
+                 if ([fault.code isEqualToString:kMDAPIErrorUnverifiedLocation] ||
+                     [fault.code isEqualToString:kMDAPIErrorNewLocation])
+                 {
+                     [wSelf displayAlertWithMedableFault:fault];
+                 }
+                 else
+                 {
+                     [wSelf showMedableLoginDialog];
+                 }
+             }
+         }];
+    }
+}
+
+- (void)logoutMedable
+{
+    __weak typeof (self) wSelf = self;
     
-    self.medableAccount = nil;
+    [[MDAPIClient sharedClient] logout:^(MDFault *fault)
+    {
+        if (fault)
+        {
+            [wSelf displayAlertWithMedableFault:fault];
+        }
+    }];
+}
+
+- (void)showMedableLoginDialog
+{
+    UIAlertView* loginAlertView = [[UIAlertView alloc]
+                                   initWithTitle:NSLocalizedString(@"Medable Login", nil)
+                                   message:NSLocalizedString(@"Enter your credentials", nil)
+                                   delegate:self
+                                   cancelButtonTitle:NSLocalizedString(@"Login", nil)
+                                   otherButtonTitles:nil];
+    
+    loginAlertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    
+    [loginAlertView show];
 }
 
 - (void)displayAlertWithMedableFault:(MDFault*)fault
@@ -254,7 +364,19 @@
                           cancelButtonTitle:NSLocalizedString(@"Ok", nil)
                           otherButtonTitles:nil];
     
+    // Received error on first login with no verification token
+    if ([fault.code isEqualToString:kMDAPIErrorUnverifiedLocation] ||
+        [fault.code isEqualToString:kMDAPIErrorNewLocation])
+    {
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        alert.message = [alert.message stringByAppendingString:@"\nPlease enter verfication code:"];
+    }
+    
     [alert show];
 }
 
 @end
+
+// org.uscbodycomputing.${PRODUCT_NAME:rfc1034identifier}
+// biogrammobileapp
+

@@ -38,6 +38,11 @@
 {
     [super viewDidLoad];
     [self updateEditButton];
+    
+    // Testing Facebook
+//    FBLoginView *loginView = [[FBLoginView alloc] init];
+//    loginView.center = self.view.center;
+//    [self.view addSubview:loginView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -276,38 +281,6 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
 }
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-    NSInteger toRow = toIndexPath.row;
-    NSInteger fromRow = fromIndexPath.row;
-    if (toRow != fromRow)
-    {
-        //        id elem = [self.toDoItems objectAtIndex:fromRow];
-        //        [self.toDoItems removeObjectAtIndex:fromRow];
-        //        [self.toDoItems insertObject:elem atIndex:toRow];
-    }
-}
-
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
 
 #pragma mark - Navigation
 

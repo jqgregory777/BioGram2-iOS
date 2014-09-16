@@ -45,12 +45,13 @@
 		549727B919C7FAAC00DAF814 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727B819C7FAAC00DAF814 /* SystemConfiguration.framework */; };
 		54A266D019C2B1A300BE5834 /* CBCMedableCreateAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */; };
 		54A266D419C2B69F00BE5834 /* CBCMedableMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */; };
-		54A266D719C2BBF000BE5834 /* CBCMedableAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */; };
 		54C7FFA919C5E0B4008BB7AE /* CBCEditPhotoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C7FFA819C5E0B4008BB7AE /* CBCEditPhotoController.m */; };
 		54C7FFAC19C5E3B7008BB7AE /* CBCImageUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 54C7FFAB19C5E3B7008BB7AE /* CBCImageUtilities.m */; };
 		54D1803D19C6CC0600196BE9 /* AliveHMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 54D1803C19C6CC0600196BE9 /* AliveHMViewController.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		54D1804D19C6D19500196BE9 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54D1804C19C6D19500196BE9 /* AudioToolbox.framework */; };
 		54FDF7CE19C7B1EC001928AF /* CBCTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FDF7CD19C7B1EC001928AF /* CBCTabBarController.m */; };
+		C13622C819C8BEA700B31E82 /* Environments.plist in Resources */ = {isa = PBXBuildFile; fileRef = C13622C719C8BEA700B31E82 /* Environments.plist */; };
+		C13622C919C8BEA700B31E82 /* Environments.plist in Resources */ = {isa = PBXBuildFile; fileRef = C13622C719C8BEA700B31E82 /* Environments.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,8 +117,6 @@
 		54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableCreateAccountController.m; sourceTree = "<group>"; };
 		54A266D219C2B69F00BE5834 /* CBCMedableMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedableMainTableViewController.h; sourceTree = "<group>"; };
 		54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableMainTableViewController.m; sourceTree = "<group>"; };
-		54A266D519C2BBF000BE5834 /* CBCMedableAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedableAccount.h; sourceTree = "<group>"; };
-		54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableAccount.m; sourceTree = "<group>"; };
 		54C7FFA719C5E0B4008BB7AE /* CBCEditPhotoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCEditPhotoController.h; sourceTree = "<group>"; };
 		54C7FFA819C5E0B4008BB7AE /* CBCEditPhotoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCEditPhotoController.m; sourceTree = "<group>"; };
 		54C7FFAA19C5E3B7008BB7AE /* CBCImageUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCImageUtilities.h; sourceTree = "<group>"; };
@@ -127,6 +126,7 @@
 		54D1804C19C6D19500196BE9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		54FDF7CC19C7B1EC001928AF /* CBCTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCTabBarController.h; sourceTree = "<group>"; };
 		54FDF7CD19C7B1EC001928AF /* CBCTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCTabBarController.m; sourceTree = "<group>"; };
+		C13622C719C8BEA700B31E82 /* Environments.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Environments.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,9 +140,9 @@
 				549727B319C7F82800DAF814 /* Accounts.framework in Frameworks */,
 				549727B119C7F7C100DAF814 /* Social.framework in Frameworks */,
 				549727AF19C7F7B200DAF814 /* QuartzCore.framework in Frameworks */,
-				549727AD19C7F7A500DAF814 /* MessageUI.framework in Frameworks */,
 				549727AB19C7F23900DAF814 /* iOSMedableSDK.framework in Frameworks */,
 				549727A919C7F22D00DAF814 /* FacebookSDK.framework in Frameworks */,
+				549727AD19C7F7A500DAF814 /* MessageUI.framework in Frameworks */,
 				549727A719C7F21C00DAF814 /* AliveHMLibrary.framework in Frameworks */,
 				54D1804D19C6D19500196BE9 /* AudioToolbox.framework in Frameworks */,
 				541AD54A19C21A840083FDD1 /* CoreGraphics.framework in Frameworks */,
@@ -317,8 +317,7 @@
 				54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */,
 				54A266D219C2B69F00BE5834 /* CBCMedableMainTableViewController.h */,
 				54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */,
-				54A266D519C2BBF000BE5834 /* CBCMedableAccount.h */,
-				54A266D619C2BBF000BE5834 /* CBCMedableAccount.m */,
+				C13622C719C8BEA700B31E82 /* Environments.plist */,
 			);
 			name = Medable;
 			sourceTree = "<group>";
@@ -402,6 +401,7 @@
 				541AD57D19C21B310083FDD1 /* Main.storyboard in Resources */,
 				545C5B7B19C3E7C200FC704D /* Biogram2_iOSModel.strings in Resources */,
 				541AD55419C21A840083FDD1 /* InfoPlist.strings in Resources */,
+				C13622C819C8BEA700B31E82 /* Environments.plist in Resources */,
 				541AD55F19C21A840083FDD1 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +410,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C13622C919C8BEA700B31E82 /* Environments.plist in Resources */,
 				541AD57119C21A850083FDD1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,7 +438,6 @@
 				5495F86C19C2779E00E5937E /* CBCDetailViewController.m in Sources */,
 				545C5B8619C4F7B200FC704D /* CBCManualHeartRateController.m in Sources */,
 				545C5B7919C3A00A00FC704D /* EXTPhoneNumberFormatter.m in Sources */,
-				54A266D719C2BBF000BE5834 /* CBCMedableAccount.m in Sources */,
 				541AD55A19C21A840083FDD1 /* CBCAppDelegate.m in Sources */,
 				54A266D019C2B1A300BE5834 /* CBCMedableCreateAccountController.m in Sources */,
 			);
@@ -499,6 +499,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Biogram2-iOS/Frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -515,6 +516,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -538,6 +540,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Biogram2-iOS/Frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -546,6 +549,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -557,13 +561,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 					"$(inherited)",
 					"/Users/jason_gregory/GitHub/BioGram-iOS/biogram",
-					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
 				INFOPLIST_FILE = "Biogram2-iOS/Biogram2-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -578,13 +583,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 					"$(inherited)",
 					"/Users/jason_gregory/GitHub/BioGram-iOS/biogram",
-					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
 				INFOPLIST_FILE = "Biogram2-iOS/Biogram2-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -601,6 +607,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";
@@ -623,6 +630,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)/Biogram2-iOS/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Biogram2-iOS/Biogram2-iOS-Prefix.pch";

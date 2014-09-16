@@ -12,26 +12,38 @@
 	<dict>
 		<key>1900B9CD-3B90-4C2B-A0A8-FFE8A1CA5796</key>
 		<string>https://github.com/jqgregory777/BioGram2-iOS.git</string>
+		<key>313DD5EA117BAD062580C649BB3B6B490DF990E6</key>
+		<string>github.com:jqgregory777/BioGram2-iOS.git</string>
 		<key>D311C289-C273-4B19-8BF5-E28D08AFB011</key>
 		<string>https://github.com/trinagregory/BioGram-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Biogram2-iOS.xcodeproj/project.xcworkspace</string>
+	<string>Biogram2-iOS.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>1900B9CD-3B90-4C2B-A0A8-FFE8A1CA5796</key>
+		<string>../../../BioGram2-iOS</string>
+		<key>313DD5EA117BAD062580C649BB3B6B490DF990E6</key>
 		<string>../..</string>
 		<key>D311C289-C273-4B19-8BF5-E28D08AFB011</key>
 		<string>../../../BioGram-iOS</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/jqgregory777/BioGram2-iOS.git</string>
+	<string>github.com:jqgregory777/BioGram2-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>1900B9CD-3B90-4C2B-A0A8-FFE8A1CA5796</string>
+	<string>313DD5EA117BAD062580C649BB3B6B490DF990E6</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>313DD5EA117BAD062580C649BB3B6B490DF990E6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Biogram</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

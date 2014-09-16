@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Debug</key>
+	<dict>
+		<key>org</key>
+		<string>biogram</string>
+		<key>Protocol</key>
+		<string>https</string>
+		<key>BASEURL</key>
+		<string>dev.medable.com</string>
+		<key>APIPrefix</key>
+		<string>api</string>
+		<key>Medable-Client-Key</key>
+		<string>uMCPt73lfJHJV6kCxxyWSG</string>
+	</dict>
+	<key>Release</key>
+	<dict>
+		<key>org</key>
+		<string>biogram</string>
+		<key>Protocol</key>
+		<string>https</string>
+		<key>BASEURL</key>
+		<string>dev.medable.com</string>
+		<key>APIPrefix</key>
+		<string>api</string>
+		<key>Medable-Client-Key</key>
+		<string>uMCPt73lfJHJV6kCxxyWSG</string>
+	</dict>
+	<key>Production</key>
+	<dict>
+		<key>org</key>
+		<string>biogram</string>
+		<key>Protocol</key>
+		<string>https</string>
+		<key>BASEURL</key>
+		<string>dev.medable.com</string>
+		<key>APIPrefix</key>
+		<string>api</string>
+		<key>Medable-Client-Key</key>
+		<string>uMCPt73lfJHJV6kCxxyWSG</string>
+	</dict>
+</dict>
+</plist>
