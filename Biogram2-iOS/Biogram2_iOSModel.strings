@@ -14,9 +14,6 @@
 "Property/dateOfBirth" = "Birth Date";
 "Property/gender" = "Gender";
 
-"Segue/login" = "login";
-"Segue/logout" = "logout";
-
 // App text
 "Enter your credentials" = "Enter your credentials";
 "Login" = "Login";

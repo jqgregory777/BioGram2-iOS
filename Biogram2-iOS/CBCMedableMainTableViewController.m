@@ -12,6 +12,8 @@
 @interface CBCMedableMainTableViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *accountCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *loginCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *logoutCell;
 
 @end
 
@@ -31,6 +33,32 @@
 {
     [super viewDidLoad];
     [self updateAccountDetailsButton];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.isMovingToParentViewController == NO)
+    {
+        // we're already on the navigation stack
+        // another controller must have been popped off
+        [self updateAccountDetailsButton];
+    }
+
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton) name:kMDNotificationUserDidLogin object:nil];
+    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton) name:kMDNotificationUserDidLogout object:nil];
+    
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)updateAccountDetailsButton
@@ -49,19 +77,24 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Navigation
 
-- (void)viewWillAppear:(BOOL)animated
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super viewWillAppear:animated];
-    
-    if (self.isMovingToParentViewController == NO)
+    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([cell.textLabel.text isEqualToString:@"Log In"])
     {
-        // we're already on the navigation stack
-        // another controller must have been popped off
-        [self updateAccountDetailsButton];
+        [[CBCAppDelegate appDelegate] showMedableLoginDialog];
+    }
+    else if ([cell.textLabel.text isEqualToString:@"Log Out"])
+    {
+        [[CBCAppDelegate appDelegate] logoutMedable];
     }
 }
+
+
+#pragma mark - Navigation
 
 // NOT NECESSARY - [updateAccountDetailsButton] sets userInteractionEnabled to NO which disallows the segue
 //- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
@@ -83,14 +116,6 @@
         //UINavigationController *navigationController = segue.destinationViewController;
         //CBCMedableCreateAccountController *controller = [navigationController viewControllers][0];
         //controller.delegate = self;
-    }
-    else if ([segue.identifier isEqualToString:NSLocalizedString(@"Segue/login", nil)])
-    {
-        [[CBCAppDelegate appDelegate] showMedableLoginDialog];
-    }
-    else if ([segue.identifier isEqualToString:NSLocalizedString(@"Segue/logout", nil)])
-    {
-        [[CBCAppDelegate appDelegate] logoutMedable];
     }
 }
 

@@ -40,9 +40,9 @@
 - (void)cancelPendingHeartRateEvent;
 - (BOOL)savePendingHeartRateEvent;
 
+
 #pragma mark - Medable
 
-- (void)deleteMedableAccount;
 - (void)showMedableLoginDialog;
 - (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken;
 - (void)logoutMedable;
