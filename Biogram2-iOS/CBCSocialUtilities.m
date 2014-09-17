@@ -197,15 +197,59 @@ typedef NSInteger SocialServiceID;
         NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
         NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
 //        UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
-        
+
+        // OLD WAY
 //        self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
 //        [self.slComposeViewController addImage:image];
 //        [self.slComposeViewController setInitialText:message];
 //        [self presentViewController:self.slComposeViewController animated:YES completion:NULL];
+        
+        // NEW WAY
+        
+        ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+        ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:
+                                      ACAccountTypeIdentifierTwitter];
+        
+        [accountStore requestAccessToAccountsWithType:accountType options:nil
+                                      completion:
+            ^(BOOL granted, NSError *error)
+            {
+                if (granted == YES)
+                {
+                    // Get account and communicate with Twitter API
+                    NSArray *arrayOfAccounts = [accountStore
+                                                accountsWithAccountType:accountType];
+                    
+                    if ([arrayOfAccounts count] > 0)
+                    {
+                        ACAccount *twitterAccount = [arrayOfAccounts lastObject];
+                        
+                        NSDictionary *parametersDict = @{@"status": message};
+                        
+                        NSURL *requestURL = [NSURL
+                                             URLWithString:@"http://api.twitter.com/1/statuses/update.json"];
+                        
+                        SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                                    requestMethod:SLRequestMethodPOST
+                                                                              URL:requestURL
+                                                                       parameters:parametersDict];
+                        
+                        postRequest.account = twitterAccount;
+                        
+                        [postRequest performRequestWithHandler:
+                            ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
+                             {
+                                 NSLog(@"Twitter HTTP response: %i", [urlResponse statusCode]);
+                             }
+                        ];
+                    }
+                }
+            }
+        ];
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"No Account Found" message:@"Configure a Twitter account in setting" delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"No Account Found" message:@"Please configure a Twitter account in Settings." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil,nil];
         alert.alertViewStyle = UIAlertViewStyleDefault;
         [alert show];
     }
