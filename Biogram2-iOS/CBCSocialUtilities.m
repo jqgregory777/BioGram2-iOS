@@ -14,25 +14,33 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
 
 @implementation CBCSocialUtilities
 
-+ (void)showMessage:(NSString *)message withTitle:(NSString *)title
++ (void)postDidComplete:(NSString *)serviceId forEvent:(CBCHeartRateEvent *)heartRateEvent
 {
-    UIAlertView* loginAlertView = [[UIAlertView alloc]
-                                   initWithTitle:NSLocalizedString(title, nil)
-                                   message:NSLocalizedString(message, nil)
-                                   delegate:nil
-                                   cancelButtonTitle:NSLocalizedString(@"Dismiss", nil)
-                                   otherButtonTitles:nil];
-    [loginAlertView show];
+    if ([serviceId isEqualToString:@"facebook"])
+    {
+        heartRateEvent.postedToFacebook = @YES;
+    }
+    else if ([serviceId isEqualToString:@"twitter"])
+    {
+        heartRateEvent.postedToTwitter = @YES;
+    }
+    else if ([serviceId isEqualToString:@"medable"])
+    {
+        heartRateEvent.postedToMedable = @YES;
+    }
+
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+    [appDelegate saveHeartRateEvent:heartRateEvent];
 }
 
 #pragma mark - Facebook
 
-+ (BOOL)postToFacebook:(CBCHeartRateEvent *)pendingEvent
++ (void)postToFacebook:(CBCHeartRateEvent *)heartRateEvent
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
         NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
-        NSString * message = [NSString stringWithFormat:@"%@\n%@", pendingEvent.eventDescription, biogramTagLine];
+        NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
         
         // OLD WAY: show a pop-up dialog to allow the user the post manually.
         //        self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
@@ -98,7 +106,7 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
                                                                     URL:[NSURL URLWithString:@"https://graph.facebook.com/me/photos"]
                                                              parameters:parameters];
                                     
-                                    [fbRequest addMultipartData:pendingEvent.photo
+                                    [fbRequest addMultipartData:heartRateEvent.photo
                                                        withName:@"source"
                                                            type:@"multipart/form-data"
                                                        filename:@"BioGramPhoto"];
@@ -115,17 +123,17 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
                                          {
                                              if (error == nil)
                                              {
-                                                 NSLog(@"FB response data is: %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
-                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                     [[CBCAppDelegate appDelegate] facebookPostDidSucceed];
-                                                 });
+                                                 NSString * responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                                                 NSLog(@"FB response data is: %@", responseString);
+                                                 [CBCSocialUtilities postDidComplete:@"facebook"
+                                                                            forEvent:heartRateEvent];
                                              }
                                              else
                                              {
                                                  NSLog(@"FB request failed -- error is: %@",error.description);
                                                  NSString * message = [NSString stringWithFormat:@"An error occurred while\nposting to Facebook:\n%@",
                                                                        [error description]];
-                                                 [CBCSocialUtilities showMessage:message withTitle:@"Posting Error"];
+                                                 [CBCAppDelegate showMessage:message withTitle:@"Posting Error"];
                                              }
                                          }
                                      ];
@@ -133,7 +141,7 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
                                 else
                                 {
                                     NSLog(@"FB: no facebook accounts found");
-                                    [CBCSocialUtilities showMessage:@"Please configure a Facebook account in Settings." withTitle:@"No Account Found"];
+                                    [CBCAppDelegate showMessage:@"Please configure a Facebook account in Settings." withTitle:@"No Account Found"];
                                 }
                             }
                             else
@@ -143,7 +151,7 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
                                 {
                                     NSString * message = [NSString stringWithFormat:@"An error occurred while\nrequesting Facebook permissions:\n%@",
                                                           [error description]];
-                                    [CBCSocialUtilities showMessage:message withTitle:@"Permissions Error"];
+                                    [CBCAppDelegate showMessage:message withTitle:@"Permissions Error"];
                                 }
                             }
                         }
@@ -156,7 +164,7 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
                     {
                         NSString * message = [NSString stringWithFormat:@"An error occurred while\nrequesting Facebook permissions:\n%@",
                                               [error description]];
-                        [CBCSocialUtilities showMessage:message withTitle:@"Permissions Error"];
+                        [CBCAppDelegate showMessage:message withTitle:@"Permissions Error"];
                     }
                 }
             }
@@ -164,20 +172,19 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
     }
     else
     {
-        [CBCSocialUtilities showMessage:@"Please configure a Facebook account in Settings." withTitle:@"No Account Found"];
+        [CBCAppDelegate showMessage:@"Please configure a Facebook account in Settings." withTitle:@"No Account Found"];
     }
-    return YES;
 }
 
 #pragma mark - Twitter
 
-+ (BOOL)postToTwitter:(CBCHeartRateEvent *)pendingEvent
++ (void)postToTwitter:(CBCHeartRateEvent *)heartRateEvent
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
         NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
-        NSString * message = [NSString stringWithFormat:@"%@\n%@", pendingEvent.eventDescription, biogramTagLine];
-//        UIImage * image = [UIImage imageWithData:pendingEvent.photo];
+        NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+//        UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
         
 //        self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
 //        [self.slComposeViewController addImage:image];
@@ -190,8 +197,45 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
         alert.alertViewStyle = UIAlertViewStyleDefault;
         [alert show];
     }
-    return YES;
 }
 
+#pragma mark - Medable
+
++ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent
+{
+    // Post to Medable
+    MDAPIClient* apiClient = [MDAPIClient sharedClient];
+    
+    // Current account
+    MDAccount* currentAccount = apiClient.localUser;
+    if (currentAccount) // logged in?
+    {
+        UIImage* backgroundImage = [UIImage imageWithData:heartRateEvent.backgroundImage];
+        UIImage* overlayImage = [UIImage imageWithData:heartRateEvent.overlayImage];
+        
+        NSString* biogramId = [currentAccount biogramId];
+        
+        [[MDAPIClient sharedClient]
+         postHeartbeatWithBiogramId:biogramId
+         heartbeat:[heartRateEvent.heartRate integerValue]
+         image:backgroundImage
+         overlay:overlayImage
+         progress:nil
+         finishBlock:
+            ^(MDPost *post, MDFault *fault)
+            {
+                if (fault)
+                {
+                    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+                    [appDelegate displayAlertWithMedableFault:fault];
+                }
+                else
+                {
+                    [CBCSocialUtilities postDidComplete:@"medable"
+                                               forEvent:heartRateEvent];
+                }
+            }];
+    }
+}
 
 @end

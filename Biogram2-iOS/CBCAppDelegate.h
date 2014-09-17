@@ -39,11 +39,7 @@
 - (CBCHeartRateEvent *)createPendingHeartRateEvent;
 - (void)cancelPendingHeartRateEvent;
 - (BOOL)savePendingHeartRateEvent;
-
-#pragma mark - Social
-
-- (void)facebookPostDidSucceed;
-- (void)facebookPostDidFail;
+- (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 
 #pragma mark - Medable
 
@@ -52,5 +48,9 @@
 - (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken;
 - (void)logoutMedable;
 - (void)displayAlertWithMedableFault:(MDFault*)fault;
+
+#pragma mark - Utilities
+
++ (void)showMessage:(NSString *)message withTitle:(NSString *)title;
 
 @end

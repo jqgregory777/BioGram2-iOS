@@ -8,7 +8,6 @@
 
 #import "CBCAppDelegate.h"
 #import "CBCFeedViewController.h"
-#import "CBCSocialUtilities.h"
 
 #import <iOSMedableSDK/AFNetworkActivityLogger.h>
 #import <iOSMedableSDK/AFNetworkActivityIndicatorManager.h>
@@ -109,6 +108,20 @@
             }
         } 
     }
+}
+
+#pragma mark - Utilities
+
+// convenient utility -- put it here for lack of a better place
++ (void)showMessage:(NSString *)message withTitle:(NSString *)title
+{
+    UIAlertView* loginAlertView = [[UIAlertView alloc]
+                                   initWithTitle:NSLocalizedString(title, nil)
+                                   message:NSLocalizedString(message, nil)
+                                   delegate:nil
+                                   cancelButtonTitle:NSLocalizedString(@"Dismiss", nil)
+                                   otherButtonTitles:nil];
+    [loginAlertView show];
 }
 
 #pragma mark - Core Data stack
@@ -214,9 +227,9 @@
     NSManagedObjectContext *context = [self managedObjectContext];
     self.pendingHeartRateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"HeartRateEvent" inManagedObjectContext:context];
     self.pendingHeartRateEvent.timeStamp = [NSDate date]; // current date
-    self.pendingHeartRateEvent.postedToFacebook = [NSNumber numberWithBool:NO];
-    self.pendingHeartRateEvent.postedToTwitter = [NSNumber numberWithBool:NO];
-    self.pendingHeartRateEvent.postedToMedable = [NSNumber numberWithBool:NO];
+    self.pendingHeartRateEvent.postedToFacebook = @NO;
+    self.pendingHeartRateEvent.postedToTwitter = @NO;
+    self.pendingHeartRateEvent.postedToMedable = @NO;
 
     return self.pendingHeartRateEvent;
 }
@@ -231,41 +244,38 @@
     }
 }
 
-- (BOOL)savePendingHeartRateEvent
+- (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
 {
-    if (self.pendingHeartRateEvent != nil)
+    if (heartRateEvent != nil)
     {
         NSManagedObjectContext *context = [self managedObjectContext];
         NSError *error = nil;
         if (![context save:&error])
         {
             // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            // abort() causes the application to generate a crash log and terminate.
+            // You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
-            self.pendingHeartRateEvent = nil;
             return NO; // won't get here until abort() above is removed -- TO DO: handle these errors properly
         }
-
-        NSManagedObjectID * permanentId = self.pendingHeartRateEvent.objectID;
+        
+        NSManagedObjectID * permanentId = heartRateEvent.objectID;
         NSURL * url = [permanentId URIRepresentation];
         NSLog(@"Saved CBCHeartRateEvent with URL = %@", url);
-        
-        self.pendingHeartRateEvent = nil; // release the strong reference
     }
     return YES;
 }
 
-#pragma mark - Social
-
-- (void)facebookPostDidSucceed
+- (BOOL)savePendingHeartRateEvent
 {
-    NSLog(@"[appDelegate facebookPostDidSucceed]");
-}
-
-- (void)facebookPostDidFail
-{
-    NSLog(@"[appDelegate facebookPostDidFail]");
+    if (self.pendingHeartRateEvent != nil)
+    {
+        BOOL success = [self saveHeartRateEvent:self.pendingHeartRateEvent];
+        self.pendingHeartRateEvent = nil; // release the strong reference
+        return success;
+    }
+    return NO;
 }
 
 #pragma mark - UIAlertViewDelegate
