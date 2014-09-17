@@ -46,7 +46,7 @@
     // Create a new pending heart rate event (for manual entry)
     //
     
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
     [appDelegate createPendingHeartRateEvent];
 }
 
@@ -92,7 +92,7 @@
     {
         NSString *finalHeartRate = self.heartRateLabel.text;
 
-        CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+        CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
         appDelegate.pendingHeartRateEvent.heartRate = finalHeartRate;
     }
 }

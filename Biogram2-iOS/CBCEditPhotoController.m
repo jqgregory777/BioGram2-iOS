@@ -64,7 +64,7 @@
     self.shareOrSaveButton.possibleTitles = [NSSet setWithObjects:@"Share", @"Save", nil];
 
     // retrieve the pending heart rate event
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
     CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
     
     // crop image to a square
@@ -300,7 +300,7 @@
          {
              if (fault)
              {
-                 CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+                 CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
                  [appDelegate displayAlertWithMedableFault:fault];
              }
 

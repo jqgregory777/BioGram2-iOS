@@ -76,7 +76,7 @@
 {
     if (buttonIndex == 1)
     {
-        CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+        CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
         [appDelegate deleteMedableAccount];
         [self performSegueWithIdentifier:@"returnToMainView" sender:self];
     }
