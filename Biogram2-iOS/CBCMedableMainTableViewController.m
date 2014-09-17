@@ -101,7 +101,7 @@
 //{
 //    if ([identifier isEqualToString:@"medableAccountDetailsSegue"])
 //    {
-//        CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+//        CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
 //        CBCMedableAccount* account = appDelegate.medableAccount;
 //        return (account != nil);
 //    }

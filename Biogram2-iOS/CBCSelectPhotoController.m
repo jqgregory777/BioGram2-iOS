@@ -31,7 +31,7 @@
 {
     [super viewDidLoad];
 
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
     
     self.timeStampLabel.text = [appDelegate.pendingHeartRateEvent timeStampAsString];
 }
@@ -79,7 +79,7 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
     
     // extract the raw image from the info dict and cache it in the pending heart rate event
     // for processing by the CBCEditPhotoController page

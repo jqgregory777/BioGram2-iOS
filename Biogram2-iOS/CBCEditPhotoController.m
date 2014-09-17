@@ -64,7 +64,7 @@
     self.shareOrSaveButton.possibleTitles = [NSSet setWithObjects:@"Share", @"Save", nil];
 
     // retrieve the pending heart rate event
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
     CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
     
     // crop image to a square
@@ -276,44 +276,6 @@
     }
 }
 
-- (BOOL)postToMedable:(CBCHeartRateEvent *)pendingEvent
-{   
-    // Post to Medable
-    MDAPIClient* apiClient = [MDAPIClient sharedClient];
-
-    // Current account
-    MDAccount* currentAccount = apiClient.localUser;
-    if (currentAccount) // logged in?
-    {
-        UIImage* backgroundImage = [UIImage imageWithData:pendingEvent.backgroundImage];
-        UIImage* overlayImage = [UIImage imageWithData:pendingEvent.overlayImage];
-
-        NSString* biogramId = [currentAccount biogramId];
-
-        [[MDAPIClient sharedClient]
-         postHeartbeatWithBiogramId:biogramId
-         heartbeat:[pendingEvent.heartRate integerValue]
-         image:backgroundImage
-         overlay:overlayImage
-         progress:nil
-         finishBlock:^(MDPost *post, MDFault *fault)
-         {
-             if (fault)
-             {
-                 CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
-                 [appDelegate displayAlertWithMedableFault:fault];
-             }
-
-             pendingEvent.postedToMedable = [NSNumber numberWithBool:(fault == nil)];
-         }];
-        
-        return YES;
-    }
-    
-    pendingEvent.postedToMedable = @(0);
-    return NO;
-}
-
 #pragma mark - Save Button
 
 - (void)updatePendingEventFromUI
@@ -338,6 +300,10 @@
     
     NSData * photoData = UIImagePNGRepresentation(compositedImage);
     pendingEvent.photo = photoData;
+
+    // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out!
+    // But this is the ONLY place we set the photo, so screw it - just do it here.
+    pendingEvent.thumbnail = nil;
 }
 
 - (IBAction)saveButtonTouched:(id)sender
@@ -347,26 +313,36 @@
     
     [self updatePendingEventFromUI];
     
-    if (pendingEvent.postedToFacebook.boolValue)
-    {
-        BOOL postedSuccessfully = [CBCSocialUtilities postToFacebook:pendingEvent];
-        pendingEvent.postedToFacebook = [NSNumber numberWithBool:postedSuccessfully];
-    }
-    if (pendingEvent.postedToTwitter.boolValue)
-    {
-        //BOOL postedSuccessfully = [CBCSocialUtilities postToTwitter:pendingEvent];
-        //pendingEvent.postedToTwitter = [NSNumber numberWithBool:postedSuccessfully];
-    }
-    if (pendingEvent.postedToMedable.boolValue)
-    {
-        [self postToMedable:pendingEvent];  // setting post result inside the method
-    }
-    
-    pendingEvent.thumbnail = nil; // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out! but this is the ONLY place we set the photo, so screw it - just do it here
-    
+    BOOL wantPostToFacebook = pendingEvent.postedToFacebook.boolValue;
+    BOOL wantPostToTwitter = pendingEvent.postedToTwitter.boolValue;
+    BOOL wantPostToMedable = pendingEvent.postedToMedable.boolValue;
+
+    // assume failure until success is confirmed
+    pendingEvent.postedToFacebook = @NO;
+    pendingEvent.postedToTwitter = @NO;
+    pendingEvent.postedToMedable = @NO;
+
     if ([appDelegate savePendingHeartRateEvent])
     {
-        // success! nothing special to do, at least not yet
+        // success! now post to social media as requested
+        // upon success, we'll set the postedTo* attributes back to YES and re-save
+        
+        if (wantPostToFacebook)
+        {
+            [CBCSocialUtilities postToFacebook:pendingEvent];
+        }
+        if (wantPostToTwitter)
+        {
+            [CBCSocialUtilities postToTwitter:pendingEvent];
+        }
+        if (wantPostToMedable)
+        {
+            [CBCSocialUtilities postToMedable:pendingEvent];
+        }
+    }
+    else
+    {
+        
     }
 
     // Also activate the feed view in the tab bar.

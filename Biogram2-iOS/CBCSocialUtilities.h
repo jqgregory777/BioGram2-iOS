@@ -10,9 +10,23 @@
 #import <Foundation/Foundation.h>
 #import <Social/Social.h>
 
+// Represents a request to share a single CBCHeartRateEvent to one or more social media services.
+// This object is created when the CBCHeartRateEvent is first saved. It sticks around until
+// all requested shares have either completed or failed, and then updates the CBCHeartRateEvent's
+// postedTo* attributes appropriately (and notifies the user if one or more of the shares failed).
+
 @interface CBCSocialUtilities : NSObject
 
-+ (BOOL)postToFacebook:(CBCHeartRateEvent *)pendingEvent;
-+ (BOOL)postToTwitter:(CBCHeartRateEvent *)pendingEvent;
+#pragma mark - Facebook
+
++ (void)postToFacebook:(CBCHeartRateEvent *)pendingEvent;
+
+#pragma mark - Twitter
+
++ (void)postToTwitter:(CBCHeartRateEvent *)pendingEvent;
+
+#pragma mark - Medable
+
++ (void)postToMedable:(CBCHeartRateEvent *)pendingEvent;
 
 @end

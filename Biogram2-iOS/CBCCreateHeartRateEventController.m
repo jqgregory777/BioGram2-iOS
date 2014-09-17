@@ -48,7 +48,7 @@
         // we're already on the navigation stack
         // another controller must have been popped off
         // so, cancel the pending heart rate event
-        CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+        CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
         [appDelegate cancelPendingHeartRateEvent];
     }
 }
@@ -64,7 +64,7 @@
         // Create a new pending heart rate event (for manual entry)
         //
         
-        CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+        CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
         [appDelegate createPendingHeartRateEvent];
     }
 }
@@ -79,7 +79,7 @@
 
 -(void)didCloseAliveViewWithHeartRate:(NSString*)heartRate
 {
-    CBCAppDelegate *appDelegate = (CBCAppDelegate *)[[UIApplication sharedApplication] delegate];
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
     if (appDelegate.pendingHeartRateEvent != nil)
     {
         appDelegate.pendingHeartRateEvent.heartRate = heartRate;
