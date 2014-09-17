@@ -365,7 +365,7 @@
                  }
                  else
                  {
-                     [wSelf showMedableLoginDialog];
+                     [wSelf displayAlertWithMessage:fault.text];
                  }
              }
          }];
@@ -417,6 +417,16 @@
     }
     
     [alert show];
+}
+
+- (void)displayAlertWithMessage:(NSString*)message
+{
+    [[[UIAlertView alloc]
+      initWithTitle:nil
+      message:message
+      delegate:nil
+      cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+      otherButtonTitles:nil] show];
 }
 
 @end

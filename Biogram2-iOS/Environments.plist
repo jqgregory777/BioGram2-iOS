@@ -22,11 +22,11 @@
 		<key>Protocol</key>
 		<string>https</string>
 		<key>BASEURL</key>
-		<string>dev.medable.com</string>
+		<string>medable.com</string>
 		<key>APIPrefix</key>
 		<string>api</string>
 		<key>Medable-Client-Key</key>
-		<string>uMCPt73lfJHJV6kCxxyWSG</string>
+		<string>YUgOzXiBfymNHY0ABea4Ph</string>
 	</dict>
 	<key>Production</key>
 	<dict>
@@ -35,11 +35,11 @@
 		<key>Protocol</key>
 		<string>https</string>
 		<key>BASEURL</key>
-		<string>dev.medable.com</string>
+		<string>medable.com</string>
 		<key>APIPrefix</key>
 		<string>api</string>
 		<key>Medable-Client-Key</key>
-		<string>uMCPt73lfJHJV6kCxxyWSG</string>
+		<string>YUgOzXiBfymNHY0ABea4Ph</string>
 	</dict>
 </dict>
 </plist>
