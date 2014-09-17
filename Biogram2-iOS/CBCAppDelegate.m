@@ -260,15 +260,18 @@
     {
         case UIAlertViewStyleLoginAndPasswordInput:
         {
-            UITextField* emailTextField = [alertView textFieldAtIndex:0];
-            self.email = emailTextField.text;
-            
-            UITextField* passwordTextField = [alertView textFieldAtIndex:1];
-            self.password = passwordTextField.text;
-            
-            [self loginMedableWithEmail:self.email
-                               password:self.password
-                      verificationToken:self.verificationToken];
+            if (buttonIndex == 1)
+            {
+                UITextField* emailTextField = [alertView textFieldAtIndex:0];
+                self.email = emailTextField.text;
+                
+                UITextField* passwordTextField = [alertView textFieldAtIndex:1];
+                self.password = passwordTextField.text;
+                
+                [self loginMedableWithEmail:self.email
+                                   password:self.password
+                          verificationToken:self.verificationToken];
+            }
             
             break;
         }
@@ -347,8 +350,8 @@
                                    initWithTitle:NSLocalizedString(@"Medable Login", nil)
                                    message:NSLocalizedString(@"Enter your credentials", nil)
                                    delegate:self
-                                   cancelButtonTitle:NSLocalizedString(@"Login", nil)
-                                   otherButtonTitles:nil];
+                                   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                   otherButtonTitles:NSLocalizedString(@"Login", nil), nil];
     
     loginAlertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
     
