@@ -14,23 +14,35 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
 
 @implementation CBCSocialUtilities
 
-+ (void)postDidComplete:(NSString *)serviceId forEvent:(CBCHeartRateEvent *)heartRateEvent
+enum ESocialServiceID
 {
-    if ([serviceId isEqualToString:@"facebook"])
-    {
-        heartRateEvent.postedToFacebook = @YES;
-    }
-    else if ([serviceId isEqualToString:@"twitter"])
-    {
-        heartRateEvent.postedToTwitter = @YES;
-    }
-    else if ([serviceId isEqualToString:@"medable"])
-    {
-        heartRateEvent.postedToMedable = @YES;
-    }
+    SocialServiceIDFacebook,
+    SocialServiceIDTwitter,
+    SocialServiceIDMedable,
 
+    SocialServiceIDCount
+};
+typedef NSInteger SocialServiceID;
+
++ (void)postDidComplete:(SocialServiceID)serviceId forEvent:(CBCHeartRateEvent *)heartRateEvent
+{
     CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-    [appDelegate saveHeartRateEvent:heartRateEvent];
+
+    switch (serviceId)
+    {
+        case SocialServiceIDFacebook:
+            heartRateEvent.postedToFacebook = @YES;
+            [appDelegate saveHeartRateEvent:heartRateEvent];
+            break;
+        case SocialServiceIDTwitter:
+            heartRateEvent.postedToTwitter = @YES;
+            [appDelegate saveHeartRateEvent:heartRateEvent];
+            break;
+        case SocialServiceIDMedable:
+            heartRateEvent.postedToMedable = @YES;
+            [appDelegate saveHeartRateEvent:heartRateEvent];
+            break;
+    }
 }
 
 #pragma mark - Facebook
@@ -125,7 +137,7 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
                                              {
                                                  NSString * responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
                                                  NSLog(@"FB response data is: %@", responseString);
-                                                 [CBCSocialUtilities postDidComplete:@"facebook"
+                                                 [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
                                                                             forEvent:heartRateEvent];
                                              }
                                              else
@@ -231,7 +243,7 @@ const char * g_biogramTagLine = "Posted by Biogram(TM)";
                 }
                 else
                 {
-                    [CBCSocialUtilities postDidComplete:@"medable"
+                    [CBCSocialUtilities postDidComplete:SocialServiceIDMedable
                                                forEvent:heartRateEvent];
                 }
             }];
