@@ -8,12 +8,12 @@
 
 #import "CBCAppDelegate.h"
 #import "CBCFeedViewController.h"
+#import "CBCSocialUtilities.h"
 
 #import <iOSMedableSDK/AFNetworkActivityLogger.h>
 #import <iOSMedableSDK/AFNetworkActivityIndicatorManager.h>
 
-@interface CBCAppDelegate ()
-<UIAlertViewDelegate>
+@interface CBCAppDelegate () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSString* email;
 @property (nonatomic, strong) NSString* password;
@@ -234,7 +234,7 @@
 - (BOOL)savePendingHeartRateEvent
 {
     if (self.pendingHeartRateEvent != nil)
-    {        
+    {
         NSManagedObjectContext *context = [self managedObjectContext];
         NSError *error = nil;
         if (![context save:&error])
@@ -246,11 +246,27 @@
             self.pendingHeartRateEvent = nil;
             return NO; // won't get here until abort() above is removed -- TO DO: handle these errors properly
         }
-        self.pendingHeartRateEvent = nil;
+
+        NSManagedObjectID * permanentId = self.pendingHeartRateEvent.objectID;
+        NSURL * url = [permanentId URIRepresentation];
+        NSLog(@"Saved CBCHeartRateEvent with URL = %@", url);
+        
+        self.pendingHeartRateEvent = nil; // release the strong reference
     }
     return YES;
 }
 
+#pragma mark - Social
+
+- (void)facebookPostDidSucceed
+{
+    NSLog(@"[appDelegate facebookPostDidSucceed]");
+}
+
+- (void)facebookPostDidFail
+{
+    NSLog(@"[appDelegate facebookPostDidFail]");
+}
 
 #pragma mark - UIAlertViewDelegate
 

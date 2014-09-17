@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCSocialUtilities.m"
-            timestampString = "432587798.430763"
+            filePath = "Biogram2-iOS/CBCAppDelegate.m"
+            timestampString = "432665890.869579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "+postToFacebook:"
+            startingLineNumber = "263"
+            endingLineNumber = "263"
+            landmarkName = "-facebookPostDidSucceed"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,29 +25,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCSocialUtilities.m"
-            timestampString = "432591923.955455"
+            filePath = "Biogram2-iOS/CBCAppDelegate.m"
+            timestampString = "432665890.869579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "+postToFacebook:"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "-facebookPostDidFail"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCSocialUtilities.m"
-            timestampString = "432591927.596056"
+            filePath = "Biogram2-iOS/CBCAppDelegate.m"
+            timestampString = "432665890.869579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "+postToFacebook:"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
+            landmarkName = "-savePendingHeartRateEvent"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

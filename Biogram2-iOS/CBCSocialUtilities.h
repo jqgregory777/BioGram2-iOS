@@ -12,7 +12,12 @@
 
 @interface CBCSocialUtilities : NSObject
 
+#pragma mark - Facebook
+
 + (BOOL)postToFacebook:(CBCHeartRateEvent *)pendingEvent;
+
+#pragma mark - Twitter
+
 + (BOOL)postToTwitter:(CBCHeartRateEvent *)pendingEvent;
 
 @end

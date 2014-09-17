@@ -40,6 +40,11 @@
 - (void)cancelPendingHeartRateEvent;
 - (BOOL)savePendingHeartRateEvent;
 
+#pragma mark - Social
+
+- (void)facebookPostDidSucceed;
+- (void)facebookPostDidFail;
+
 #pragma mark - Medable
 
 - (void)deleteMedableAccount;
