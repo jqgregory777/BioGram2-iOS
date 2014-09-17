@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CBCMedableViewAccountController : UITableViewController <UIAlertViewDelegate>
+@interface CBCMedableViewAccountController : UITableViewController
 
 @end

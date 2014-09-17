@@ -9,11 +9,15 @@
 #import "CBCMedableCreateAccountController.h"
 #import "CBCAppDelegate.h"
 #import "EXTPhoneNumberFormatter.h"
+#import "CBCMedableMainTableViewController.h"
+
 
 @interface CBCMedableCreateAccountController ()
 @property (weak, nonatomic) IBOutlet UITextField *firstNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *lastNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *phoneNumberTextField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *birthDatePicker;
 @property (weak, nonatomic) IBOutlet UITableViewCell *genderMaleCell;
@@ -44,9 +48,11 @@
     self.firstNameTextField.delegate = self;
     self.lastNameTextField.delegate = self;
     self.emailTextField.delegate = self;
+    self.passwordTextField.delegate = self;
+    self.confirmPasswordTextField.delegate = self;
     self.phoneNumberTextField.delegate = self;
     
-    _phoneNumberFormatter = [EXTPhoneNumberFormatter new];
+    _phoneNumberFormatter = [[EXTPhoneNumberFormatter alloc] init];
     _locale = [[NSLocale currentLocale] localeIdentifier];
     _phoneNumberTextSemaphore = 0; // init semaphore
     self.phoneNumberTextField.placeholder = [_phoneNumberFormatter placeholderStringForLocale:_locale];
@@ -138,6 +144,8 @@
     accountValidator.lastName = self.lastNameTextField.text;
     accountValidator.phone = [MDDataFriendly plainPhoneNumberFromMaskedPhoneNumber:self.phoneNumberTextField.text];
     accountValidator.email = self.emailTextField.text;
+    accountValidator.password = self.passwordTextField.text;
+    accountValidator.confirmPassword = self.confirmPasswordTextField.text;
     accountValidator.dateOfBirth = [MDDateUtilities formattedDayOfBirthFromDate:self.birthDatePicker.date];
     
     if (self.genderMaleCell.accessoryType == UITableViewCellAccessoryCheckmark)
@@ -176,6 +184,8 @@
          progressCallback:nil
          callback:^(NSDictionary *result, MDFault *fault)
          {
+             void (^completion)() = nil;
+             
              if (fault)
              {
                  [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Signup Failed", nil)
@@ -184,11 +194,17 @@
                                    cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                    otherButtonTitles:nil, nil] show];
              }
+             else
+             {
+                 completion = ^{
+                     [(CBCMedableMainTableViewController*)self.presentingViewController updateAccountDetailsButton];
+                 };
+             }
+             
+             [self dismissViewControllerAnimated:YES completion:completion];
          }];
 
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)displayValidationErrorsWithArray:(NSArray*)invalidMessages

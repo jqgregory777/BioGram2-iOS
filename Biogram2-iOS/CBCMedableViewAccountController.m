@@ -10,6 +10,8 @@
 #import "CBCAppDelegate.h"
 
 @interface CBCMedableViewAccountController ()
+<UIAlertViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableViewCell *firstNameCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *lastNameCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *emailCell;
@@ -42,7 +44,7 @@
         self.lastNameCell.detailTextLabel.text = account.lastName;
         self.emailCell.detailTextLabel.text = account.email;
         self.phoneNumberCell.detailTextLabel.text = account.mobile;
-        self.birthDateCell.detailTextLabel.text = [[MDDateUtilities dateFromWapiDobString:account.dob] description];
+        self.birthDateCell.detailTextLabel.text = account.dob;
         self.genderCell.detailTextLabel.text = [MDDataFriendly genderLongStringFromShortString:[MDDataFriendly genderShortStringFromGender:account.gender]];
     }
 }
@@ -59,7 +61,12 @@
     if (cell == self.deleteAccountCell)
     {
         UIAlertView *alert = [[UIAlertView alloc]
-                              initWithTitle:@"Confirm Account Deletion" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Delete", nil];
+                              initWithTitle:@"Confirm Account Deletion"
+                              message:nil
+                              delegate:self
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:@"Delete", nil];
+        
         alert.alertViewStyle = UIAlertViewStyleDefault;
         [alert show];
     }
