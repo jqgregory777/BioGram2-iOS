@@ -76,17 +76,24 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    [self checkForValidMedableSession];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    [self checkForValidMedableSession];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+    
+    // Medable - Delete temp files
+    [[NSFileManager defaultManager] deleteGeneralCacheDirectoryForUserID:[MDAPIClient sharedClient].currentUserEmail];
 }
 
 - (void)saveContext
@@ -296,10 +303,18 @@
 
 #pragma mark - Medable
 
-- (void)deleteMedableAccount
+- (void)checkForValidMedableSession
 {
-    // TO DO: actually delete the Medable account
-        // Accounts can't be deleted
+    // Autologin if we already have a token
+    [[MDAPIClient sharedClient]
+     loginStatusWithParameters:[MDAPIParameterFactory parametersWithExpand]
+     callback:^(MDAccount* account, MDFault* fault)
+     {
+         if (fault)
+         {
+             NSLog(@"wtf");
+         }
+     }];
 }
 
 - (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken
