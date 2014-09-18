@@ -14,6 +14,8 @@
 const char * g_biogramTagLine = "Posted by Biogram(TM)";
 BOOL g_useSLComposeViewController = YES; // waaaay easier, and it's the ONLY way to do it for Twitter AFAIK!
 
+NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
+
 @implementation CBCSocialUtilities
 
 enum ESocialServiceID
@@ -45,14 +47,8 @@ typedef NSInteger SocialServiceID;
             [appDelegate saveHeartRateEvent:heartRateEvent];
             break;
     }
-    
-    if (appDelegate.detailViewController != nil)
-    {
-        // if the detail view controller is currently visible, update its UI
-        // to possibly reflect the changes we made above (if it happens to be
-        // displaying THIS heart rate event)
-        [appDelegate.detailViewController updateUI];
-    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kCBCSocialPostDidComplete object:appDelegate];
 }
 
 #pragma mark - Facebook

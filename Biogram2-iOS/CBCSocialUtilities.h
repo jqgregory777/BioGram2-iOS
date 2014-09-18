@@ -17,6 +17,9 @@
 
 @interface CBCSocialUtilities : NSObject
 
+#pragma mark - Notifications
+extern NSString* const kCBCSocialPostDidComplete;
+
 #pragma mark - Facebook
 
 + (void)postToFacebook:(CBCHeartRateEvent *)pendingEvent sender:(id)sender;

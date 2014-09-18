@@ -177,7 +177,7 @@
 {
     //if ([segue.identifier isEqualToString:@"aSpecificSegue"])
     {
-        CBCAppDelegate * appDelegate = [[UIApplication sharedApplication] delegate];
+        CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
         
         [self updatePendingEventFromUI];
         

@@ -27,7 +27,10 @@
     appDelegate.detailViewController = self;
     
     [super viewDidLoad];
-    
+
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(updateUI) name:kCBCSocialPostDidComplete object:nil];
+
     self.timeStampLabel.text = self.displayedEvent.timeStampAsString;
 
     self.captionLabel.text = self.displayedEvent.eventDescription;
@@ -76,6 +79,11 @@
 - (IBAction)postToTwitterTouched:(id)sender
 {
     [CBCSocialUtilities postToTwitter:self.displayedEvent sender:self];
+}
+
+- (IBAction)postToMedableTouched:(id)sender
+{
+    [CBCSocialUtilities postToMedable:self.displayedEvent sender:self];
 }
 
 @end

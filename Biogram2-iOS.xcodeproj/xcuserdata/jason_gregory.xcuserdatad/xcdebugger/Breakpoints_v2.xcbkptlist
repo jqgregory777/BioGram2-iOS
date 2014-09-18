@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Biogram2-iOS/CBCSocialUtilities.m"
-            timestampString = "432705178.82234"
+            timestampString = "432719193.640848"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "+postDidComplete:forEvent:"
             landmarkType = "5">
          </BreakpointContent>

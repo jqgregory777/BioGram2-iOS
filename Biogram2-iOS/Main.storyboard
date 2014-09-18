@@ -847,6 +847,10 @@
                                     <outlet property="delegate" destination="Z6i-6r-adS" id="fAU-id-GwD"/>
                                 </connections>
                             </tableView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo_medable" translatesAutoresizingMaskIntoConstraints="NO" id="dA7-fQ-yUG">
+                                <rect key="frame" x="281" y="75" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -869,6 +873,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="editButton" destination="6AN-4Q-orO" id="NUX-lF-MnF"/>
+                        <outlet property="medableLoggedInImgView" destination="dA7-fQ-yUG" id="RzR-G7-dNn"/>
                         <outlet property="tableView" destination="PtP-Or-cTL" id="nGX-Z4-xDP"/>
                     </connections>
                 </viewController>
@@ -885,44 +890,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
-                            <tableViewSection id="tXr-dE-b6T">
+                            <tableViewSection headerTitle="    " id="ZC3-sP-mvR">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="251" id="MH2-V2-65z">
-                                        <rect key="frame" x="0.0" y="64" width="320" height="251"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MH2-V2-65z" id="df2-Tc-R1t">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="select_entry_method" translatesAutoresizingMaskIntoConstraints="NO" id="ppV-H6-aGs">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="250"/>
-                                                </imageView>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="cgU-je-qGP" detailTextLabel="NGs-Ya-ZZX" imageView="pr5-3s-6db" style="IBUITableViewCellStyleSubtitle" id="3Wd-Hu-Iur">
-                                        <rect key="frame" x="0.0" y="315" width="320" height="44"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="cgU-je-qGP" detailTextLabel="NGs-Ya-ZZX" imageView="pr5-3s-6db" rowHeight="120" style="IBUITableViewCellStyleSubtitle" id="3Wd-Hu-Iur">
+                                        <rect key="frame" x="0.0" y="86" width="320" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Wd-Hu-Iur" id="Zb1-aQ-bEy">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Manual" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cgU-je-qGP">
-                                                    <rect key="frame" x="60" y="3" width="60" height="22"/>
+                                                    <rect key="frame" x="90" y="41" width="60" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Enter heart rate manually" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NGs-Ya-ZZX">
-                                                    <rect key="frame" x="60" y="25" width="140" height="15"/>
+                                                    <rect key="frame" x="90" y="63" width="140" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="tabbar_feed" id="pr5-3s-6db">
-                                                    <rect key="frame" x="15" y="6" width="30" height="30"/>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="icon_manual" id="pr5-3s-6db">
+                                                    <rect key="frame" x="15" y="29" width="60" height="60"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
                                             </subviews>
@@ -931,29 +923,29 @@
                                             <segue destination="jMW-ng-OLr" kind="push" id="vnO-ZC-J5g"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="w5b-Bz-gMk" detailTextLabel="Jxc-z8-4tI" imageView="4Ah-J9-Qpu" style="IBUITableViewCellStyleSubtitle" id="hX0-jf-eem">
-                                        <rect key="frame" x="0.0" y="359" width="320" height="44"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="w5b-Bz-gMk" detailTextLabel="Jxc-z8-4tI" imageView="4Ah-J9-Qpu" rowHeight="120" style="IBUITableViewCellStyleSubtitle" id="hX0-jf-eem">
+                                        <rect key="frame" x="0.0" y="206" width="320" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hX0-jf-eem" id="Swu-l6-cgr">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="AliveCor" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="w5b-Bz-gMk">
-                                                    <rect key="frame" x="60" y="3" width="68" height="22"/>
+                                                    <rect key="frame" x="90" y="41" width="68" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Use AliveCor to measure heart rate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Jxc-z8-4tI">
-                                                    <rect key="frame" x="60" y="25" width="195" height="15"/>
+                                                    <rect key="frame" x="90" y="63" width="195" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="tabbar_heartrate" id="4Ah-J9-Qpu">
-                                                    <rect key="frame" x="15" y="6" width="30" height="30"/>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="icon_alivecor" id="4Ah-J9-Qpu">
+                                                    <rect key="frame" x="15" y="29" width="60" height="60"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
                                             </subviews>
@@ -1283,13 +1275,13 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="n8e-QD-X97">
-                                <rect key="frame" x="48" y="443" width="32" height="32"/>
+                                <rect key="frame" x="93" y="439" width="32" height="32"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="tx0-sU-TME">
-                                <rect key="frame" x="123" y="443" width="32" height="32"/>
+                                <rect key="frame" x="168" y="439" width="32" height="32"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="yEY-O0-PIR">
-                                <rect key="frame" x="199" y="443" width="32" height="32"/>
+                                <rect key="frame" x="244" y="439" width="32" height="32"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -1444,13 +1436,13 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="is0-DL-6Kz">
-                                <rect key="frame" x="52" y="451" width="32" height="32"/>
+                                <rect key="frame" x="93" y="446" width="32" height="32"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="YKt-6c-Ydc">
-                                <rect key="frame" x="124" y="451" width="32" height="32"/>
+                                <rect key="frame" x="165" y="446" width="32" height="32"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="Pjc-Xr-9oI">
-                                <rect key="frame" x="199" y="451" width="32" height="32"/>
+                                <rect key="frame" x="240" y="446" width="32" height="32"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -1487,14 +1479,15 @@
         <image name="alivecor_leads_on" width="42" height="7"/>
         <image name="checkmark" width="32" height="32"/>
         <image name="heart_large" width="322" height="292"/>
+        <image name="icon_alivecor" width="60" height="60"/>
+        <image name="icon_manual" width="60" height="60"/>
         <image name="logo_biogram-2" width="166" height="125"/>
-        <image name="logo_facebook" width="256" height="256"/>
-        <image name="logo_medable" width="64" height="64"/>
+        <image name="logo_facebook" width="60" height="60"/>
+        <image name="logo_medable" width="60" height="60"/>
         <image name="logo_medable_full" width="255" height="83"/>
-        <image name="logo_twitter" width="256" height="256"/>
+        <image name="logo_twitter" width="60" height="60"/>
         <image name="photo_placeholder" width="174" height="174"/>
         <image name="photo_template" width="174" height="171"/>
-        <image name="select_entry_method" width="400" height="311"/>
         <image name="tabbar_feed" width="30" height="30"/>
         <image name="tabbar_heartrate" width="30" height="30"/>
         <image name="tabbar_settings" width="30" height="30"/>

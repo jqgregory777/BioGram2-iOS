@@ -20,7 +20,7 @@
 
 - (IBAction)saveButtonTouched:(id)sender
 {
-    CBCAppDelegate * appDelegate = [[UIApplication sharedApplication] delegate];
+    CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
     
     if ([appDelegate savePendingHeartRateEvent])
     {

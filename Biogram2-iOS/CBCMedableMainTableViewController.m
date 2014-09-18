@@ -50,8 +50,6 @@
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton) name:kMDNotificationUserDidLogin object:nil];
     [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton) name:kMDNotificationUserDidLogout object:nil];
-    
-    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -16,6 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
+@property (weak, nonatomic) IBOutlet UIImageView *medableLoggedInImgView;
 
 @end
 
@@ -38,6 +39,10 @@
 {
     [super viewDidLoad];
     [self updateEditButton];
+    [self updateMedableLoggedIn];
+    
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(updateMedableLoggedIn) name:kMDNotificationUserDidLogin object:nil];
     
     // Testing Facebook
 //    FBLoginView *loginView = [[FBLoginView alloc] init];
@@ -45,10 +50,28 @@
 //    [self.view addSubview:loginView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.isMovingToParentViewController == NO)
+    {
+        // we're already on the navigation stack
+        // another controller must have been popped off
+        [self updateMedableLoggedIn];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)updateMedableLoggedIn
+{
+    BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
+    self.medableLoggedInImgView.hidden = !loggedIn;
 }
 
 - (void)updateEditButton
@@ -77,7 +100,7 @@
         return _fetchedResultsController;
     }
     
-    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"HeartRateEvent" inManagedObjectContext:appDelegate.managedObjectContext];
