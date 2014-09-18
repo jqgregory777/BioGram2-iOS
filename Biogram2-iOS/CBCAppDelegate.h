@@ -13,7 +13,7 @@
 
 @class CBCDetailViewController;
 
-@interface CBCAppDelegate : UIResponder <UIApplicationDelegate>
+@interface CBCAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (weak, nonatomic) CBCDetailViewController *detailViewController;

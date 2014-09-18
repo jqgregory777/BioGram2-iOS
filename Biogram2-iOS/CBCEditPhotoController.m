@@ -17,29 +17,12 @@
 @interface CBCEditPhotoController ()
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *overlayImageView;
 @property (weak, nonatomic) IBOutlet UITextField *captionTextField;
-@property (weak, nonatomic) IBOutlet UIButton *postToFacebookButton;
-@property (weak, nonatomic) IBOutlet UIButton *postToTwitterButton;
-@property (weak, nonatomic) IBOutlet UIImageView *postToFacebookImgView;
-@property (weak, nonatomic) IBOutlet UIImageView *postToTwitterImgView;
-
-@property (strong, nonatomic) SLComposeViewController *slComposeViewController;
 
 @end
 
 @implementation CBCEditPhotoController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)registerForKeyboardNotifications
 {
@@ -54,7 +37,9 @@
 }
 
 - (void)viewDidLoad
-{    
+{
+    self.displayedEvent = nil;
+    
     [super viewDidLoad];
     [self registerForKeyboardNotifications];
     
@@ -65,7 +50,7 @@
     // crop image to a square
     UIImage *croppedImage = [CBCImageUtilities cropImage:appDelegate.pendingRawImage];
     
-    CGSize size = CGSizeMake(self.backgroundImageView.frame.size.width*2,self.backgroundImageView.frame.size.height*2);
+    CGSize size = CGSizeMake(self.photoImageView.frame.size.width*2,self.photoImageView.frame.size.height*2);
     
     UIImage *scaledImage = [CBCImageUtilities scaleImage:croppedImage toSize:size];
     
@@ -81,9 +66,11 @@
     UIImage *watermarkImage = [CBCImageUtilities addText:watermark text:pendingEvent.heartRate];
     
     self.overlayImageView.image = watermarkImage;
-    self.backgroundImageView.image = backgroundImage;
+    self.photoImageView.image = backgroundImage;
 
     self.timeStampLabel.text = [pendingEvent timeStampAsString];
+
+    self.displayedEvent = pendingEvent;
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,26 +81,9 @@
 
 #pragma mark - Pan Gesture Recognizer
 
-- (IBAction)handlePan:(id)sender {
-    
+- (IBAction)handlePan:(id)sender
+{
     UIPanGestureRecognizer *recognizer = (UIPanGestureRecognizer *)sender;
-    
-    //    if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged) {
-    //        CGPoint nextPoint = [recognizer translationInView:self.view];
-    //        CGPoint currentPoint = self.watermarkImageView.center;
-    //
-    //        currentPoint.x += nextPoint.x;
-    //        currentPoint.y += nextPoint.y;
-    //
-    //        self.watermarkImageView.center = currentPoint;
-    //
-    //        [recognizer setTranslation:CGPointZero inView:self.view];
-    //    }
-    //
-    //    if (recognizer.state == UIGestureRecognizerStateEnded) {
-    //        self.watermarkImageView.center = originalPoint;
-    //        [recognizer setTranslation:CGPointZero inView:self.view];
-    //    }
     
     CGPoint translation = [recognizer translationInView:self.view];
     CGPoint currentPoint = self.overlayImageView.center;
@@ -121,7 +91,7 @@
     currentPoint.x += translation.x;
     currentPoint.y += translation.y;
     
-    CGRect bounds = CGRectMake(self.backgroundImageView.frame.origin.x + self.overlayImageView.frame.size.width/2,self.backgroundImageView.frame.origin.y + self.overlayImageView.frame.size.height/2,self.backgroundImageView.frame.size.width - self.overlayImageView.frame.size.width,self.backgroundImageView.frame.size.height - self.overlayImageView.frame.size.height);
+    CGRect bounds = CGRectMake(self.photoImageView.frame.origin.x + self.overlayImageView.frame.size.width/2,self.photoImageView.frame.origin.y + self.overlayImageView.frame.size.height/2,self.photoImageView.frame.size.width - self.overlayImageView.frame.size.width,self.photoImageView.frame.size.height - self.overlayImageView.frame.size.height);
     
     if (CGRectContainsPoint(bounds, currentPoint)) {
         // Point lies inside the bounds
@@ -129,44 +99,7 @@
     }
     
     [recognizer setTranslation:CGPointZero inView:self.view];
-    
-    
-    //    CGPoint translation = [recognizer translationInView:self.view];
-    //    CGRect recognizerFrame = self.watermarkImageView.frame;
-    //
-    //    recognizerFrame.origin.x += translation.x;
-    //    recognizerFrame.origin.y += translation.y;
-    //
-    //    // Check if UIImageView is completely inside its superView
-    //    if (CGRectContainsRect(self.imageView.bounds, recognizerFrame)) {
-    //        recognizer.view.frame = recognizerFrame;
-    //    }
-    //    // Else check if UIImageView is vertically and/or horizontally outside of its
-    //    // superView. If yes, then set UImageView's frame accordingly.
-    //    // This is required so that when user pans rapidly then it provides smooth translation.
-    //    else {
-    //        // Check vertically
-    //        if (recognizerFrame.origin.y < self.imageView.bounds.origin.y) {
-    //            recognizerFrame.origin.y = 0;
-    //        }
-    //        else if (recognizerFrame.origin.y + recognizerFrame.size.height > self.imageView.bounds.size.height) {
-    //            recognizerFrame.origin.y = self.imageView.bounds.size.height - recognizerFrame.size.height;
-    //        }
-    //
-    //        // Check horizantally
-    //        if (recognizerFrame.origin.x < self.imageView.bounds.origin.x) {
-    //            recognizerFrame.origin.x = 0;
-    //        }
-    //        else if (recognizerFrame.origin.x + recognizerFrame.size.width > self.imageView.bounds.size.width) {
-    //            recognizerFrame.origin.x = self.imageView.bounds.size.width - recognizerFrame.size.width;
-    //        }
-    //    }
-    //    
-    //    // Reset translation so that on next pan recognition
-    //    // we get correct translation value
-    //    [recognizer setTranslation:CGPointZero inView:self.view];
 }
-
 
 #pragma mark - Keyboard/View Management
 
@@ -209,99 +142,63 @@
 
 - (void)updateUI
 {
-    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
-    
-    self.postToFacebookImgView.hidden = !(pendingEvent.postedToFacebook.boolValue);
-    self.postToTwitterImgView.hidden = !(pendingEvent.postedToTwitter.boolValue);
-
-    self.postToFacebookButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] && !(pendingEvent.postedToFacebook.boolValue));
-    self.postToTwitterButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(pendingEvent.postedToTwitter.boolValue));
-}
-
-- (IBAction)postToFacebookTouched:(id)sender
-{
-    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
-
-    [self updatePendingEventFromUI];
-    
-    [CBCSocialUtilities postToFacebook:pendingEvent sender:self];
-}
-
-- (IBAction)postToTwitterTouched:(id)sender
-{
-    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
-    
-    [self updatePendingEventFromUI];
-    
-    [CBCSocialUtilities postToTwitter:pendingEvent sender:self];
+    // nothing to customize here (yet)
+    [super updateUI];
 }
 
 #pragma mark - Save Button
 
 - (void)updatePendingEventFromUI
 {
-    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
-    
     // set the remaining attributes (the other attributes like timeStamp and heartRate were set by prior controllers in the sequence)
-    pendingEvent.eventDescription = self.captionTextField.text; // whatever the user types in
+    self.displayedEvent.eventDescription = self.captionTextField.text; // whatever the user types in
     
-    UIImage* backgroundImage = self.backgroundImageView.image;
+    UIImage* backgroundImage = self.photoImageView.image;
     UIImage* overlayImage = self.overlayImageView.image;
     
-    pendingEvent.backgroundImage = UIImagePNGRepresentation(backgroundImage);
-    pendingEvent.overlayImage = UIImagePNGRepresentation(self.overlayImageView.image);
+    self.displayedEvent.backgroundImage = UIImagePNGRepresentation(backgroundImage);
+    self.displayedEvent.overlayImage = UIImagePNGRepresentation(self.overlayImageView.image);
     
     // present image
     UIImage* compositedImage = [CBCImageUtilities generatePhoto:backgroundImage
-                                                                frame:self.backgroundImageView.frame
+                                                                frame:self.photoImageView.frame
                                                             watermark:overlayImage
                                                        watermarkFrame:self.overlayImageView.frame];
     
     NSData * photoData = UIImagePNGRepresentation(compositedImage);
-    pendingEvent.photo = photoData;
+    self.displayedEvent.photo = photoData;
 
     // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out!
     // But this is the ONLY place we set the photo, so screw it - just do it here.
-    pendingEvent.thumbnail = nil;
+    self.displayedEvent.thumbnail = nil;
 }
 
-- (IBAction)saveButtonTouched:(id)sender
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
-    CBCAppDelegate * appDelegate = [[UIApplication sharedApplication] delegate];
-    CBCHeartRateEvent * pendingEvent = appDelegate.pendingHeartRateEvent;
-    
-    [self updatePendingEventFromUI];
-    
-    if ([appDelegate savePendingHeartRateEvent])
+    //if ([segue.identifier isEqualToString:@"aSpecificSegue"])
     {
-        // successfully saved to Core Data... now post to Medable
-        // TO DO: CHANGE TO POST TO MEDABLE *ONLY* AND NOT USE CORE DATA AT ALL
+        CBCAppDelegate * appDelegate = [[UIApplication sharedApplication] delegate];
         
-        if ([[MDAPIClient sharedClient] localUser])
+        [self updatePendingEventFromUI];
+        
+        if ([appDelegate savePendingHeartRateEvent])
         {
-            [CBCSocialUtilities postToMedable:pendingEvent sender:self];
+            // yay
+            return YES;
         }
         else
         {
-            // TO DO: user chose not to log in... discard the event
-            [CBCAppDelegate showMessage:@"Unable to post event to Medable." withTitle:@"Medable Failure"];
+            [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
+            return NO;
         }
     }
-    else
-    {
-        [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
-    }
+    return YES;
+}
 
-    // Also activate the feed view in the tab bar.
-    self.tabBarController.selectedIndex = 0;
-
-    // Jump back to start of the "create heart rate event" page sequence.
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    //[self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    CBCDetailViewController * controller = [segue destinationViewController];
+    controller.displayedEvent = self.displayedEvent;
 }
 
 @end

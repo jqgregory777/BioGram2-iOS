@@ -1,5 +1,5 @@
 //
-//  CBCEditPhotoController.h
+//  CBCShareEventController.h
 //  Biogram2-iOS
 //
 //  Created by Jason Gregory on 9/14/14.
@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "CBCDetailViewController.h"
 
-@interface CBCEditPhotoController : CBCDetailViewController
+@interface CBCShareEventController : CBCDetailViewController
 
 @end

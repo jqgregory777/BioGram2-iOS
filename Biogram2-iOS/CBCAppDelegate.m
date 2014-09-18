@@ -13,7 +13,7 @@
 #import <iOSMedableSDK/AFNetworkActivityLogger.h>
 #import <iOSMedableSDK/AFNetworkActivityIndicatorManager.h>
 
-@interface CBCAppDelegate () <UIAlertViewDelegate>
+@interface CBCAppDelegate ()
 
 @property (nonatomic, strong) NSString* email;
 @property (nonatomic, strong) NSString* password;
@@ -55,6 +55,11 @@
     
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 
+    // Install defaults for NSUserDefaults
+    NSDictionary * appDefaults = @{ @"CacheMedableLoginInfo" : @YES,
+                                    @"LoggedInToMedable" : @NO };
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    
     // Initialize Medable's assets manager
     [MDAssetManager sharedManager];
 
@@ -340,16 +345,55 @@
 
 - (void)checkForValidMedableSession
 {
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(medableLoginStateDidChange) name:kMDNotificationUserDidLogin object:nil];
+    [defaultCenter addObserver:self selector:@selector(medableLoginStateDidChange) name:kMDNotificationUserDidLogout object:nil];
+
     // Autologin if we already have a token
+
+    __weak typeof (self) wSelf = self;
+
     [[MDAPIClient sharedClient]
      loginStatusWithParameters:[MDAPIParameterFactory parametersWithExpand]
-     callback:^(MDAccount* account, MDFault* fault)
-     {
-         if (fault)
-         {
-             NSLog(@"wtf");
-         }
-     }];
+                      callback:
+        ^(MDAccount* account, MDFault* fault)
+        {
+            if (fault)
+            {
+                NSLog(@"wtf");
+            }
+            else if (account == nil)
+            {
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginInfo"])
+                {
+                    // the user has requested that we cache the login information for convenience
+                    // see if we have any cached info, and auto-login if so
+                    wSelf.email = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginEmail"];
+                    wSelf.password = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
+                    if (wSelf.email != nil && wSelf.password != nil)
+                    {
+                        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"LoggedInToMedable"])
+                        {
+                            [wSelf loginMedableWithEmail:wSelf.email
+                                                password:wSelf.password
+                                       verificationToken:wSelf.verificationToken];
+                        }
+                    }
+                    else
+                    {
+                        wSelf.email = wSelf.password = nil;
+                    }
+                }
+            }
+        }
+    ];
+}
+
+- (void)medableLoginStateDidChange
+{
+    BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
+    NSLog(@"medableLoginStateDidChange - loggedIn = %s", loggedIn?"YES":"NO");
+    [[NSUserDefaults standardUserDefaults] setBool:loggedIn forKey:@"LoggedInToMedable"];
 }
 
 - (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken
@@ -360,24 +404,36 @@
         
         [[MDAPIClient sharedClient]
          authenticateSessionWithEmail:email
-         password:password
-         verificationToken:verificationToken
-         singleUse:NO
-         callback:^(MDAccount *localUser, MDFault *fault)
-         {
-             if (fault)
-             {
-                 if ([fault.code isEqualToString:kMDAPIErrorUnverifiedLocation] ||
-                     [fault.code isEqualToString:kMDAPIErrorNewLocation])
-                 {
-                     [wSelf displayAlertWithMedableFault:fault];
-                 }
-                 else
-                 {
-                     [wSelf displayAlertWithMessage:fault.text];
-                 }
-             }
-         }];
+                             password:password
+                    verificationToken:verificationToken
+                            singleUse:NO
+                             callback:
+            ^(MDAccount *localUser, MDFault *fault)
+            {
+                if (fault)
+                {
+                    if ([fault.code isEqualToString:kMDAPIErrorUnverifiedLocation] ||
+                        [fault.code isEqualToString:kMDAPIErrorNewLocation])
+                    {
+                        [wSelf displayAlertWithMedableFault:fault];
+                    }
+                    else
+                    {
+                        [wSelf displayAlertWithMessage:fault.text];
+                    }
+                }
+                else
+                {
+                    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginInfo"])
+                    {
+                        // the user has requested that we cache the login information for convenience
+                        // see if we have any cached info, and auto-login if so
+                        [[NSUserDefaults standardUserDefaults] setObject:email forKey:@"MedableLoginEmail"];
+                        [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
+                    }
+                }
+            }
+        ];
     }
 }
 
@@ -404,6 +460,19 @@
                                    otherButtonTitles:NSLocalizedString(@"Login", nil), nil];
     
     loginAlertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginInfo"])
+    {
+        // the user has requested that we cache the login information for convenience
+        // see if we have any cached info, and auto-login if so
+        NSString * email = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginEmail"];
+        NSString * password = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
+        if (email != nil && password != nil)
+        {
+            [loginAlertView textFieldAtIndex:0].text = email;
+            [loginAlertView textFieldAtIndex:1].text = password;
+        }
+    }
     
     [loginAlertView show];
 }

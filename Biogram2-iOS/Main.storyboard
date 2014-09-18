@@ -690,6 +690,8 @@
                     <navigationItem key="navigationItem" title="Medable" id="jXJ-41-rxU"/>
                     <connections>
                         <outlet property="accountCell" destination="Jyc-JT-xEb" id="TM3-CS-0S5"/>
+                        <outlet property="loginCell" destination="f5t-fl-hwv" id="e2X-LV-AGL"/>
+                        <outlet property="logoutCell" destination="nya-Sa-JqE" id="l6A-lr-w5I"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yV0-cX-rnv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1199,57 +1201,20 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXk-3S-sta">
-                                <rect key="frame" x="58" y="459" width="50" height="50"/>
-                                <state key="normal" title="Facebook" image="logo_facebook">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="postToFacebookTouched:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="kdU-2J-0Ah"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukB-60-bR4">
-                                <rect key="frame" x="132" y="459" width="50" height="50"/>
-                                <state key="normal" title="Button" image="logo_twitter">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="postToTwitterTouched:" destination="zxF-Qw-ZDf" eventType="touchUpInside" id="y5y-Lb-Pig"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="deX-Ph-86s">
-                                <rect key="frame" x="207" y="459" width="50" height="50"/>
-                                <state key="normal" title="Button" image="logo_medable">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="szJ-Lb-LTi">
-                                <rect key="frame" x="52" y="451" width="32" height="32"/>
-                            </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="yE5-GM-Kdp">
-                                <rect key="frame" x="124" y="451" width="32" height="32"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="D9K-Ae-0iJ">
-                                <rect key="frame" x="199" y="451" width="32" height="32"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Edit" id="t5n-Bd-TCt">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="tWq-My-fp9">
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="sAG-LM-mf9">
                             <connections>
-                                <action selector="saveButtonTouched:" destination="zxF-Qw-ZDf" id="BGv-zT-pvC"/>
+                                <segue destination="4s8-If-xKu" kind="push" id="8vq-1g-FyX"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="backgroundImageView" destination="2QY-zH-bEp" id="WTk-t4-cAb"/>
-                        <outlet property="captionTextField" destination="85k-mv-ey0" id="Ky5-qd-BxP"/>
+                        <outlet property="captionTextField" destination="85k-mv-ey0" id="c7d-SH-kDl"/>
                         <outlet property="overlayImageView" destination="4ec-IW-9dL" id="dqX-gY-s9f"/>
-                        <outlet property="postToFacebookButton" destination="dXk-3S-sta" id="8qS-Cq-Fo3"/>
-                        <outlet property="postToFacebookImgView" destination="szJ-Lb-LTi" id="9ao-Ji-Mam"/>
-                        <outlet property="postToTwitterButton" destination="ukB-60-bR4" id="kp2-gl-MgH"/>
-                        <outlet property="postToTwitterImgView" destination="yE5-GM-Kdp" id="zz2-FZ-aC7"/>
+                        <outlet property="photoImageView" destination="2QY-zH-bEp" id="XUR-FA-d7c"/>
                         <outlet property="scrollView" destination="Akc-3V-7Zv" id="F8R-gb-ATA"/>
                         <outlet property="timeStampLabel" destination="nOa-c3-2hN" id="ExA-3U-16w"/>
                         <segue destination="Fb1-fe-rON" kind="unwind" identifier="unwindToCreateHeartRateEventSegue" unwindAction="unwindToCreateHeartRateEvent:" id="fSi-iM-HtI"/>
@@ -1285,28 +1250,37 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fZ-zG-ZX9">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Caption" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fZ-zG-ZX9">
                                 <rect key="frame" x="44" y="410" width="235" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jz4-We-Hez">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jz4-We-Hez">
                                 <rect key="frame" x="53" y="450" width="55" height="55"/>
                                 <state key="normal" title="Facebook" image="logo_facebook">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="postToFacebookTouched:" destination="yeV-0U-bxB" eventType="touchUpInside" id="GL6-RW-wvo"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6h-c6-UjG">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6h-c6-UjG">
                                 <rect key="frame" x="130" y="450" width="55" height="55"/>
                                 <state key="normal" title="Button" image="logo_twitter">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="postToTwitterTouched:" destination="yeV-0U-bxB" eventType="touchUpInside" id="N1I-e1-WzO"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58w-xz-iWR">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58w-xz-iWR">
                                 <rect key="frame" x="206" y="450" width="55" height="55"/>
                                 <state key="normal" title="Button" image="logo_medable">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="postToMedableTouched:" destination="yeV-0U-bxB" eventType="touchUpInside" id="ZTg-Q8-P2Z"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="n8e-QD-X97">
                                 <rect key="frame" x="48" y="443" width="32" height="32"/>
@@ -1322,8 +1296,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="Detail" id="xPN-Vg-K8F"/>
                     <connections>
-                        <outlet property="descriptionLabel" destination="7fZ-zG-ZX9" id="VWM-Ah-GMu"/>
-                        <outlet property="imageView" destination="siU-y7-OHz" id="BqY-kr-h91"/>
+                        <outlet property="captionLabel" destination="7fZ-zG-ZX9" id="LX0-TB-rxJ"/>
+                        <outlet property="photoImageView" destination="siU-y7-OHz" id="7rr-kp-Swu"/>
+                        <outlet property="postToFacebookButton" destination="jz4-We-Hez" id="Um5-J5-012"/>
+                        <outlet property="postToMedableButton" destination="58w-xz-iWR" id="6WD-zA-Bqn"/>
+                        <outlet property="postToTwitterButton" destination="F6h-c6-UjG" id="2YX-sC-bll"/>
                         <outlet property="postedToFacebookImgView" destination="n8e-QD-X97" id="hQl-hF-8hf"/>
                         <outlet property="postedToMedableImgView" destination="yEY-O0-PIR" id="2HW-E2-920"/>
                         <outlet property="postedToTwitterImgView" destination="tx0-sU-TME" id="Y3p-Xb-qZB"/>
@@ -1409,6 +1386,100 @@
             </objects>
             <point key="canvasLocation" x="305" y="1026"/>
         </scene>
+        <!--Share Event Controller - Share-->
+        <scene sceneID="4Wg-e1-Om1">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="4s8-If-xKu" customClass="CBCShareEventController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MEv-LB-qLE"/>
+                        <viewControllerLayoutGuide type="bottom" id="x0R-5g-8au"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleAspectFit" id="qXc-aL-VS3" customClass="UIScrollView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4iN-Sl-FTC" userLabel="Image View - Background">
+                                <rect key="frame" x="10" y="104" width="300" height="300"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="306" id="ADe-Vg-U6k"/>
+                                    <constraint firstAttribute="width" constant="306" id="VPi-x8-KRP"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time Stamp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QX8-cr-r98">
+                                <rect key="frame" x="43" y="75" width="235" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Caption" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZd-up-rKc">
+                                <rect key="frame" x="43" y="417" width="235" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vxZ-7x-rjC">
+                                <rect key="frame" x="58" y="459" width="50" height="50"/>
+                                <state key="normal" title="Facebook" image="logo_facebook">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postToFacebookTouched:" destination="4s8-If-xKu" eventType="touchUpInside" id="zso-x9-ZLX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eyq-Tp-MsE">
+                                <rect key="frame" x="132" y="459" width="50" height="50"/>
+                                <state key="normal" title="Button" image="logo_twitter">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postToTwitterTouched:" destination="4s8-If-xKu" eventType="touchUpInside" id="INp-o3-Zx8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eqT-0u-cQs">
+                                <rect key="frame" x="207" y="459" width="50" height="50"/>
+                                <state key="normal" title="Button" image="logo_medable">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postToMedableTouched:" destination="4s8-If-xKu" eventType="touchUpInside" id="uOs-eb-eTH"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="is0-DL-6Kz">
+                                <rect key="frame" x="52" y="451" width="32" height="32"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="YKt-6c-Ydc">
+                                <rect key="frame" x="124" y="451" width="32" height="32"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="Pjc-Xr-9oI">
+                                <rect key="frame" x="199" y="451" width="32" height="32"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Share" id="dVD-rB-Rpz">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="c8M-s8-wx1">
+                            <connections>
+                                <action selector="saveButtonTouched:" destination="4s8-If-xKu" id="nN6-32-kpp"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="captionLabel" destination="FZd-up-rKc" id="S5b-vw-kJc"/>
+                        <outlet property="photoImageView" destination="4iN-Sl-FTC" id="elF-3D-Isy"/>
+                        <outlet property="postToFacebookButton" destination="vxZ-7x-rjC" id="nTy-rf-MmH"/>
+                        <outlet property="postToMedableButton" destination="eqT-0u-cQs" id="CXE-41-bMe"/>
+                        <outlet property="postToTwitterButton" destination="eyq-Tp-MsE" id="32U-Mr-5JG"/>
+                        <outlet property="postedToFacebookImgView" destination="is0-DL-6Kz" id="qrw-Tn-JNx"/>
+                        <outlet property="postedToMedableImgView" destination="Pjc-Xr-9oI" id="IF7-Ns-qM9"/>
+                        <outlet property="postedToTwitterImgView" destination="YKt-6c-Ydc" id="2PF-e0-y5K"/>
+                        <outlet property="timeStampLabel" destination="QX8-cr-r98" id="J4C-Bt-UVW"/>
+                        <segue destination="jmi-lz-onX" kind="unwind" identifier="unwindToCreateHeartRateEventSegue" unwindAction="unwindToCreateHeartRateEvent:" id="YPN-HQ-PIQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JwH-02-ZNP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="jmi-lz-onX" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2750" y="1026"/>
+        </scene>
     </scenes>
     <resources>
         <image name="AliveCor_Instructions" width="568" height="256"/>
@@ -1434,6 +1505,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="wKO-gj-FVW"/>
+        <segue reference="C7n-Hc-6L0"/>
     </inferredMetricsTieBreakers>
 </document>

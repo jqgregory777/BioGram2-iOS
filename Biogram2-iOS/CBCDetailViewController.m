@@ -8,17 +8,7 @@
 
 #import "CBCDetailViewController.h"
 #import "CBCAppDelegate.h"
-
-@interface CBCDetailViewController ()
-
-@property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *postedToFacebookImgView;
-@property (weak, nonatomic) IBOutlet UIImageView *postedToTwitterImgView;
-@property (weak, nonatomic) IBOutlet UIImageView *postedToMedableImgView;
-
-@end
+#import "CBCSocialUtilities.h"
 
 @implementation CBCDetailViewController
 
@@ -38,15 +28,14 @@
     
     [super viewDidLoad];
     
-    self.timeStampLabel.text = [NSDateFormatter localizedStringFromDate:self.displayedEvent.timeStamp
-                                                         dateStyle:NSDateFormatterMediumStyle
-                                                         timeStyle:NSDateFormatterShortStyle];
-    self.descriptionLabel.text = self.displayedEvent.eventDescription;
+    self.timeStampLabel.text = self.displayedEvent.timeStampAsString;
+
+    self.captionLabel.text = self.displayedEvent.eventDescription;
     
     UIImage* image = [UIImage imageWithData:self.displayedEvent.photo];
     if (image != nil)
     {
-        self.imageView.image = image;
+        self.photoImageView.image = image;
     }
 
     [self updateUI];
@@ -65,12 +54,28 @@
     self.postedToFacebookImgView.hidden = !self.displayedEvent.postedToFacebook.boolValue;
     self.postedToTwitterImgView.hidden = !self.displayedEvent.postedToTwitter.boolValue;
     self.postedToMedableImgView.hidden = !self.displayedEvent.postedToMedable.boolValue;
+    
+    self.postToFacebookButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] && !(self.displayedEvent.postedToFacebook.boolValue));
+    self.postToTwitterButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(self.displayedEvent.postedToTwitter.boolValue));
+    self.postToMedableButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(self.displayedEvent.postedToMedable.boolValue));
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Posting (aka Sharing)
+
+- (IBAction)postToFacebookTouched:(id)sender
+{
+    [CBCSocialUtilities postToFacebook:self.displayedEvent sender:self];
+}
+
+- (IBAction)postToTwitterTouched:(id)sender
+{
+    [CBCSocialUtilities postToTwitter:self.displayedEvent sender:self];
 }
 
 @end

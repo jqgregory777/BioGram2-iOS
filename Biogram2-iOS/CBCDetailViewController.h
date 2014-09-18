@@ -13,6 +13,19 @@
 
 @property (weak, nonatomic) CBCHeartRateEvent * displayedEvent;
 
+@property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
+@property (weak, nonatomic) IBOutlet UILabel *captionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *postToFacebookButton;
+@property (weak, nonatomic) IBOutlet UIButton *postToTwitterButton;
+@property (weak, nonatomic) IBOutlet UIButton *postToMedableButton;
+@property (weak, nonatomic) IBOutlet UIImageView *postedToFacebookImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *postedToTwitterImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *postedToMedableImgView;
+
 - (void)updateUI;
+- (IBAction)postToFacebookTouched:(id)sender;
+- (IBAction)postToTwitterTouched:(id)sender;
+- (IBAction)postToMedableTouched:(id)sender;
 
 @end

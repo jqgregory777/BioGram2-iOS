@@ -64,11 +64,19 @@
 - (void)updateAccountDetailsButton
 {
     // Grey out the Account cell if there's no account to view
-    BOOL enabled = ([[MDAPIClient sharedClient] localUser] != nil);
+    BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
 
-    self.accountCell.userInteractionEnabled = enabled;
-    self.accountCell.textLabel.enabled = enabled;
-    self.accountCell.detailTextLabel.enabled = enabled;
+    self.accountCell.userInteractionEnabled = loggedIn;
+    self.accountCell.textLabel.enabled = loggedIn;
+    self.accountCell.detailTextLabel.enabled = loggedIn;
+
+    self.loginCell.userInteractionEnabled = !loggedIn;
+    self.loginCell.textLabel.enabled = !loggedIn;
+    self.loginCell.detailTextLabel.enabled = !loggedIn;
+
+    self.logoutCell.userInteractionEnabled = loggedIn;
+    self.logoutCell.textLabel.enabled = loggedIn;
+    self.logoutCell.detailTextLabel.enabled = loggedIn;
 }
 
 - (void)didReceiveMemoryWarning
