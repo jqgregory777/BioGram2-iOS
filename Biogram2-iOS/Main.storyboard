@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="F4O-v4-iYn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="F4O-v4-iYn">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment defaultVersion="1808" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
         <!--Tab Bar Controller-->
@@ -25,7 +25,7 @@
             </objects>
             <point key="canvasLocation" x="-247" y="1026"/>
         </scene>
-        <!--Table View Controller - Settings-->
+        <!--Settings-->
         <scene sceneID="eYC-PU-Znn">
             <objects>
                 <tableViewController id="TR0-Xh-Nxg" sceneMemberID="viewController">
@@ -110,7 +110,7 @@
             </objects>
             <point key="canvasLocation" x="735" y="2581"/>
         </scene>
-        <!--Medable Create Account Controller - Create Account-->
+        <!--Create Account-->
         <scene sceneID="H8R-ao-kDb">
             <objects>
                 <tableViewController id="7qv-Mf-Z8e" customClass="CBCMedableCreateAccountController" sceneMemberID="viewController">
@@ -360,7 +360,7 @@
             </objects>
             <point key="canvasLocation" x="2985" y="3605"/>
         </scene>
-        <!--Medable View Account Controller - Account-->
+        <!--Account-->
         <scene sceneID="ugq-BD-9Qj">
             <objects>
                 <tableViewController id="gfp-C6-iL1" customClass="CBCMedableViewAccountController" sceneMemberID="viewController">
@@ -539,7 +539,7 @@
             </objects>
             <point key="canvasLocation" x="2549" y="2945"/>
         </scene>
-        <!--Table View Controller - Preferences-->
+        <!--Preferences-->
         <scene sceneID="WRz-ka-FOM">
             <objects>
                 <tableViewController id="4eN-wD-ynh" sceneMemberID="viewController">
@@ -581,7 +581,7 @@
             </objects>
             <point key="canvasLocation" x="1712" y="2581"/>
         </scene>
-        <!--Medable Main Table View Controller - Medable-->
+        <!--Medable-->
         <scene sceneID="MIy-YY-k3S">
             <objects>
                 <tableViewController storyboardIdentifier="medableMainTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="z2H-gV-BAV" customClass="CBCMedableMainTableViewController" sceneMemberID="viewController">
@@ -698,7 +698,7 @@
             </objects>
             <point key="canvasLocation" x="2087" y="2945"/>
         </scene>
-        <!--Table View Controller - About-->
+        <!--About-->
         <scene sceneID="pNp-pn-iJn">
             <objects>
                 <tableViewController id="LyE-Tp-Rki" sceneMemberID="viewController">
@@ -784,7 +784,7 @@
             </objects>
             <point key="canvasLocation" x="1348" y="2180"/>
         </scene>
-        <!--Feed View Controller - Feed-->
+        <!--Feed-->
         <scene sceneID="3tq-By-vgp">
             <objects>
                 <viewController id="Z6i-6r-adS" customClass="CBCFeedViewController" sceneMemberID="viewController">
@@ -796,25 +796,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
-                                <rect key="frame" x="54" y="227" width="212" height="29"/>
-                                <segments>
-                                    <segment title="Me"/>
-                                    <segment title="Friends"/>
-                                    <segment title="Everyone"/>
-                                </segments>
-                            </segmentedControl>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_biogram-2" translatesAutoresizingMaskIntoConstraints="NO" id="u3P-VY-IkX">
-                                <rect key="frame" x="54" y="66" width="212" height="160"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logo_biogram-2" translatesAutoresizingMaskIntoConstraints="NO" id="u3P-VY-IkX">
+                                <rect key="frame" x="54" y="67" width="212" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="Puf-bg-uPc"/>
                                 </constraints>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PtP-Or-cTL">
-                                <rect key="frame" x="0.0" y="263" width="320" height="255"/>
+                                <rect key="frame" x="0.0" y="294" width="320" height="224"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="255" id="DmV-CA-RHf"/>
+                                    <constraint firstAttribute="height" constant="224" id="DmV-CA-RHf"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="feedProtoCell" textLabel="dvw-M4-0xM" imageView="qEX-KC-8bt" style="IBUITableViewCellStyleDefault" id="c8h-ZL-8yH">
@@ -849,18 +841,41 @@
                             </tableView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo_medable" translatesAutoresizingMaskIntoConstraints="NO" id="dA7-fQ-yUG">
                                 <rect key="frame" x="281" y="75" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
+                                <rect key="frame" x="54" y="226" width="212" height="29"/>
+                                <segments>
+                                    <segment title="Me"/>
+                                    <segment title="Friends"/>
+                                    <segment title="Everyone"/>
+                                </segments>
+                                <connections>
+                                    <action selector="feedFilterChanged:" destination="Z6i-6r-adS" eventType="valueChanged" id="ADF-jL-F4W"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Oe3-68-G3Z">
+                                <rect key="frame" x="93" y="262" width="135" height="29"/>
+                                <segments>
+                                    <segment title="Local"/>
+                                    <segment title="Medable"/>
+                                </segments>
+                                <connections>
+                                    <action selector="feedSourceChanged:" destination="Z6i-6r-adS" eventType="valueChanged" id="Ylc-hZ-G53"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="u3P-VY-IkX" firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="0WJ-vW-juh"/>
-                            <constraint firstItem="PtP-Or-cTL" firstAttribute="top" secondItem="uZQ-D2-eX5" secondAttribute="bottom" constant="8" symbolic="YES" id="4DR-Xd-kcS"/>
+                            <constraint firstItem="PtP-Or-cTL" firstAttribute="top" secondItem="Oe3-68-G3Z" secondAttribute="bottom" constant="4" id="3Kt-OF-wjF"/>
                             <constraint firstItem="u3P-VY-IkX" firstAttribute="leading" secondItem="S3u-x7-TZw" secondAttribute="leading" constant="54" id="5yT-lt-Bla"/>
-                            <constraint firstItem="uZQ-D2-eX5" firstAttribute="top" secondItem="u3P-VY-IkX" secondAttribute="bottom" constant="1" id="PgF-fS-f5J"/>
+                            <constraint firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="8PM-yx-rPe"/>
+                            <constraint firstItem="uZQ-D2-eX5" firstAttribute="top" secondItem="u3P-VY-IkX" secondAttribute="bottom" id="PgF-fS-f5J"/>
                             <constraint firstItem="PtP-Or-cTL" firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="gAZ-VB-jYe"/>
                             <constraint firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="nSN-R5-E4g"/>
                             <constraint firstItem="PtP-Or-cTL" firstAttribute="leading" secondItem="S3u-x7-TZw" secondAttribute="leading" id="ofg-mb-kqx"/>
+                            <constraint firstAttribute="centerX" secondItem="Oe3-68-G3Z" secondAttribute="centerX" id="qUu-J5-V7R"/>
+                            <constraint firstItem="Oe3-68-G3Z" firstAttribute="top" secondItem="uZQ-D2-eX5" secondAttribute="bottom" constant="5" id="uqL-wI-7Lj"/>
                             <constraint firstItem="2fj-rs-q9k" firstAttribute="top" secondItem="PtP-Or-cTL" secondAttribute="bottom" constant="1" id="zHp-rW-pY8"/>
                         </constraints>
                     </view>
@@ -873,6 +888,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="editButton" destination="6AN-4Q-orO" id="NUX-lF-MnF"/>
+                        <outlet property="feedFilterControl" destination="uZQ-D2-eX5" id="C9D-hk-cIP"/>
+                        <outlet property="feedSourceControl" destination="Oe3-68-G3Z" id="rVS-WP-S2K"/>
                         <outlet property="medableLoggedInImgView" destination="dA7-fQ-yUG" id="RzR-G7-dNn"/>
                         <outlet property="tableView" destination="PtP-Or-cTL" id="nGX-Z4-xDP"/>
                     </connections>
@@ -881,7 +898,7 @@
             </objects>
             <point key="canvasLocation" x="735" y="306"/>
         </scene>
-        <!--Create Heart Rate Event Controller - Create Event-->
+        <!--Create Event-->
         <scene sceneID="ooV-ya-6v2">
             <objects>
                 <tableViewController id="uBd-wk-R0G" customClass="CBCCreateHeartRateEventController" sceneMemberID="viewController">
@@ -968,7 +985,7 @@
             </objects>
             <point key="canvasLocation" x="735" y="1026"/>
         </scene>
-        <!--Manual Heart Rate Controller - Heart Rate-->
+        <!--Heart Rate-->
         <scene sceneID="NkH-Sw-0gp">
             <objects>
                 <viewController id="jMW-ng-OLr" customClass="CBCManualHeartRateController" sceneMemberID="viewController">
@@ -1021,7 +1038,7 @@
             </objects>
             <point key="canvasLocation" x="1355" y="1026"/>
         </scene>
-        <!--AliveHM View Controller - AliveCor ECG-->
+        <!--AliveCor ECG-->
         <scene sceneID="wfj-Aa-qYf">
             <objects>
                 <viewController id="mBs-VM-LHn" customClass="AliveHMViewController" sceneMemberID="viewController">
@@ -1070,7 +1087,6 @@
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" title="AliveCor ECG" id="HTK-yf-s7g">
                         <barButtonItem key="rightBarButtonItem" title="Confirm" id="VS9-dJ-xfK">
@@ -1095,7 +1111,7 @@
             </objects>
             <point key="canvasLocation" x="1231" y="1701"/>
         </scene>
-        <!--Select Photo Controller - Photo-->
+        <!--Photo-->
         <scene sceneID="cvp-uQ-GEo">
             <objects>
                 <viewController id="l3R-YC-rtF" customClass="CBCSelectPhotoController" sceneMemberID="viewController">
@@ -1149,7 +1165,7 @@
             </objects>
             <point key="canvasLocation" x="1920" y="1026"/>
         </scene>
-        <!--Edit Photo Controller - Edit-->
+        <!--Edit-->
         <scene sceneID="2Qt-FI-Q5l">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="zxF-Qw-ZDf" customClass="CBCEditPhotoController" sceneMemberID="viewController">
@@ -1169,7 +1185,7 @@
                                     <constraint firstAttribute="width" constant="306" id="5qO-c5-Rdy"/>
                                 </constraints>
                             </imageView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
                                 <rect key="frame" x="201" y="289" width="77" height="77"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -1222,7 +1238,7 @@
             </objects>
             <point key="canvasLocation" x="2331" y="1026"/>
         </scene>
-        <!--Detail View Controller - Detail-->
+        <!--Detail-->
         <scene sceneID="GsL-c2-qbE">
             <objects>
                 <viewController id="yeV-0U-bxB" customClass="CBCDetailViewController" sceneMemberID="viewController">
@@ -1378,7 +1394,7 @@
             </objects>
             <point key="canvasLocation" x="305" y="1026"/>
         </scene>
-        <!--Share Event Controller - Share-->
+        <!--Share-->
         <scene sceneID="4Wg-e1-Om1">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="4s8-If-xKu" customClass="CBCShareEventController" sceneMemberID="viewController">
