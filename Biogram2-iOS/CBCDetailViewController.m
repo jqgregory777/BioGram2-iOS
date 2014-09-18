@@ -127,7 +127,7 @@
 {
     if (self.displayedEvent)
     {
-        [CBCSocialUtilities postToMedable:self.displayedEvent sender:self];
+        [CBCSocialUtilities postToMedable:self.displayedEvent postToPublicFeed:YES sender:self];
     }
 }
 

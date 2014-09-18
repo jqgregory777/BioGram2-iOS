@@ -30,6 +30,6 @@ extern NSString* const kCBCSocialPostDidComplete;
 
 #pragma mark - Medable
 
-+ (void)postToMedable:(CBCHeartRateEvent *)pendingEvent sender:(id)sender;
++ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent postToPublicFeed:(BOOL)postToPublicFeed sender:(id)sender;
 
 @end

@@ -607,11 +607,11 @@ typedef enum : NSInteger
         switch (self.currentFeedFilter)
         {
             case CBCFeedFilterCollective:
-                [self listCollectiveFeed];
+                [self listFeedWithPublic:YES];
                 break;
                 
             case CBCFeedFilterMe:
-                [self listFeed];
+                [self listFeedWithPublic:NO];
                 break;
                 
             default:
@@ -620,7 +620,7 @@ typedef enum : NSInteger
     }
 }
 
-- (void)listFeed
+- (void)listFeedWithPublic:(BOOL)publicFeed
 {
     if (self.currentFeedSource == CBCFeedSourceMedable)
     {
@@ -631,9 +631,19 @@ typedef enum : NSInteger
         {
             NSString* biogramId = [currentAccount biogramId];
             
+            MDAPIParameters* parameters = nil;
+            if (publicFeed)
+            {
+                parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPublicFeedKey] excludePostTypes:@[kPrivateFeedKey]];
+            }
+            else
+            {
+                parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]];
+            }
+            
             [[MDAPIClient sharedClient]
              listFeedWithBiogramId:biogramId
-             parameters:nil
+             parameters:parameters
              callback:^(NSArray *feed, MDFault *fault)
              {
                  if (!fault)
@@ -678,6 +688,18 @@ typedef enum : NSInteger
              listFeedWithBiogramId:[currentAccount biogramId]
              parameters:parameters
              callback:^(NSArray *feed, MDFault *fault)
+             {
+                 if (!fault)
+                 {
+                     wSelf.data = feed;
+                     [wSelf.tableView reloadData];
+                 }
+             }];
+            
+            
+            [[MDAPIClient sharedClient]
+             listPublicBiogramObjectsWithParameters:parameters
+             callback:^(NSArray* feed, MDFault *fault)
              {
                  if (!fault)
                  {

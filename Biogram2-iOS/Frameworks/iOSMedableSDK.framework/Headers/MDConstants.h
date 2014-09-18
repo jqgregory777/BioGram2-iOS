@@ -320,3 +320,5 @@ extern NSString* const kCensorPngFilename;
 extern NSString* const kBiogramKey;
 extern NSString* const kHeartrateKey;
 extern NSString* const kIntegerKey;
+extern NSString* const kPublicFeedKey;
+extern NSString* const kPrivateFeedKey;

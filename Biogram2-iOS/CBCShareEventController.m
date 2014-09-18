@@ -20,11 +20,9 @@
 
 - (IBAction)saveButtonTouched:(id)sender
 {
-    CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
-    
     if ([[MDAPIClient sharedClient] localUser])
     {
-        [CBCSocialUtilities postToMedable:self.displayedEvent sender:self];
+        [CBCSocialUtilities postToMedable:self.displayedEvent postToPublicFeed:YES sender:self];
     }
     else
     {

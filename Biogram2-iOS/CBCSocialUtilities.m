@@ -377,7 +377,7 @@ typedef NSInteger SocialServiceID;
 
 #pragma mark - Medable
 
-+ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent sender:(id)sender
++ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent postToPublicFeed:(BOOL)postToPublicFeed sender:(id)sender
 {
     // Post to Medable
     MDAPIClient* apiClient = [MDAPIClient sharedClient];
@@ -394,6 +394,7 @@ typedef NSInteger SocialServiceID;
         [[MDAPIClient sharedClient]
          postHeartbeatWithBiogramId:biogramId
          heartbeat:[heartRateEvent.heartRate integerValue]
+         postToPublicFeed:postToPublicFeed
          image:backgroundImage
          overlay:overlayImage
          progress:nil
