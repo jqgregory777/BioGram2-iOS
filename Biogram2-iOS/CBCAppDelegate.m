@@ -404,6 +404,10 @@
                     {
                         [wSelf displayAlertWithMedableFault:fault];
                     }
+                    else if ([fault.code isEqualToString:@"kInvalidCredentials"])
+                    {
+                        [wSelf showMedableLoginDialog];
+                    }
                     else
                     {
                         [wSelf displayAlertWithMessage:fault.text];

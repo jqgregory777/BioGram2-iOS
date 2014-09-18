@@ -12,11 +12,36 @@
 #import "CBCImageUtilities.h"
 #import "CBCDetailViewController.h"
 
+
+typedef enum : NSInteger
+{
+    CBCFeedFilterMe = 0,
+    CBCFeedFilterFriends,
+    CBCFeedFilterEveryone
+} CBCFeedFilter;
+
+typedef enum : NSInteger
+{
+    CBCFeedSourceCoreData = 0,
+    CBCFeedSourceMedable
+} CBCFeedSource;
+
 @interface CBCFeedViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (weak, nonatomic) IBOutlet UIImageView *medableLoggedInImgView;
+
+@property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *feedSourceControl;
+
+@property (assign, nonatomic) CBCFeedFilter currentFeedFilter;
+@property (assign, nonatomic) CBCFeedSource currentFeedSource;
+
+@property (nonatomic, strong) NSArray* data;
+
+- (IBAction)feedFilterChanged:(id)sender;
+- (IBAction)feedSourceChanged:(id)sender;
 
 @end
 
@@ -44,6 +69,12 @@
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(updateMedableLoggedIn) name:kMDNotificationUserDidLogin object:nil];
     
+    self.currentFeedFilter = CBCFeedFilterMe;
+    self.currentFeedSource = CBCFeedSourceMedable;
+    
+    self.feedFilterControl.selectedSegmentIndex = self.currentFeedFilter;
+    self.feedSourceControl.selectedSegmentIndex = self.currentFeedSource;
+    
     // Testing Facebook
 //    FBLoginView *loginView = [[FBLoginView alloc] init];
 //    loginView.center = self.view.center;
@@ -60,6 +91,8 @@
         // another controller must have been popped off
         [self updateMedableLoggedIn];
     }
+    
+    [self updateMedableFeed];
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,6 +105,8 @@
 {
     BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
     self.medableLoggedInImgView.hidden = !loggedIn;
+
+    [self updateMedableFeed];
 }
 
 - (void)updateEditButton
@@ -91,6 +126,7 @@
     
     [self.editButton setEnabled:(numberOfObjects != 0)];
 }
+
 
 #pragma mark - Core Data Fetched Results Controller
 
@@ -150,7 +186,7 @@
 {
     //NSLog(@"controller:didChangeSection:\n");
 
-    switch(type)
+    switch (type)
     {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
@@ -160,6 +196,11 @@
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
                           withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+        case NSFetchedResultsChangeUpdate:
+        default:
             break;
     }
 }
@@ -207,19 +248,54 @@
     [self updateEditButton];
 }
 
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return [[self.fetchedResultsController sections] count];
+    NSInteger numberOfSections = 0;
+    
+    switch (self.currentFeedSource)
+    {
+        case CBCFeedSourceMedable:
+            numberOfSections = 1;
+            break;
+            
+        case CBCFeedSourceCoreData:
+            numberOfSections = [[self.fetchedResultsController sections] count];
+            break;
+            
+        default:
+            break;
+    }
+    
+    return numberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
+    
+    NSInteger numberOfRows = 0;
+    
+    switch (self.currentFeedSource)
+    {
+        case CBCFeedSourceMedable:
+            numberOfRows = [self.data count];
+            break;
+            
+        case CBCFeedSourceCoreData:
+        {
+            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+            numberOfRows = [sectionInfo numberOfObjects];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    return numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -229,32 +305,73 @@
     return cell;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:indexPath
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-    cell.textLabel.text = [NSDateFormatter localizedStringFromDate:event.timeStamp
-                                                         dateStyle:NSDateFormatterMediumStyle
-                                                         timeStyle:NSDateFormatterShortStyle];
-    
-    UIImage * thumbnail = event.thumbnail;
-    if (thumbnail == nil)
+    if (self.currentFeedSource == CBCFeedSourceMedable)
     {
-        UIImage* image = [UIImage imageWithData:event.photo];
-        if (image != nil)
+        MDPost* post = [self.data objectAtIndex:indexPath.row];
+        
+        if (post.typeEnumerated == MDPostTypeHeartrate)
         {
-            CGRect cellBounds = cell.bounds;
-            CGSize size;
-            size.width = size.height = cellBounds.size.height - 2;
+            NSUInteger heartbeat = 0;
             
-            thumbnail = [CBCImageUtilities scaleImage:image toSize:size];
-
-            event.thumbnail = thumbnail;
+            NSArray* body = [post body];
+            for (NSDictionary* bodyDict in body)
+            {
+                NSString* segmentType = [bodyDict objectForKey:kTypeKey];
+                if ([segmentType isEqualToString:kIntegerKey])
+                {
+                    NSNumber* heartbeatNumber = [bodyDict objectForKey:kValueKey];
+                    heartbeat = [heartbeatNumber unsignedIntegerValue];
+                }
+            }
+            
+            cell.textLabel.text = [NSDateFormatter
+                                   localizedStringFromDate:post.created
+                                   dateStyle:NSDateFormatterMediumStyle
+                                   timeStyle:NSDateFormatterShortStyle];
+            
+            [post postPicsWithUpdateBlock:^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    cell.imageView.image = image;
+                                });
+                 
+                 return YES;
+             }];
+            
         }
     }
-
-    if (thumbnail != nil)
-        cell.imageView.image = thumbnail;
+    else if (self.currentFeedSource == CBCFeedSourceCoreData)
+    {
+        CBCHeartRateEvent* event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        cell.textLabel.text = [NSDateFormatter localizedStringFromDate:event.timeStamp
+                                                             dateStyle:NSDateFormatterMediumStyle
+                                                             timeStyle:NSDateFormatterShortStyle];
+        
+        UIImage* thumbnail = event.thumbnail;
+        if (thumbnail == nil)
+        {
+            UIImage* image = [UIImage imageWithData:event.photo];
+            if (image != nil)
+            {
+                CGRect cellBounds = cell.bounds;
+                CGSize size;
+                size.width = size.height = cellBounds.size.height - 2;
+                
+                thumbnail = [CBCImageUtilities scaleImage:image toSize:size];
+                
+                event.thumbnail = thumbnail;
+            }
+        }
+        
+        if (thumbnail != nil)
+        {
+            cell.imageView.image = thumbnail;
+        }
+    }
 }
 
 #pragma mark - Table view editing
@@ -283,20 +400,53 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        // Delete the row from the data source
-        //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        CBCHeartRateEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-        [context deleteObject:event];
-        
-        NSError *error = nil;
-        if (![context save:&error])
+        // Delete from CoreData
+        if (self.currentFeedSource == CBCFeedSourceCoreData)
         {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            // Delete the row from the data source
+            //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+            CBCHeartRateEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            
+            [context deleteObject:event];
+            
+            NSError *error = nil;
+            if (![context save:&error])
+            {
+                // Replace this implementation with code to handle the error appropriately.
+                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
+        }
+        else if (self.currentFeedSource == CBCFeedSourceMedable)
+        {
+            // Delete from Medable
+            MDPost* post = [self.data objectAtIndex:indexPath.row];
+            
+            NSString* creatorId = nil;
+            if ([post.creator isExpanded])
+            {
+                creatorId = [post.creator.value objectForKey:kIDKey];
+            }
+            else
+            {
+                creatorId = post.creator.value;
+            }
+            
+            if ([creatorId isEqualToString:[[MDAPIClient sharedClient] localUser].Id])
+            {
+                [[MDAPIClient sharedClient]
+                 deletePostWithId:post.Id
+                 commentId:nil
+                 callback:^(MDFault *fault)
+                 {
+                     if (fault)
+                     {
+                         [[CBCAppDelegate appDelegate] displayAlertWithMedableFault:fault];
+                     }
+                 }];
+            }
         }
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
@@ -311,9 +461,156 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     CBCDetailViewController *detailController = [segue destinationViewController];
-    NSIndexPath * indexPath = [self.tableView indexPathForSelectedRow];
-    CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    detailController.displayedEvent = event;
+    NSIndexPath* indexPath = [self.tableView indexPathForSelectedRow];
+
+    if (self.currentFeedSource == CBCFeedSourceCoreData)
+    {
+        CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        detailController.displayedEvent = event;
+        detailController.displayedPost = nil;
+    }
+    else if (self.currentFeedSource == CBCFeedSourceMedable)
+    {
+        MDPost* selectedPost = [self.data objectAtIndex:indexPath.row];
+        detailController.displayedPost = selectedPost;
+        detailController.displayedEvent = nil;
+    }
+}
+
+
+#pragma mark - Segmented controls
+
+- (IBAction)feedFilterChanged:(id)sender
+{
+    switch (self.feedFilterControl.selectedSegmentIndex)
+    {
+        case CBCFeedFilterMe:
+            self.currentFeedFilter = CBCFeedFilterMe;
+            break;
+            
+        case CBCFeedFilterFriends:
+            self.currentFeedFilter = CBCFeedFilterFriends;
+            break;
+            
+        case CBCFeedFilterEveryone:
+            self.currentFeedFilter = CBCFeedFilterEveryone;
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (IBAction)feedSourceChanged:(id)sender
+{
+    switch (self.feedSourceControl.selectedSegmentIndex)
+    {
+        case CBCFeedSourceCoreData:
+            self.currentFeedSource = CBCFeedSourceCoreData;
+            [self.tableView reloadData];
+            break;
+            
+        case CBCFeedSourceMedable:
+            self.currentFeedSource = CBCFeedSourceMedable;
+            [self updateMedableFeed];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
+#pragma mark - Medable feed
+
+- (void)updateMedableFeed
+{
+    if (self.currentFeedSource == CBCFeedSourceMedable)
+    {
+        switch (self.currentFeedFilter)
+        {
+            case CBCFeedFilterFriends:
+            case CBCFeedFilterEveryone:
+                [self listCollectiveFeed];
+                break;
+                
+            case CBCFeedFilterMe:
+                [self listFeed];
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+- (void)listFeed
+{
+    if (self.currentFeedSource == CBCFeedSourceMedable)
+    {
+        __weak typeof (self) wSelf = self;
+        
+        MDAccount* currentAccount = [MDAPIClient sharedClient].localUser;
+        if (currentAccount)
+        {
+            NSString* biogramId = [currentAccount biogramId];
+            
+            [[MDAPIClient sharedClient]
+             listFeedWithBiogramId:biogramId
+             parameters:nil
+             callback:^(NSArray *feed, MDFault *fault)
+             {
+                 if (!fault)
+                 {
+                     wSelf.data = feed;
+                     [wSelf.tableView reloadData];
+                 }
+             }];
+        }
+    }
+}
+
+- (void)listCollectiveFeed
+{
+    if (self.currentFeedSource == CBCFeedSourceMedable)
+    {
+        __weak typeof (self) wSelf = self;
+        
+        MDAPIClient* apiClient = [MDAPIClient sharedClient];
+        
+        // Current account
+        MDAccount* currentAccount = apiClient.localUser;
+        if (currentAccount)
+        {
+            // i.e. First Page
+            // GET /feed/biogram/53e29340247fdb7b5c00010e?contexts[]=biogram&postTypes=heartrate&filterCaller=true&limit=2
+            
+            MDAPIParameters* contextsParameter = [MDAPIParameterFactory parametersWithContexts:@[ kBiogramKey ]];
+            MDAPIParameters* postTypeParameter = [MDAPIParameterFactory parametersWithIncludePostTypes:@[ kHeartrateKey ] excludePostTypes:nil];
+            MDAPIParameters* filterCallerParameter = [MDAPIParameterFactory parametersWithFilterCaller:YES];
+            MDAPIParameters* limitParameter = [MDAPIParameterFactory parametersWithLimitResultsTo:2];
+            
+            MDAPIParameters* parameters = [MDAPIParameterFactory parametersWithParameters:
+                                           contextsParameter,
+                                           postTypeParameter,
+                                           filterCallerParameter,
+                                           limitParameter,
+                                           nil];
+            
+            // GET /feed?contexts[]=biogram&postTypes=heartrate&filterCaller=true
+            [[MDAPIClient sharedClient]
+             listFeedWithBiogramId:[currentAccount biogramId]
+             parameters:parameters
+             callback:^(NSArray *feed, MDFault *fault)
+             {
+                 if (!fault)
+                 {
+                     wSelf.data = feed;
+                     [wSelf.tableView reloadData];
+                 }
+             }];
+        }
+    }
 }
 
 @end
