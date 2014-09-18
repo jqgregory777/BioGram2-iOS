@@ -142,17 +142,24 @@
     return [UIImage imageWithCGImage:imageMasked];
 }
 
-+ (UIImage *)generatePhoto:(UIImage *)backgroundImage frame:(CGRect)backgroundFrame
++ (NSArray *)generatePhoto:(UIImage *)backgroundImage frame:(CGRect)backgroundFrame
                  watermark:(UIImage *)watermarkImage watermarkFrame:(CGRect)watermarkFrame;
 {
+    // make the fully composited image
     UIGraphicsBeginImageContext(backgroundImage.size);
     [backgroundImage drawInRect:CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height)];
-    //[watermarkImage drawInRect:CGRectMake(backgroundImage.size.width - watermarkImage.size.width - 10, backgroundImage.size.height - watermarkImage.size.height - 10, watermarkImage.size.width, watermarkImage.size.height)];
     [watermarkImage drawInRect:CGRectMake((watermarkFrame.origin.x - backgroundFrame.origin.x)*2, (watermarkFrame.origin.y - backgroundFrame.origin.y)*2, watermarkImage.size.width, watermarkImage.size.height)];
-    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *resultComposited = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-    return result;
+
+    // also make an image that is entirely transparent except for the heart overlay (for medable)
+    UIGraphicsBeginImageContextWithOptions(backgroundImage.size, NO, 1.0);
+    [watermarkImage drawInRect:CGRectMake((watermarkFrame.origin.x - backgroundFrame.origin.x)*2, (watermarkFrame.origin.y - backgroundFrame.origin.y)*2, watermarkImage.size.width, watermarkImage.size.height)];
+    UIImage *resultOverlay = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    NSArray * images = [NSArray arrayWithObjects:resultComposited, resultOverlay, nil];
+    return images;
 }
 
 @end

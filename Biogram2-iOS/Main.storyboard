@@ -881,7 +881,7 @@
             </objects>
             <point key="canvasLocation" x="735" y="306"/>
         </scene>
-        <!--Create Heart Rate Event Controller - Create Event-->
+        <!--Create Heart Rate Event Controller - Heart Rate-->
         <scene sceneID="ooV-ya-6v2">
             <objects>
                 <tableViewController id="uBd-wk-R0G" customClass="CBCCreateHeartRateEventController" sceneMemberID="viewController">
@@ -962,13 +962,13 @@
                             <outlet property="delegate" destination="uBd-wk-R0G" id="Six-RQ-r6l"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Create Event" id="kkO-vX-q1V"/>
+                    <navigationItem key="navigationItem" title="Heart Rate" id="kkO-vX-q1V"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pj7-og-HCD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="735" y="1026"/>
         </scene>
-        <!--Manual Heart Rate Controller - Heart Rate-->
+        <!--Manual Heart Rate Controller - Manual-->
         <scene sceneID="NkH-Sw-0gp">
             <objects>
                 <viewController id="jMW-ng-OLr" customClass="CBCManualHeartRateController" sceneMemberID="viewController">
@@ -1005,7 +1005,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Heart Rate" id="YD5-Qx-ueo">
+                    <navigationItem key="navigationItem" title="Manual" id="YD5-Qx-ueo">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="MPc-de-wuW">
                             <connections>
                                 <segue destination="l3R-YC-rtF" kind="push" identifier="manualHeartRateSegue" id="C7n-Hc-6L0"/>
@@ -1021,7 +1021,7 @@
             </objects>
             <point key="canvasLocation" x="1355" y="1026"/>
         </scene>
-        <!--AliveHM View Controller - AliveCor ECG-->
+        <!--AliveHM View Controller - AliveCor-->
         <scene sceneID="wfj-Aa-qYf">
             <objects>
                 <viewController id="mBs-VM-LHn" customClass="AliveHMViewController" sceneMemberID="viewController">
@@ -1072,7 +1072,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <navigationItem key="navigationItem" title="AliveCor ECG" id="HTK-yf-s7g">
+                    <navigationItem key="navigationItem" title="AliveCor" id="HTK-yf-s7g">
                         <barButtonItem key="rightBarButtonItem" title="Confirm" id="VS9-dJ-xfK">
                             <connections>
                                 <segue destination="l3R-YC-rtF" kind="push" id="wKO-gj-FVW"/>
@@ -1340,11 +1340,11 @@
             </objects>
             <point key="canvasLocation" x="2549" y="3608"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation Controller - Feed-->
         <scene sceneID="uF0-qe-2Eb">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2xh-t7-SiL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="tabbar_feed" id="6lP-tt-VU1"/>
+                    <tabBarItem key="tabBarItem" title="Feed" image="tabbar_feed" id="6lP-tt-VU1"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DYm-J6-sSu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1359,11 +1359,11 @@
             </objects>
             <point key="canvasLocation" x="305" y="306"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation Controller - Heart Rate-->
         <scene sceneID="ysp-LL-IDn">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nLi-rV-jeS" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="tabbar_heartrate" id="xR6-wr-nLx"/>
+                    <tabBarItem key="tabBarItem" title="Heart Rate" image="tabbar_heartrate" id="xR6-wr-nLx"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1SB-ZF-rUC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1498,6 +1498,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="C7n-Hc-6L0"/>
+        <segue reference="wKO-gj-FVW"/>
     </inferredMetricsTieBreakers>
 </document>

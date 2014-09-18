@@ -157,16 +157,21 @@
     UIImage* overlayImage = self.overlayImageView.image;
     
     self.displayedEvent.backgroundImage = UIImagePNGRepresentation(backgroundImage);
-    self.displayedEvent.overlayImage = UIImagePNGRepresentation(self.overlayImageView.image);
     
     // present image
-    UIImage* compositedImage = [CBCImageUtilities generatePhoto:backgroundImage
-                                                                frame:self.photoImageView.frame
-                                                            watermark:overlayImage
-                                                       watermarkFrame:self.overlayImageView.frame];
+    NSArray* generatedImages = [CBCImageUtilities generatePhoto:backgroundImage
+                                                          frame:self.photoImageView.frame
+                                                      watermark:overlayImage
+                                                 watermarkFrame:self.overlayImageView.frame];
+
+    UIImage* compositedImage        = (UIImage*)generatedImages[0];
+    UIImage* compositedOverlayImage = (UIImage*)generatedImages[1];
     
     NSData * photoData = UIImagePNGRepresentation(compositedImage);
     self.displayedEvent.photo = photoData;
+    
+    NSData * overlayData = UIImagePNGRepresentation(compositedOverlayImage);
+    self.displayedEvent.overlayImage = overlayData;
 
     // HACK: I couldn't figure out how to override setPhoto: to automatically nil this out!
     // But this is the ONLY place we set the photo, so screw it - just do it here.

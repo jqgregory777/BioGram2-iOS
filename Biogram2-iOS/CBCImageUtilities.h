@@ -13,6 +13,6 @@
 + (UIImage *)cropImage:(UIImage *)image;
 + (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)newSize;
 + (UIImage *)addText:(UIImage *)img text:(NSString *)text1;
-+ (UIImage *)generatePhoto:(UIImage *)backgroundImage frame:(CGRect)backgroundFrame watermark:(UIImage *)watermarkImage watermarkFrame:(CGRect)watermarkFrame;
++ (NSArray *)generatePhoto:(UIImage *)backgroundImage frame:(CGRect)backgroundFrame watermark:(UIImage *)watermarkImage watermarkFrame:(CGRect)watermarkFrame;
 
 @end
