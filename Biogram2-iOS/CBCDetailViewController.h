@@ -11,7 +11,7 @@
 
 @interface CBCDetailViewController : UIViewController
 
-@property (weak, nonatomic) CBCHeartRateEvent* displayedEvent;
+@property (strong, nonatomic) CBCHeartRateEvent* displayedEvent;
 @property (strong, nonatomic) MDPost* displayedPost;
 
 @property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;

@@ -128,7 +128,10 @@ typedef enum : NSInteger
     // when in full medable mode, the goToMedableButton takes the user directly
     // to the Medable settings page
     self.goToMedableButton.userInteractionEnabled = !inTrialMode;
+    self.goToMedableButton.hidden = inTrialMode;
+
     self.medableInfoButton.userInteractionEnabled = inTrialMode;
+    self.medableInfoButton.hidden = !inTrialMode;
 
 #ifdef DEBUG
     self.resetTrialModeButton.enabled = !inTrialMode;
@@ -524,18 +527,17 @@ typedef enum : NSInteger
     NSLog(@"medableInfoTouched:");
 
     NSString * message = [NSString stringWithCString:
-        "Secure your heart rate data with Medable.\n"
-        "Create an account or log in to unlock all\n"
-        "of the features of Biogram.\n"
-        "https://www.medable.com"
+        "Secure your heart rate data with Medable. "
+        "Create an account or log in to unlock all "
+        "of the features of Biogram."
         encoding:NSUTF8StringEncoding];
     
     UIAlertView* alert = [[UIAlertView alloc]
                           initWithTitle:@"Medable"
-                          message:message
+                          message:NSLocalizedString(message, nil)
                           delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-                          otherButtonTitles:nil];
+                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                          otherButtonTitles:NSLocalizedString(@"www.medable.com", nil), nil];
     [alert show];
 }
 
@@ -543,7 +545,14 @@ typedef enum : NSInteger
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [self goToMedableTouched:self];
+    if (buttonIndex == 0)
+    {
+        [self goToMedableTouched:self];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.medable.com"]];
+    }
 }
 
 - (IBAction)goToMedableTouched:(id)sender
