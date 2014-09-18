@@ -19,14 +19,14 @@
 
 #pragma mark - Facebook
 
-+ (void)postToFacebook:(CBCHeartRateEvent *)pendingEvent;
++ (void)postToFacebook:(CBCHeartRateEvent *)pendingEvent sender:(id)sender;
 
 #pragma mark - Twitter
 
-+ (void)postToTwitter:(CBCHeartRateEvent *)pendingEvent;
++ (void)postToTwitter:(CBCHeartRateEvent *)pendingEvent sender:(id)sender;
 
 #pragma mark - Medable
 
-+ (void)postToMedable:(CBCHeartRateEvent *)pendingEvent;
++ (void)postToMedable:(CBCHeartRateEvent *)pendingEvent sender:(id)sender;
 
 @end

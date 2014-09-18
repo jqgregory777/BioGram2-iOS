@@ -11,10 +11,12 @@
 #import "CBCHeartRateEvent.h"
 #import "AliveHMViewController.h"
 
+@class CBCDetailViewController;
 
 @interface CBCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (weak, nonatomic) CBCDetailViewController *detailViewController;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;

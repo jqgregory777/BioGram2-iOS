@@ -13,4 +13,6 @@
 
 @property (weak, nonatomic) CBCHeartRateEvent * displayedEvent;
 
+- (void)updateUI;
+
 @end

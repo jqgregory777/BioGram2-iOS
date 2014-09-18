@@ -43,6 +43,12 @@
 //    FBLoginView *loginView = [[FBLoginView alloc] init];
 //    loginView.center = self.view.center;
 //    [self.view addSubview:loginView];
+    
+    // Log in to Medable
+    if (![[MDAPIClient sharedClient] localUser])
+    {
+        [[CBCAppDelegate appDelegate] showMedableLoginDialog];
+    }
 }
 
 - (void)didReceiveMemoryWarning

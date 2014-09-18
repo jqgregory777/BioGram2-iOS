@@ -8,6 +8,7 @@
 
 #import "CBCAppDelegate.h"
 #import "CBCFeedViewController.h"
+#import "CBCSocialUtilities.h"
 
 #import <iOSMedableSDK/AFNetworkActivityLogger.h>
 #import <iOSMedableSDK/AFNetworkActivityIndicatorManager.h>
@@ -276,13 +277,21 @@
 
 - (BOOL)savePendingHeartRateEvent
 {
+    BOOL success = NO;
+    
     if (self.pendingHeartRateEvent != nil)
     {
-        BOOL success = [self saveHeartRateEvent:self.pendingHeartRateEvent];
+        success = [self saveHeartRateEvent:self.pendingHeartRateEvent];
+
+        if (success)
+        {
+            // nothing to do right now
+        }
+        
         self.pendingHeartRateEvent = nil; // release the strong reference
-        return success;
     }
-    return NO;
+    
+    return success;
 }
 
 #pragma mark - UIAlertViewDelegate

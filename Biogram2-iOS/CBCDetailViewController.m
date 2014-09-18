@@ -33,6 +33,9 @@
 
 - (void)viewDidLoad
 {
+    CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
+    appDelegate.detailViewController = self;
+    
     [super viewDidLoad];
     
     self.timeStampLabel.text = [NSDateFormatter localizedStringFromDate:self.displayedEvent.timeStamp
@@ -45,7 +48,20 @@
     {
         self.imageView.image = image;
     }
+
+    [self updateUI];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
+    appDelegate.detailViewController = nil;
     
+    [super viewWillDisappear:animated];
+}
+
+- (void)updateUI
+{
     self.postedToFacebookImgView.hidden = !self.displayedEvent.postedToFacebook.boolValue;
     self.postedToTwitterImgView.hidden = !self.displayedEvent.postedToTwitter.boolValue;
     self.postedToMedableImgView.hidden = !self.displayedEvent.postedToMedable.boolValue;

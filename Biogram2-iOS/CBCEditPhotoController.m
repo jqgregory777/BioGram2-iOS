@@ -23,11 +23,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *captionTextField;
 @property (weak, nonatomic) IBOutlet UIButton *postToFacebookButton;
 @property (weak, nonatomic) IBOutlet UIButton *postToTwitterButton;
-@property (weak, nonatomic) IBOutlet UIButton *postToMedableButton;
 @property (weak, nonatomic) IBOutlet UIImageView *postToFacebookImgView;
 @property (weak, nonatomic) IBOutlet UIImageView *postToTwitterImgView;
-@property (weak, nonatomic) IBOutlet UIImageView *postToMedableImgView;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareOrSaveButton;
 
 @property (strong, nonatomic) SLComposeViewController *slComposeViewController;
 
@@ -61,8 +58,6 @@
     [super viewDidLoad];
     [self registerForKeyboardNotifications];
     
-    self.shareOrSaveButton.possibleTitles = [NSSet setWithObjects:@"Share", @"Save", nil];
-
     // retrieve the pending heart rate event
     CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
     CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
@@ -217,31 +212,21 @@
     CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
     
-    BOOL anyShare = (pendingEvent.postedToFacebook.boolValue
-                  || pendingEvent.postedToTwitter.boolValue
-                  || pendingEvent.postedToMedable.boolValue);
-    
     self.postToFacebookImgView.hidden = !(pendingEvent.postedToFacebook.boolValue);
     self.postToTwitterImgView.hidden = !(pendingEvent.postedToTwitter.boolValue);
-    self.postToMedableImgView.hidden = !(pendingEvent.postedToMedable.boolValue);
 
-    self.shareOrSaveButton.title = (anyShare) ? @"Share" : @"Save";
-
-    self.postToFacebookButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
-    self.postToTwitterButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]);
-    self.postToMedableButton.enabled = YES; // TO DO: should be based on whether user is logged in to a valid Medable account
+    self.postToFacebookButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] && !(pendingEvent.postedToFacebook.boolValue));
+    self.postToTwitterButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(pendingEvent.postedToTwitter.boolValue));
 }
 
 - (IBAction)postToFacebookTouched:(id)sender
 {
     CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
+
+    [self updatePendingEventFromUI];
     
-    // toggle the posted state
-    BOOL wantPost = !pendingEvent.postedToFacebook.boolValue;
-    pendingEvent.postedToFacebook = [NSNumber numberWithBool:wantPost];
-    
-    [self updateUI];
+    [CBCSocialUtilities postToFacebook:pendingEvent sender:self];
 }
 
 - (IBAction)postToTwitterTouched:(id)sender
@@ -249,31 +234,9 @@
     CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
     
-    // toggle the posted state
-    BOOL wantPost = !pendingEvent.postedToTwitter.boolValue;
-    pendingEvent.postedToTwitter = [NSNumber numberWithBool:wantPost];
+    [self updatePendingEventFromUI];
     
-    [self updateUI];
-}
-
-- (IBAction)postToMedableTouched:(id)sender
-{
-    // Check if the user is logged in to Medable
-    if ([[MDAPIClient sharedClient] localUser])
-    {
-        CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
-        
-        // toggle the posted state
-        BOOL wantPost = !pendingEvent.postedToMedable.boolValue;
-        pendingEvent.postedToMedable = [NSNumber numberWithBool:wantPost];
-        
-        [self updateUI];
-    }
-    else
-    {
-        [[CBCAppDelegate appDelegate] showMedableLoginDialog];
-    }
+    [CBCSocialUtilities postToTwitter:pendingEvent sender:self];
 }
 
 #pragma mark - Save Button
@@ -308,41 +271,29 @@
 
 - (IBAction)saveButtonTouched:(id)sender
 {
-    CBCAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
+    CBCAppDelegate * appDelegate = [[UIApplication sharedApplication] delegate];
+    CBCHeartRateEvent * pendingEvent = appDelegate.pendingHeartRateEvent;
     
     [self updatePendingEventFromUI];
     
-    BOOL wantPostToFacebook = pendingEvent.postedToFacebook.boolValue;
-    BOOL wantPostToTwitter = pendingEvent.postedToTwitter.boolValue;
-    BOOL wantPostToMedable = pendingEvent.postedToMedable.boolValue;
-
-    // assume failure until success is confirmed
-    pendingEvent.postedToFacebook = @NO;
-    pendingEvent.postedToTwitter = @NO;
-    pendingEvent.postedToMedable = @NO;
-
     if ([appDelegate savePendingHeartRateEvent])
     {
-        // success! now post to social media as requested
-        // upon success, we'll set the postedTo* attributes back to YES and re-save
+        // successfully saved to Core Data... now post to Medable
+        // TO DO: CHANGE TO POST TO MEDABLE *ONLY* AND NOT USE CORE DATA AT ALL
         
-        if (wantPostToFacebook)
+        if ([[MDAPIClient sharedClient] localUser])
         {
-            [CBCSocialUtilities postToFacebook:pendingEvent];
+            [CBCSocialUtilities postToMedable:pendingEvent sender:self];
         }
-        if (wantPostToTwitter)
+        else
         {
-            [CBCSocialUtilities postToTwitter:pendingEvent];
-        }
-        if (wantPostToMedable)
-        {
-            [CBCSocialUtilities postToMedable:pendingEvent];
+            // TO DO: user chose not to log in... discard the event
+            [CBCAppDelegate showMessage:@"Unable to post event to Medable." withTitle:@"Medable Failure"];
         }
     }
     else
     {
-        
+        [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
     }
 
     // Also activate the feed view in the tab bar.
