@@ -42,10 +42,11 @@ typedef enum : NSInteger
 @property (nonatomic, strong) NSArray* data;
 
 - (IBAction)feedFilterChanged:(id)sender;
-- (IBAction)feedSourceChanged:(id)sender;
 - (IBAction)medableInfoTouched:(id)sender;
 - (IBAction)goToMedableTouched:(id)sender;
 - (IBAction)resetTrialModeTouched:(id)sender;
+
+- (void)feedSourceDidChange;
 
 @end
 
@@ -67,7 +68,7 @@ typedef enum : NSInteger
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
 #ifdef DEBUG
     self.resetTrialModeButton.enabled = YES;
     self.resetTrialModeButton.hidden = NO;
@@ -106,7 +107,7 @@ typedef enum : NSInteger
         [self updateMedableLoggedIn];
     }
     
-    [self updateMedableFeed];
+    [self feedSourceDidChange];
 }
 
 - (void)didReceiveMemoryWarning
@@ -133,7 +134,8 @@ typedef enum : NSInteger
     self.resetTrialModeButton.enabled = !inTrialMode;
 #endif
 
-    [self updateMedableFeed];
+    self.currentFeedSource = (inTrialMode) ? CBCFeedSourceCoreData : CBCFeedSourceMedable;
+    [self feedSourceDidChange];
 }
 
 - (void)updateEditButton
@@ -539,21 +541,20 @@ typedef enum : NSInteger
     self.currentFeedFilter = self.feedFilterControl.selectedSegmentIndex;
 }
 
-- (IBAction)feedSourceChanged:(id)sender
+- (void)feedSourceDidChange
 {
     switch (self.currentFeedSource)
     {
         case CBCFeedSourceCoreData:
-            self.currentFeedSource = CBCFeedSourceCoreData;
             [self.tableView reloadData];
             break;
             
         case CBCFeedSourceMedable:
-            self.currentFeedSource = CBCFeedSourceMedable;
             [self updateMedableFeed];
             break;
             
         default:
+            NSLog(@"Invalid feed source!");
             break;
     }
 }
