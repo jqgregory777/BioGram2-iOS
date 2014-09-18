@@ -93,7 +93,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="z2H-gV-BAV" kind="push" id="F7l-v9-hz3"/>
+                                            <segue destination="z2H-gV-BAV" kind="push" identifier="goToMedableSettingsSegue" id="F7l-v9-hz3"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -796,21 +796,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
-                                <rect key="frame" x="54" y="227" width="212" height="29"/>
-                                <segments>
-                                    <segment title="Me"/>
-                                    <segment title="Friends"/>
-                                    <segment title="Everyone"/>
-                                </segments>
-                            </segmentedControl>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_biogram-2" translatesAutoresizingMaskIntoConstraints="NO" id="u3P-VY-IkX">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="logo_biogram-2" translatesAutoresizingMaskIntoConstraints="NO" id="u3P-VY-IkX">
                                 <rect key="frame" x="54" y="66" width="212" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="Puf-bg-uPc"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PtP-Or-cTL">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
+                                <rect key="frame" x="54" y="221" width="212" height="29"/>
+                                <segments>
+                                    <segment title="Me"/>
+                                    <segment title="Collective"/>
+                                </segments>
+                            </segmentedControl>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PtP-Or-cTL">
                                 <rect key="frame" x="0.0" y="263" width="320" height="255"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -847,19 +846,46 @@
                                     <outlet property="delegate" destination="Z6i-6r-adS" id="fAU-id-GwD"/>
                                 </connections>
                             </tableView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo_medable" translatesAutoresizingMaskIntoConstraints="NO" id="dA7-fQ-yUG">
-                                <rect key="frame" x="281" y="75" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PlN-lC-s3P">
+                                <rect key="frame" x="271" y="220" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                                <state key="normal" backgroundImage="logo_medable">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N4q-NS-rBR">
+                                <rect key="frame" x="272" y="221" width="29" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="goToMedableTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="uli-pJ-dVm"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6t-IA-ZC2">
+                                <rect key="frame" x="54" y="220" width="246" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" backgroundImage="logo_medable_full">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="medableInfoTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="bS2-HN-YRc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="pg4-7B-00C">
+                                <rect key="frame" x="20" y="72" width="82" height="51"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="Reset to Trial Mode"/>
+                                <connections>
+                                    <action selector="resetTrialModeTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="i91-4f-Asr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="u3P-VY-IkX" firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="0WJ-vW-juh"/>
-                            <constraint firstItem="PtP-Or-cTL" firstAttribute="top" secondItem="uZQ-D2-eX5" secondAttribute="bottom" constant="8" symbolic="YES" id="4DR-Xd-kcS"/>
                             <constraint firstItem="u3P-VY-IkX" firstAttribute="leading" secondItem="S3u-x7-TZw" secondAttribute="leading" constant="54" id="5yT-lt-Bla"/>
-                            <constraint firstItem="uZQ-D2-eX5" firstAttribute="top" secondItem="u3P-VY-IkX" secondAttribute="bottom" constant="1" id="PgF-fS-f5J"/>
-                            <constraint firstItem="PtP-Or-cTL" firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="gAZ-VB-jYe"/>
-                            <constraint firstAttribute="centerX" secondItem="uZQ-D2-eX5" secondAttribute="centerX" id="nSN-R5-E4g"/>
                             <constraint firstItem="PtP-Or-cTL" firstAttribute="leading" secondItem="S3u-x7-TZw" secondAttribute="leading" id="ofg-mb-kqx"/>
                             <constraint firstItem="2fj-rs-q9k" firstAttribute="top" secondItem="PtP-Or-cTL" secondAttribute="bottom" constant="1" id="zHp-rW-pY8"/>
                         </constraints>
@@ -873,7 +899,11 @@
                     </navigationItem>
                     <connections>
                         <outlet property="editButton" destination="6AN-4Q-orO" id="NUX-lF-MnF"/>
-                        <outlet property="medableLoggedInImgView" destination="dA7-fQ-yUG" id="RzR-G7-dNn"/>
+                        <outlet property="feedFilterControl" destination="uZQ-D2-eX5" id="c8Q-wF-Ug9"/>
+                        <outlet property="goToMedableButton" destination="N4q-NS-rBR" id="uTe-eg-yWg"/>
+                        <outlet property="medableInfoButton" destination="P6t-IA-ZC2" id="4A9-6f-h6Q"/>
+                        <outlet property="medableLoggedInButton" destination="PlN-lC-s3P" id="Ibr-KQ-StN"/>
+                        <outlet property="resetTrialModeButton" destination="pg4-7B-00C" id="gRG-1Y-zae"/>
                         <outlet property="tableView" destination="PtP-Or-cTL" id="nGX-Z4-xDP"/>
                     </connections>
                 </viewController>

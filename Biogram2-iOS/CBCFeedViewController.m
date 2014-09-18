@@ -16,8 +16,7 @@
 typedef enum : NSInteger
 {
     CBCFeedFilterMe = 0,
-    CBCFeedFilterFriends,
-    CBCFeedFilterEveryone
+    CBCFeedFilterCollective
 } CBCFeedFilter;
 
 typedef enum : NSInteger
@@ -30,10 +29,12 @@ typedef enum : NSInteger
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
-@property (weak, nonatomic) IBOutlet UIImageView *medableLoggedInImgView;
+@property (weak, nonatomic) IBOutlet UIButton *medableLoggedInButton;
+@property (weak, nonatomic) IBOutlet UIButton *goToMedableButton;
+@property (weak, nonatomic) IBOutlet UIButton *medableInfoButton;
+@property (weak, nonatomic) IBOutlet UIButton *resetTrialModeButton;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
-@property (strong, nonatomic) IBOutlet UISegmentedControl *feedSourceControl;
 
 @property (assign, nonatomic) CBCFeedFilter currentFeedFilter;
 @property (assign, nonatomic) CBCFeedSource currentFeedSource;
@@ -42,6 +43,9 @@ typedef enum : NSInteger
 
 - (IBAction)feedFilterChanged:(id)sender;
 - (IBAction)feedSourceChanged:(id)sender;
+- (IBAction)medableInfoTouched:(id)sender;
+- (IBAction)goToMedableTouched:(id)sender;
+- (IBAction)resetTrialModeTouched:(id)sender;
 
 @end
 
@@ -63,6 +67,17 @@ typedef enum : NSInteger
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+#ifdef DEBUG
+    self.resetTrialModeButton.enabled = YES;
+    self.resetTrialModeButton.hidden = NO;
+    self.resetTrialModeButton.userInteractionEnabled = YES;
+#else
+    self.resetTrialModeButton.enabled = NO;
+    self.resetTrialModeButton.hidden = YES;
+    self.resetTrialModeButton.userInteractionEnabled = NO;
+#endif
+    
     [self updateEditButton];
     [self updateMedableLoggedIn];
     
@@ -73,7 +88,6 @@ typedef enum : NSInteger
     self.currentFeedSource = CBCFeedSourceMedable;
     
     self.feedFilterControl.selectedSegmentIndex = self.currentFeedFilter;
-    self.feedSourceControl.selectedSegmentIndex = self.currentFeedSource;
     
     // Testing Facebook
 //    FBLoginView *loginView = [[FBLoginView alloc] init];
@@ -103,8 +117,21 @@ typedef enum : NSInteger
 
 - (void)updateMedableLoggedIn
 {
+    BOOL inTrialMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"InTrialMode"];
+    
     BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
-    self.medableLoggedInImgView.hidden = !loggedIn;
+    self.medableLoggedInButton.enabled = loggedIn;
+    [self.feedFilterControl setEnabled:loggedIn forSegmentAtIndex:CBCFeedFilterCollective];
+    
+    // when in trial mode, the medableInfoButton brings up info on medable
+    // when in full medable mode, the goToMedableButton takes the user directly
+    // to the Medable settings page
+    self.goToMedableButton.userInteractionEnabled = !inTrialMode;
+    self.medableInfoButton.userInteractionEnabled = inTrialMode;
+
+#ifdef DEBUG
+    self.resetTrialModeButton.enabled = !inTrialMode;
+#endif
 
     [self updateMedableFeed];
 }
@@ -477,33 +504,44 @@ typedef enum : NSInteger
     }
 }
 
+- (IBAction)medableInfoTouched:(id)sender
+{
+    NSLog(@"medableInfoTouched:");
+}
+
+- (IBAction)resetTrialModeTouched:(id)sender
+{
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"InTrialMode"];
+    [self updateMedableLoggedIn];
+}
+
+- (IBAction)goToMedableTouched:(id)sender
+{
+    NSLog(@"goToMedableTouched:");
+
+    // go to settings tab
+    self.tabBarController.selectedIndex = 2;
+
+    // go to medable settings page
+    UINavigationController * settingsNavControl = self.tabBarController.viewControllers[2];
+    UIViewController * settingsControl = settingsNavControl.childViewControllers[0];
+    if (![settingsNavControl.visibleViewController.restorationIdentifier isEqualToString:@"medableMainTableViewController"])
+    {
+        [settingsControl performSegueWithIdentifier:@"goToMedableSettingsSegue" sender:self];
+
+    }
+}
 
 #pragma mark - Segmented controls
 
 - (IBAction)feedFilterChanged:(id)sender
 {
-    switch (self.feedFilterControl.selectedSegmentIndex)
-    {
-        case CBCFeedFilterMe:
-            self.currentFeedFilter = CBCFeedFilterMe;
-            break;
-            
-        case CBCFeedFilterFriends:
-            self.currentFeedFilter = CBCFeedFilterFriends;
-            break;
-            
-        case CBCFeedFilterEveryone:
-            self.currentFeedFilter = CBCFeedFilterEveryone;
-            break;
-            
-        default:
-            break;
-    }
+    self.currentFeedFilter = self.feedFilterControl.selectedSegmentIndex;
 }
 
 - (IBAction)feedSourceChanged:(id)sender
 {
-    switch (self.feedSourceControl.selectedSegmentIndex)
+    switch (self.currentFeedSource)
     {
         case CBCFeedSourceCoreData:
             self.currentFeedSource = CBCFeedSourceCoreData;
@@ -529,8 +567,7 @@ typedef enum : NSInteger
     {
         switch (self.currentFeedFilter)
         {
-            case CBCFeedFilterFriends:
-            case CBCFeedFilterEveryone:
+            case CBCFeedFilterCollective:
                 [self listCollectiveFeed];
                 break;
                 

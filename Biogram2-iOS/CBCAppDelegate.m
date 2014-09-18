@@ -58,7 +58,9 @@
     // Install defaults for NSUserDefaults
     NSDictionary * appDefaults = @{ @"CacheMedableLoginEmail" : @YES,
                                     @"CacheMedableLoginPassword" : @NO,
-                                    @"LoggedInToMedable" : @NO };
+                                    @"LoggedInToMedable" : @NO,
+                                    @"InTrialMode" : @YES,
+                                    @"TrialEventCount" : @0 };
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
     
     // Initialize Medable's assets manager
@@ -371,6 +373,12 @@
     BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
     NSLog(@"medableLoginStateDidChange - loggedIn = %s", loggedIn?"YES":"NO");
     [[NSUserDefaults standardUserDefaults] setBool:loggedIn forKey:@"LoggedInToMedable"];
+    
+    if (loggedIn)
+    {
+        // once you've logged in at least once, you're no longer in trial mode
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"InTrialMode"];
+    }
 }
 
 - (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken
