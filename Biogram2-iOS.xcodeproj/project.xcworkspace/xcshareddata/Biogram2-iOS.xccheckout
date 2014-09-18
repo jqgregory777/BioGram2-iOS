@@ -14,7 +14,7 @@
 		<string>https://github.com/jqgregory777/BioGram2-iOS.git</string>
 		<key>313DD5EA117BAD062580C649BB3B6B490DF990E6</key>
 		<string>github.com:jqgregory777/BioGram2-iOS.git</string>
-		<key>D311C289-C273-4B19-8BF5-E28D08AFB011</key>
+		<key>3C4EF12C2569876A3D91E7408C934C5F97EF0A40</key>
 		<string>https://github.com/trinagregory/BioGram-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
@@ -25,7 +25,7 @@
 		<string>../../../BioGram2-iOS</string>
 		<key>313DD5EA117BAD062580C649BB3B6B490DF990E6</key>
 		<string>../..</string>
-		<key>D311C289-C273-4B19-8BF5-E28D08AFB011</key>
+		<key>3C4EF12C2569876A3D91E7408C934C5F97EF0A40</key>
 		<string>../../../BioGram-iOS</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -48,7 +48,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D311C289-C273-4B19-8BF5-E28D08AFB011</string>
+			<string>3C4EF12C2569876A3D91E7408C934C5F97EF0A40</string>
 			<key>IDESourceControlWCCName</key>
 			<string>BioGram-iOS</string>
 		</dict>
