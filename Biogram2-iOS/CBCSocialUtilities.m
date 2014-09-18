@@ -196,24 +196,25 @@ typedef NSInteger SocialServiceID;
     {
         NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
         NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
-//        UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
 
         // OLD WAY
-//        self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-//        [self.slComposeViewController addImage:image];
-//        [self.slComposeViewController setInitialText:message];
-//        [self presentViewController:self.slComposeViewController animated:YES completion:NULL];
-        
+        //self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        //[self.slComposeViewController addImage:image];
+        //[self.slComposeViewController setInitialText:message];
+        //[self presentViewController:self.slComposeViewController animated:YES completion:NULL];
+
         // NEW WAY
         
         ACAccountStore *accountStore = [[ACAccountStore alloc] init];
         ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:
                                       ACAccountTypeIdentifierTwitter];
         
+        NSLog(@"TWTR: requesting access");
         [accountStore requestAccessToAccountsWithType:accountType options:nil
                                       completion:
             ^(BOOL granted, NSError *error)
             {
+                NSLog(@"FB: access completion: granted = %s", granted?"YES":"NO");
                 if (granted == YES)
                 {
                     // Get account and communicate with Twitter API
@@ -227,7 +228,7 @@ typedef NSInteger SocialServiceID;
                         NSDictionary *parametersDict = @{@"status": message};
                         
                         NSURL *requestURL = [NSURL
-                                             URLWithString:@"http://api.twitter.com/1/statuses/update.json"];
+                                             URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
                         
                         SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
                                                                     requestMethod:SLRequestMethodPOST
@@ -236,12 +237,17 @@ typedef NSInteger SocialServiceID;
                         
                         postRequest.account = twitterAccount;
                         
+                        NSLog(@"TWTR: sending post request");
                         [postRequest performRequestWithHandler:
                             ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
-                             {
-                                 NSLog(@"Twitter HTTP response: %i", [urlResponse statusCode]);
-                             }
+                            {
+                                NSLog(@"TWTR: post response: %i", [urlResponse statusCode]);
+                            }
                         ];
+                    }
+                    else
+                    {
+                        [CBCAppDelegate showMessage:@"Please configure a Twitter account in Settings." withTitle:@"No Account Found"];
                     }
                 }
             }
@@ -249,11 +255,74 @@ typedef NSInteger SocialServiceID;
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"No Account Found" message:@"Please configure a Twitter account in Settings." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil,nil];
-        alert.alertViewStyle = UIAlertViewStyleDefault;
-        [alert show];
+        [CBCAppDelegate showMessage:@"Please configure a Twitter account in Settings." withTitle:@"No Account Found"];
     }
 }
+
+/*
+//    Use below code to do post image and text without showing ViewContoller . This is called silent Post.
+
++ (void)postToTwitter:(NSDictionary *)dataDict withAccount:(ACAccount *)twitterAccount
+{
+    NSURL *requestURL = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update_with_media.json"];
+    
+    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:requestURL parameters:dataDict];
+    
+    NSData *imageData = UIImagePNGRepresentation([UIImage imageNamed:@"icon@2x.png"]);
+    
+    [request addMultipartData:imageData
+                     withName:@"media[]"
+                         type:@"image/jpeg"
+                     filename:@"image.jpg"];
+    
+    request.account = twitterAccount;
+    
+    [request performRequestWithHandler:
+        ^(NSData *data, NSHTTPURLResponse *response, NSError *error)
+        {
+            if(!error)
+            {
+                NSDictionary *list =[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                
+                if(![list objectForKey:@"errors"]){
+                    
+                    if([list objectForKey:@"error"]!=nil){
+                        
+                        //Delegate For Fail
+                        return;
+                    }
+                }
+            }
+        }
+    ];
+}
+
++ (void) shareOnTwitterWithMessage:(NSString *)message
+{
+    ACAccountStore *twitterAccountStore = [[ACAccountStore alloc]init];
+    ACAccountType *TWaccountType= [twitterAccountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    [twitterAccountStore requestAccessToAccountsWithType:TWaccountType options:nil completion:
+        ^(BOOL granted, NSError *e)
+        {
+             if (granted)
+             {
+                 NSArray *accounts = [twitterAccountStore accountsWithAccountType:TWaccountType];
+                 
+                 ACAccount *twitterAccount = [accounts lastObject];
+                 
+                 NSDictionary *dataDict = @{@"status": message};
+                 
+                 [CBCSocialUtilities postToTwitter:dataDict withAccount:twitterAccount];
+             }
+             else
+             {
+                 return ;
+             }
+         }
+    ];
+}
+*/
 
 #pragma mark - Medable
 

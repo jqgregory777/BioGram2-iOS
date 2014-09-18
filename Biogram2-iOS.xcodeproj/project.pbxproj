@@ -23,6 +23,7 @@
 		541AD57119C21A850083FDD1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 541AD56F19C21A850083FDD1 /* InfoPlist.strings */; };
 		541AD57319C21A850083FDD1 /* Biogram2_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 541AD57219C21A850083FDD1 /* Biogram2_iOSTests.m */; };
 		541AD57D19C21B310083FDD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 541AD57C19C21B310083FDD1 /* Main.storyboard */; };
+		5432134519CA52B300A1E3E5 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5432134419CA52B200A1E3E5 /* Twitter.framework */; };
 		545C5B7319C3874400FC704D /* CBCMedableViewAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545C5B7219C3874400FC704D /* CBCMedableViewAccountController.m */; };
 		545C5B7919C3A00A00FC704D /* EXTPhoneNumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 545C5B7819C3A00A00FC704D /* EXTPhoneNumberFormatter.m */; };
 		545C5B7B19C3E7C200FC704D /* Biogram2_iOSModel.strings in Resources */ = {isa = PBXBuildFile; fileRef = 545C5B7A19C3E7C200FC704D /* Biogram2_iOSModel.strings */; };
@@ -84,6 +85,7 @@
 		541AD57019C21A850083FDD1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		541AD57219C21A850083FDD1 /* Biogram2_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Biogram2_iOSTests.m; sourceTree = "<group>"; };
 		541AD57C19C21B310083FDD1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		5432134419CA52B200A1E3E5 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		545C5B7119C3874400FC704D /* CBCMedableViewAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedableViewAccountController.h; sourceTree = "<group>"; };
 		545C5B7219C3874400FC704D /* CBCMedableViewAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableViewAccountController.m; sourceTree = "<group>"; };
 		545C5B7719C3A00A00FC704D /* EXTPhoneNumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTPhoneNumberFormatter.h; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5432134519CA52B300A1E3E5 /* Twitter.framework in Frameworks */,
 				549727B919C7FAAC00DAF814 /* SystemConfiguration.framework in Frameworks */,
 				549727B719C7F85700DAF814 /* MapKit.framework in Frameworks */,
 				549727B519C7F83300DAF814 /* AdSupport.framework in Frameworks */,
@@ -188,6 +191,7 @@
 		541AD54619C21A840083FDD1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5432134419CA52B200A1E3E5 /* Twitter.framework */,
 				549727B819C7FAAC00DAF814 /* SystemConfiguration.framework */,
 				549727B619C7F85700DAF814 /* MapKit.framework */,
 				549727B419C7F83300DAF814 /* AdSupport.framework */,
