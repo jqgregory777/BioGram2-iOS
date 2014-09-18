@@ -864,6 +864,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="feedFilterChanged:" destination="Z6i-6r-adS" eventType="touchUpInside" id="Oyj-pZ-APu"/>
                                     <action selector="medableInfoTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="bS2-HN-YRc"/>
                                 </connections>
                             </button>

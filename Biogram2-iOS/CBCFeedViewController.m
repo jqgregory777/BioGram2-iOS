@@ -506,15 +506,15 @@ typedef enum : NSInteger
     }
 }
 
-- (IBAction)medableInfoTouched:(id)sender
-{
-    NSLog(@"medableInfoTouched:");
-}
-
 - (IBAction)resetTrialModeTouched:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"InTrialMode"];
     [self updateMedableLoggedIn];
+}
+
+- (IBAction)medableInfoTouched:(id)sender
+{
+    NSLog(@"medableInfoTouched:");
 }
 
 - (IBAction)goToMedableTouched:(id)sender
@@ -539,6 +539,7 @@ typedef enum : NSInteger
 - (IBAction)feedFilterChanged:(id)sender
 {
     self.currentFeedFilter = self.feedFilterControl.selectedSegmentIndex;
+    [self feedSourceDidChange]; // I suppose this is all we need
 }
 
 - (void)feedSourceDidChange

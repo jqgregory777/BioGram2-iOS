@@ -22,24 +22,14 @@
 {
     CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
     
-    if ([appDelegate savePendingHeartRateEvent])
+    if ([[MDAPIClient sharedClient] localUser])
     {
-        // successfully saved to Core Data... now post to Medable
-        // TO DO: CHANGE TO POST TO MEDABLE *ONLY* AND NOT USE CORE DATA AT ALL
-        
-        if ([[MDAPIClient sharedClient] localUser])
-        {
-            [CBCSocialUtilities postToMedable:self.displayedEvent sender:self];
-        }
-        else
-        {
-            // TO DO: user chose not to log in... discard the event
-            [CBCAppDelegate showMessage:@"Unable to post event to Medable." withTitle:@"Medable Failure"];
-        }
+        [CBCSocialUtilities postToMedable:self.displayedEvent sender:self];
     }
     else
     {
-        [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
+        // the user is not logged in, so we must either be in trial mode
+        // or the user should not even be able to create new events
     }
 
     // Also activate the feed view in the tab bar.
