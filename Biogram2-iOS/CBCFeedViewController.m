@@ -136,6 +136,11 @@ typedef enum : NSInteger
 
     self.currentFeedSource = (inTrialMode) ? CBCFeedSourceCoreData : CBCFeedSourceMedable;
     [self feedSourceDidChange];
+    
+    if (!inTrialMode)
+    {
+        self.fetchedResultsController.delegate = nil;
+    }
 }
 
 - (void)updateEditButton
@@ -359,6 +364,8 @@ typedef enum : NSInteger
                                    localizedStringFromDate:post.created
                                    dateStyle:NSDateFormatterMediumStyle
                                    timeStyle:NSDateFormatterShortStyle];
+            
+            cell.imageView.image = [UIImage imageNamed:@"tabbar_heartrate"]; // cells are reused so it could have the image of another post, remove it
             
             [post postPicsWithUpdateBlock:^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
              {
