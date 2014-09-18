@@ -86,7 +86,6 @@ typedef enum : NSInteger
     [defaultCenter addObserver:self selector:@selector(updateMedableLoggedIn) name:kMDNotificationUserDidLogin object:nil];
     
     self.currentFeedFilter = CBCFeedFilterMe;
-    self.currentFeedSource = CBCFeedSourceMedable;
     
     self.feedFilterControl.selectedSegmentIndex = self.currentFeedFilter;
     
