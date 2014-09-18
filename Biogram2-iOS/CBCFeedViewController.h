@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CBCFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITabBarDelegate>
+@interface CBCFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITabBarDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 

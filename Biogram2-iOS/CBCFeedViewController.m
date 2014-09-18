@@ -515,6 +515,28 @@ typedef enum : NSInteger
 - (IBAction)medableInfoTouched:(id)sender
 {
     NSLog(@"medableInfoTouched:");
+
+    NSString * message = [NSString stringWithCString:
+        "Secure your heart rate data with Medable.\n"
+        "Create an account or log in to unlock all\n"
+        "of the features of Biogram.\n"
+        "https://www.medable.com"
+        encoding:NSUTF8StringEncoding];
+    
+    UIAlertView* alert = [[UIAlertView alloc]
+                          initWithTitle:@"Medable"
+                          message:message
+                          delegate:self
+                          cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                          otherButtonTitles:nil];
+    [alert show];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self goToMedableTouched:self];
 }
 
 - (IBAction)goToMedableTouched:(id)sender

@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Biogram2-iOS/CBCFeedViewController.m"
-            timestampString = "432761661.20794"
+            timestampString = "432763741.966419"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "605"
-            endingLineNumber = "605"
+            startingLineNumber = "627"
+            endingLineNumber = "627"
             landmarkName = "-listFeed"
             landmarkType = "5">
          </BreakpointContent>
