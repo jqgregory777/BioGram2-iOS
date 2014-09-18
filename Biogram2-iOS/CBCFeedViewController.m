@@ -39,7 +39,7 @@ typedef enum : NSInteger
 @property (assign, nonatomic) CBCFeedFilter currentFeedFilter;
 @property (assign, nonatomic) CBCFeedSource currentFeedSource;
 
-@property (nonatomic, strong) NSArray* data;
+@property (nonatomic, strong) NSMutableArray* data;
 
 - (IBAction)feedFilterChanged:(id)sender;
 - (IBAction)medableInfoTouched:(id)sender;
@@ -113,6 +113,16 @@ typedef enum : NSInteger
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (NSMutableArray*)data
+{
+    if (!_data)
+    {
+        _data = [NSMutableArray array];
+    }
+    
+    return _data;
 }
 
 - (void)updateMedableLoggedIn
@@ -459,6 +469,8 @@ typedef enum : NSInteger
         }
         else if (self.currentFeedSource == CBCFeedSourceMedable)
         {
+            __weak typeof (self) wSelf = self;
+            
             // Delete from Medable
             MDPost* post = [self.data objectAtIndex:indexPath.row];
             
@@ -482,6 +494,10 @@ typedef enum : NSInteger
                      if (fault)
                      {
                          [[CBCAppDelegate appDelegate] displayAlertWithMedableFault:fault];
+                     }
+                     else
+                     {
+                         [wSelf.data removeObject:post];
                      }
                  }];
             }
@@ -600,6 +616,11 @@ typedef enum : NSInteger
 
 #pragma mark - Medable feed
 
+- (void)addNewPost:(MDPost*)post
+{
+    [self.data addObject:post];
+}
+
 - (void)updateMedableFeed
 {
     if (self.currentFeedSource == CBCFeedSourceMedable)
@@ -648,7 +669,9 @@ typedef enum : NSInteger
              {
                  if (!fault)
                  {
-                     wSelf.data = feed;
+                     [wSelf.data removeAllObjects];
+                     [wSelf.data addObjectsFromArray:feed];
+                     
                      [wSelf.tableView reloadData];
                  }
              }];
