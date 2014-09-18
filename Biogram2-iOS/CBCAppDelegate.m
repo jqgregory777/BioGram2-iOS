@@ -356,19 +356,14 @@
 
     [[MDAPIClient sharedClient]
      loginStatusWithParameters:[MDAPIParameterFactory parametersWithExpand]
-                      callback:
-        ^(MDAccount* account, MDFault* fault)
-        {
-            if (fault)
-            {
-                NSLog(@"wtf");
-            }
-            if (account == nil)
-            {
-                [wSelf showMedableLoginDialog];
-            }
-        }
-    ];
+     callback:
+     ^(MDAccount* account, MDFault* fault)
+     {
+         if (account == nil)
+         {
+             [wSelf showMedableLoginDialog];
+         }
+     }];
 }
 
 - (void)medableLoginStateDidChange
