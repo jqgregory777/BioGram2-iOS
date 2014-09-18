@@ -401,48 +401,52 @@ typedef enum : NSInteger
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         // Delete from CoreData
-        
-        // Delete the row from the data source
-        //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-        CBCHeartRateEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-        [context deleteObject:event];
-        
-        NSError *error = nil;
-        if (![context save:&error])
+        if (self.currentFeedSource == CBCFeedSourceCoreData)
         {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            // Delete the row from the data source
+            //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+            CBCHeartRateEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+            
+            [context deleteObject:event];
+            
+            NSError *error = nil;
+            if (![context save:&error])
+            {
+                // Replace this implementation with code to handle the error appropriately.
+                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
         }
-        
-        // Delete from Medable
-        MDPost* post = [self.data objectAtIndex:indexPath.row];
-        
-        NSString* creatorId = nil;
-        if ([post.creator isExpanded])
+        else if (self.currentFeedSource == CBCFeedSourceMedable)
         {
-            creatorId = [post.creator.value objectForKey:kIDKey];
-        }
-        else
-        {
-            creatorId = post.creator.value;
-        }
-        
-        if ([creatorId isEqualToString:[[MDAPIClient sharedClient] localUser].Id])
-        {
-            [[MDAPIClient sharedClient]
-             deletePostWithId:post.Id
-             commentId:nil
-             callback:^(MDFault *fault)
-             {
-                 if (fault)
+            // Delete from Medable
+            MDPost* post = [self.data objectAtIndex:indexPath.row];
+            
+            NSString* creatorId = nil;
+            if ([post.creator isExpanded])
+            {
+                creatorId = [post.creator.value objectForKey:kIDKey];
+            }
+            else
+            {
+                creatorId = post.creator.value;
+            }
+            
+            if ([creatorId isEqualToString:[[MDAPIClient sharedClient] localUser].Id])
+            {
+                [[MDAPIClient sharedClient]
+                 deletePostWithId:post.Id
+                 commentId:nil
+                 callback:^(MDFault *fault)
                  {
-                     [[CBCAppDelegate appDelegate] displayAlertWithMedableFault:fault];
-                 }
-             }];
+                     if (fault)
+                     {
+                         [[CBCAppDelegate appDelegate] displayAlertWithMedableFault:fault];
+                     }
+                 }];
+            }
         }
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
