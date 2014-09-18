@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSString* password;
 @property (nonatomic, strong) NSString* verificationToken;
 
+@property (nonatomic, strong) UIAlertView* medableLoginDialog;
+
 @end
 
 @implementation CBCAppDelegate
@@ -341,6 +343,11 @@
         default:
             break;
     }
+    
+    if (alertView == self.medableLoginDialog)
+    {
+        self.medableLoginDialog = nil;
+    }
 }
 
 
@@ -441,38 +448,41 @@
 
 - (void)showMedableLoginDialog
 {
-    UIAlertView* loginAlertView = [[UIAlertView alloc]
-                                   initWithTitle:NSLocalizedString(@"Medable Login", nil)
-                                   message:NSLocalizedString(@"Enter your credentials", nil)
-                                   delegate:self
-                                   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                   otherButtonTitles:NSLocalizedString(@"Login", nil), nil];
-    
-    loginAlertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginEmail"])
+    if (!self.medableLoginDialog)
     {
-        // the user has requested that we cache the login information for convenience
-        // see if we have any cached info, and auto-login if so
-        NSString * email = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginEmail"];
-        if (email != nil)
+        self.medableLoginDialog = [[UIAlertView alloc]
+                                       initWithTitle:NSLocalizedString(@"Medable Login", nil)
+                                       message:NSLocalizedString(@"Enter your credentials", nil)
+                                       delegate:self
+                                       cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                       otherButtonTitles:NSLocalizedString(@"Login", nil), nil];
+        
+        self.medableLoginDialog.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginEmail"])
         {
-            [loginAlertView textFieldAtIndex:0].text = email;
-            [[loginAlertView textFieldAtIndex:1] becomeFirstResponder]; // sadly this doesn't work, need to do it in the UIAlertView's viewWillAppear: method...
+            // the user has requested that we cache the login information for convenience
+            // see if we have any cached info, and auto-login if so
+            NSString * email = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginEmail"];
+            if (email != nil)
+            {
+                [self.medableLoginDialog textFieldAtIndex:0].text = email;
+                [[self.medableLoginDialog textFieldAtIndex:1] becomeFirstResponder]; // sadly this doesn't work, need to do it in the UIAlertView's viewWillAppear: method...
+            }
         }
-    }
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginPassword"])
-    {
-        // the user has requested that we cache the login information for convenience
-        // see if we have any cached info, and auto-login if so
-        NSString * password = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
-        if (password != nil)
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginPassword"])
         {
-            [loginAlertView textFieldAtIndex:1].text = password;
+            // the user has requested that we cache the login information for convenience
+            // see if we have any cached info, and auto-login if so
+            NSString * password = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
+            if (password != nil)
+            {
+                [self.medableLoginDialog textFieldAtIndex:1].text = password;
+            }
         }
+        
+        [self.medableLoginDialog show];
     }
-    
-    [loginAlertView show];
 }
 
 - (void)displayAlertWithMedableFault:(MDFault*)fault
