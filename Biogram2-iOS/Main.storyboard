@@ -56,28 +56,8 @@
                                             <segue destination="LyE-Tp-Rki" kind="push" id="HUn-tm-0ib"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="nP8-6H-XKl" style="IBUITableViewCellStyleDefault" id="8eF-hD-W1u">
-                                        <rect key="frame" x="0.0" y="108" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8eF-hD-W1u" id="EMu-dk-zc7">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Preferences" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nP8-6H-XKl">
-                                                    <rect key="frame" x="15" y="0.0" width="270" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="4eN-wD-ynh" kind="push" id="Ff8-tr-8dZ"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="hBl-ZY-urE" style="IBUITableViewCellStyleDefault" id="TkJ-0g-ra7">
-                                        <rect key="frame" x="0.0" y="152" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="108" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TkJ-0g-ra7" id="p92-X0-WkI">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -353,7 +333,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o1W-s2-xsa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2549" y="3606"/>
+            <point key="canvasLocation" x="1908" y="3560"/>
         </scene>
         <!--Medable View Account Controller - Account-->
         <scene sceneID="ugq-BD-9Qj">
@@ -532,7 +512,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wqr-SW-NJL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="B1D-Ka-GjN" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2549" y="2945"/>
+            <point key="canvasLocation" x="1908" y="2899"/>
         </scene>
         <!--Medable Settings Controller - Settings-->
         <scene sceneID="3jT-Ko-MCr">
@@ -622,49 +602,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gtI-l9-nUM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2549" y="2272"/>
-        </scene>
-        <!--Table View Controller - Preferences-->
-        <scene sceneID="WRz-ka-FOM">
-            <objects>
-                <tableViewController id="4eN-wD-ynh" customClass="CBCTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Drv-Ps-fs3">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <sections>
-                            <tableViewSection id="cXl-tJ-V1W">
-                                <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="UG0-Yb-oQJ" style="IBUITableViewCellStyleDefault" id="ClF-xx-Kih">
-                                        <rect key="frame" x="0.0" y="64" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ClF-xx-Kih" id="H61-Oe-9hl">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="None yet" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UG0-Yb-oQJ">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
-                        <connections>
-                            <outlet property="dataSource" destination="4eN-wD-ynh" id="fRi-j2-m8Q"/>
-                            <outlet property="delegate" destination="4eN-wD-ynh" id="fDj-hy-oM8"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Preferences" id="qwv-JO-Lxs"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3Mi-4Z-gI8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1712" y="2581"/>
+            <point key="canvasLocation" x="1908" y="2226"/>
         </scene>
         <!--Medable Main Table View Controller - Medable-->
         <scene sceneID="MIy-YY-k3S">
@@ -783,7 +721,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yV0-cX-rnv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2087" y="2945"/>
+            <point key="canvasLocation" x="1348" y="2893"/>
         </scene>
         <!--Table View Controller - About-->
         <scene sceneID="pNp-pn-iJn">
