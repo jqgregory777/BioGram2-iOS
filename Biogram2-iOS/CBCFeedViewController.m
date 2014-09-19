@@ -12,20 +12,8 @@
 #import "CBCImageUtilities.h"
 #import "CBCDetailViewController.h"
 #import "CBCSocialUtilities.h"
+#import "CBCHeartRateFeed.h"
 
-
-typedef enum : NSInteger
-{
-    CBCFeedFilterPrivate = 0,
-    CBCFeedFilterPublic,
-    CBCFeedFilterCollective
-} CBCFeedFilter;
-
-typedef enum : NSInteger
-{
-    CBCFeedSourceCoreData = 0,
-    CBCFeedSourceMedable
-} CBCFeedSource;
 
 @interface CBCFeedViewController ()
 
@@ -37,9 +25,6 @@ typedef enum : NSInteger
 @property (weak, nonatomic) IBOutlet UIButton *resetTrialModeButton;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
-
-@property (assign, nonatomic) CBCFeedFilter currentFeedFilter;
-@property (assign, nonatomic) CBCFeedSource currentFeedSource;
 
 @property (nonatomic, strong) NSMutableArray* data;
 
@@ -86,11 +71,12 @@ typedef enum : NSInteger
     
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(updateMedableLoggedIn) name:kMDNotificationUserDidLogin object:nil];
+    [defaultCenter addObserver:self selector:@selector(updateMedableLoggedIn) name:kMDNotificationUserDidLogout object:nil];
     [defaultCenter addObserver:self selector:@selector(feedSourceDidChange) name:kCBCSocialPostDidComplete object:nil];
     
-    self.currentFeedFilter = CBCFeedFilterPrivate;
+    CBCHeartRateFeed.currentFeedFilter = CBCFeedFilterPrivate;
     
-    self.feedFilterControl.selectedSegmentIndex = self.currentFeedFilter;
+    self.feedFilterControl.selectedSegmentIndex = CBCHeartRateFeed.currentFeedFilter;
     
     // Testing Facebook
 //    FBLoginView *loginView = [[FBLoginView alloc] init];
@@ -123,12 +109,14 @@ typedef enum : NSInteger
 - (void)updateMedableLoggedIn
 {
     BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
-    BOOL inTrialMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"InTrialMode"];
-    
-    self.currentFeedSource = (inTrialMode) ? CBCFeedSourceCoreData : CBCFeedSourceMedable;
-    
+    BOOL inTrialMode = !loggedIn;
+
     self.medableLoggedInButton.enabled = loggedIn;
-    [self.feedFilterControl setEnabled:loggedIn forSegmentAtIndex:CBCFeedFilterCollective];
+
+    if (inTrialMode)
+        self.feedFilterControl.selectedSegmentIndex = CBCFeedFilterPrivate;
+    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedFilterPublic];
+    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedFilterCollective];
     
     // when in trial mode, the medableInfoButton brings up info on medable
     // when in full medable mode, the goToMedableButton takes the user directly
@@ -140,9 +128,9 @@ typedef enum : NSInteger
     self.medableInfoButton.hidden = !inTrialMode;
 
 #ifdef DEBUG
-    self.resetTrialModeButton.enabled = !inTrialMode;
+    self.resetTrialModeButton.enabled = ([[NSUserDefaults standardUserDefaults] integerForKey:@"TrialEventCount"] != 0);
 #endif
-    
+
     [self feedSourceDidChange];
 }
 
@@ -150,7 +138,7 @@ typedef enum : NSInteger
 {
     NSUInteger numberOfRows;
     
-    switch (self.currentFeedSource)
+    switch (CBCHeartRateFeed.currentFeedSource)
     {
         case CBCFeedSourceMedable:
             numberOfRows = [self.data count];
@@ -306,7 +294,7 @@ typedef enum : NSInteger
 {
     NSInteger numberOfSections = 0;
     
-    switch (self.currentFeedSource)
+    switch (CBCHeartRateFeed.currentFeedSource)
     {
         case CBCFeedSourceMedable:
             numberOfSections = 1;
@@ -329,7 +317,7 @@ typedef enum : NSInteger
     
     NSInteger numberOfRows = 0;
     
-    switch (self.currentFeedSource)
+    switch (CBCHeartRateFeed.currentFeedSource)
     {
         case CBCFeedSourceMedable:
             numberOfRows = [self.data count];
@@ -358,7 +346,7 @@ typedef enum : NSInteger
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.currentFeedSource == CBCFeedSourceMedable)
+    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
     {
         MDPost* post = [self.data objectAtIndex:indexPath.row];
         
@@ -396,7 +384,7 @@ typedef enum : NSInteger
             
         }
     }
-    else if (self.currentFeedSource == CBCFeedSourceCoreData)
+    else if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
     {
         CBCHeartRateEvent* event = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
@@ -454,7 +442,7 @@ typedef enum : NSInteger
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         // Delete from CoreData
-        if (self.currentFeedSource == CBCFeedSourceCoreData)
+        if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
         {
             // Delete the row from the data source
             //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -472,7 +460,7 @@ typedef enum : NSInteger
                 abort();
             }
         }
-        else if (self.currentFeedSource == CBCFeedSourceMedable)
+        else if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
         {
             __weak typeof (self) wSelf = self;
             
@@ -523,13 +511,13 @@ typedef enum : NSInteger
     CBCDetailViewController *detailController = [segue destinationViewController];
     NSIndexPath* indexPath = [self.tableView indexPathForSelectedRow];
 
-    if (self.currentFeedSource == CBCFeedSourceCoreData)
+    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
     {
         CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
         detailController.displayedEvent = event;
         detailController.displayedPost = nil;
     }
-    else if (self.currentFeedSource == CBCFeedSourceMedable)
+    else if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
     {
         MDPost* selectedPost = [self.data objectAtIndex:indexPath.row];
         detailController.displayedPost = selectedPost;
@@ -541,17 +529,10 @@ typedef enum : NSInteger
 
 - (IBAction)resetTrialModeTouched:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"InTrialMode"];
-
-    BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
-    if (loggedIn)
-    {
-        [[CBCAppDelegate appDelegate] logoutMedable];
-    }
-    else
-    {
-        [self updateMedableLoggedIn];
-    }
+#ifdef DEBUG
+    // reset the number of events created to extend the trial period
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"TrialEventCount"];
+#endif
 }
 
 - (IBAction)medableInfoTouched:(id)sender
@@ -608,13 +589,13 @@ typedef enum : NSInteger
 
 - (IBAction)feedFilterChanged:(id)sender
 {
-    self.currentFeedFilter = self.feedFilterControl.selectedSegmentIndex;
+    CBCHeartRateFeed.currentFeedFilter = self.feedFilterControl.selectedSegmentIndex;
     [self feedSourceDidChange]; // I suppose this is all we need
 }
 
 - (void)feedSourceDidChange
 {
-    switch (self.currentFeedSource)
+    switch (CBCHeartRateFeed.currentFeedSource)
     {
         case CBCFeedSourceCoreData:
             self.fetchedResultsController.delegate = self;
@@ -643,9 +624,9 @@ typedef enum : NSInteger
 
 - (void)updateMedableFeed
 {
-    if (self.currentFeedSource == CBCFeedSourceMedable)
+    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
     {
-        switch (self.currentFeedFilter)
+        switch (CBCHeartRateFeed.currentFeedFilter)
         {
             case CBCFeedFilterPrivate:
                 [self listFeedWithPublic:NO];
@@ -667,7 +648,7 @@ typedef enum : NSInteger
 
 - (void)listFeedWithPublic:(BOOL)publicFeed
 {
-    if (self.currentFeedSource == CBCFeedSourceMedable)
+    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
     {
         __weak typeof (self) wSelf = self;
         
@@ -707,7 +688,7 @@ typedef enum : NSInteger
 
 - (void)listCollectiveFeed
 {
-    if (self.currentFeedSource == CBCFeedSourceMedable)
+    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
     {
         __weak typeof (self) wSelf = self;
         

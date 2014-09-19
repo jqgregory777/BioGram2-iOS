@@ -7,7 +7,8 @@
 //
 
 #import "CBCAppDelegate.h"
-#import "CBCFeedViewController.h"
+//#import "CBCFeedViewController.h"
+#import "CBCHeartRateFeed.h"
 #import "CBCSocialUtilities.h"
 
 #import <iOSMedableSDK/AFNetworkActivityLogger.h>
@@ -61,10 +62,9 @@
     NSDictionary * appDefaults = @{ @"CacheMedableLoginEmail" : @YES,
                                     @"CacheMedableLoginPassword" : @NO,
                                     @"LoggedInToMedable" : @NO,
-                                    @"InTrialMode" : @YES,
                                     @"TrialEventCount" : @0 };
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
-    
+
     // Initialize Medable's assets manager
     [MDAssetManager sharedManager];
 
@@ -266,8 +266,7 @@
 {
     if (heartRateEvent != nil)
     {
-        BOOL inTrialMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"InTrialMode"];
-        if (inTrialMode)
+        if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
         {
             NSManagedObjectContext *context = [self managedObjectContext];
             NSError *error = nil;
@@ -299,8 +298,7 @@
     
     if (self.pendingHeartRateEvent != nil)
     {
-        BOOL inTrialMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"InTrialMode"];
-        if (inTrialMode)
+        if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
         {
             // in Core Data (Trial mode), update and save are the same thing
             success = [self updateHeartRateEvent:self.pendingHeartRateEvent];
@@ -397,12 +395,6 @@
     
     NSLog(@"medableLoginStateDidChange - loggedIn = %s", loggedIn?"YES":"NO");
     [[NSUserDefaults standardUserDefaults] setBool:loggedIn forKey:@"LoggedInToMedable"];
-    
-    if (loggedIn)
-    {
-        // once you've logged in at least once, you're no longer in trial mode
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"InTrialMode"];
-    }
 }
 
 - (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken
