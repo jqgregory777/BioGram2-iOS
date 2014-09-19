@@ -7,7 +7,6 @@
 //
 
 #import "CBCAppDelegate.h"
-//#import "CBCFeedViewController.h"
 #import "CBCHeartRateFeed.h"
 #import "CBCSocialUtilities.h"
 
@@ -306,7 +305,7 @@
         else
         {
             // in Medable, to save is to post an event to the user's feed
-            [CBCSocialUtilities postToMedable:self.pendingHeartRateEvent postToPublicFeed:YES sender:self];
+            [CBCSocialUtilities postToMedable:self.pendingHeartRateEvent postToPublicFeed:YES];
             success = YES;
         }
         
@@ -370,8 +369,8 @@
 - (void)checkForValidMedableSession
 {
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(medableLoginStateDidChange) name:kMDNotificationUserDidLogin object:nil];
-    [defaultCenter addObserver:self selector:@selector(medableLoginStateDidChange) name:kMDNotificationUserDidLogout object:nil];
+    [defaultCenter addObserver:self selector:@selector(medableUserDidLogIn) name:kMDNotificationUserDidLogin object:nil];
+    [defaultCenter addObserver:self selector:@selector(medableUserDidLogOut) name:kMDNotificationUserDidLogout object:nil];
 
     // Autologin if we already have a token
 
@@ -389,11 +388,46 @@
      }];
 }
 
-- (void)medableLoginStateDidChange
+- (void)medableUserDidLogIn
+{
+    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+    BOOL loggedIn = [appDelegate isLoggedInToMedable];
+    
+    NSLog(@"medableUserDidLogIn - loggedIn = %s", loggedIn?"YES":"NO");
+    [[NSUserDefaults standardUserDefaults] setBool:loggedIn forKey:@"LoggedInToMedable"];
+    
+    // if there are any saved events in the local Core Data store, automatically post them
+    // to the user's Medable feed
+    NSArray * coreDataEvents = [CBCHeartRateFeed fetchHeartRateEventsFromCoreData];
+    if (coreDataEvents != nil && coreDataEvents.count != 0)
+    {
+        int __block count = coreDataEvents.count;
+        
+        for (CBCHeartRateEvent * heartRateEvent in coreDataEvents)
+        {
+            [CBCSocialUtilities postToMedable:heartRateEvent postToPublicFeed:YES completion:
+                ^(MDPost *post, MDFault *fault)
+                {
+                    NSLog(@"BATCH POST: decrementing count = %d", count);
+                    --count;
+                    if (count == 0)
+                    {
+                        NSLog(@"BATCH POST: DONE: count = %d", count);
+                        [CBCHeartRateFeed deleteHeartRateEventsFromCoreData:coreDataEvents];
+
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kCBCSocialPostDidComplete object:appDelegate];
+                    }
+                }
+            ];
+        }
+    }
+}
+
+- (void)medableUserDidLogOut
 {
     BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
     
-    NSLog(@"medableLoginStateDidChange - loggedIn = %s", loggedIn?"YES":"NO");
+    NSLog(@"medableUserDidLogOut - loggedIn = %s", loggedIn?"YES":"NO");
     [[NSUserDefaults standardUserDefaults] setBool:loggedIn forKey:@"LoggedInToMedable"];
 }
 

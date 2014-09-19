@@ -8,11 +8,11 @@
 
 #import "CBCFeedViewController.h"
 #import "CBCAppDelegate.h"
+#import "CBCHeartRateFeed.h"
 #import "CBCHeartRateEvent.h"
 #import "CBCImageUtilities.h"
 #import "CBCDetailViewController.h"
 #import "CBCSocialUtilities.h"
-#import "CBCHeartRateFeed.h"
 
 
 @interface CBCFeedViewController ()

@@ -1260,7 +1260,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="photo_template" translatesAutoresizingMaskIntoConstraints="NO" id="siU-y7-OHz">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="photo_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="siU-y7-OHz">
                                 <rect key="frame" x="11" y="102" width="300" height="300"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time Stamp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vy9-lP-PfJ">
@@ -1506,8 +1506,7 @@
         <image name="logo_medable" width="60" height="60"/>
         <image name="logo_medable_full" width="255" height="83"/>
         <image name="logo_twitter" width="60" height="60"/>
-        <image name="photo_placeholder" width="174" height="174"/>
-        <image name="photo_template" width="174" height="171"/>
+        <image name="photo_placeholder" width="200" height="200"/>
         <image name="tabbar_feed" width="30" height="30"/>
         <image name="tabbar_heartrate" width="30" height="30"/>
         <image name="tabbar_settings" width="30" height="30"/>

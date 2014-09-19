@@ -32,4 +32,9 @@ typedef enum : NSInteger
 + (CBCFeedFilter)currentFeedFilter;
 + (void)setCurrentFeedFilter:(CBCFeedFilter)filter;
 
+#pragma mark - Core Data
+
++ (NSArray *)fetchHeartRateEventsFromCoreData;
++ (void)deleteHeartRateEventsFromCoreData:(NSArray *)events;
+
 @end

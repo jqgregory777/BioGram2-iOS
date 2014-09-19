@@ -18,6 +18,16 @@
 @interface CBCSocialUtilities : NSObject
 
 #pragma mark - Notifications
+
+enum ESocialServiceID
+{
+    SocialServiceIDFacebook,
+    SocialServiceIDTwitter,
+    SocialServiceIDMedable,
+    SocialServiceIDCount
+};
+typedef NSInteger SocialServiceID;
+
 extern NSString* const kCBCSocialPostDidComplete;
 
 #pragma mark - Facebook
@@ -30,6 +40,7 @@ extern NSString* const kCBCSocialPostDidComplete;
 
 #pragma mark - Medable
 
-+ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent postToPublicFeed:(BOOL)postToPublicFeed sender:(id)sender;
++ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent postToPublicFeed:(BOOL)postToPublicFeed completion:(void (^)(MDPost* post, MDFault* fault))finishBlock;
++ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent postToPublicFeed:(BOOL)postToPublicFeed;
 
 @end

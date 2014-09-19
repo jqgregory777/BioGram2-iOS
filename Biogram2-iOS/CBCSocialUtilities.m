@@ -18,16 +18,6 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
 @implementation CBCSocialUtilities
 
-enum ESocialServiceID
-{
-    SocialServiceIDFacebook,
-    SocialServiceIDTwitter,
-    SocialServiceIDMedable,
-
-    SocialServiceIDCount
-};
-typedef NSInteger SocialServiceID;
-
 + (void)postDidComplete:(SocialServiceID)serviceId forEvent:(CBCHeartRateEvent *)heartRateEvent
 {
     CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
@@ -377,7 +367,7 @@ typedef NSInteger SocialServiceID;
 
 #pragma mark - Medable
 
-+ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent postToPublicFeed:(BOOL)postToPublicFeed sender:(id)sender
++ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent postToPublicFeed:(BOOL)postToPublicFeed completion:(void (^)(MDPost* post, MDFault* fault))finishBlock
 {
     // Post to Medable
     MDAPIClient* apiClient = [MDAPIClient sharedClient];
@@ -398,21 +388,27 @@ typedef NSInteger SocialServiceID;
          image:backgroundImage
          overlay:overlayImage
          progress:nil
-         finishBlock:
-            ^(MDPost *post, MDFault *fault)
-            {
-                if (fault)
-                {
-                    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-                    [appDelegate displayAlertWithMedableFault:fault];
-                }
-                else
-                {
-                    [CBCSocialUtilities postDidComplete:SocialServiceIDMedable
-                                               forEvent:heartRateEvent];
-                }
-            }];
+         finishBlock:finishBlock];
     }
+}
+
++ (void)postToMedable:(CBCHeartRateEvent *)heartRateEvent postToPublicFeed:(BOOL)postToPublicFeed
+{
+    [CBCSocialUtilities postToMedable:heartRateEvent postToPublicFeed:postToPublicFeed completion:
+        ^(MDPost *post, MDFault *fault)
+        {
+            if (fault)
+            {
+                CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+                [appDelegate displayAlertWithMedableFault:fault];
+            }
+            else
+            {
+                [CBCSocialUtilities postDidComplete:SocialServiceIDMedable
+                                           forEvent:heartRateEvent];
+            }
+        }
+    ];
 }
 
 @end

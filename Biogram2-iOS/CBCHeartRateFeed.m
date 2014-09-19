@@ -33,4 +33,42 @@ static CBCFeedFilter _currentFeedFilter;
     _currentFeedFilter = filter;
 }
 
+#pragma mark - Core Data
+
++ (NSArray *)fetchHeartRateEventsFromCoreData
+{
+    NSManagedObjectContext * moc = [[CBCAppDelegate appDelegate] managedObjectContext];
+    NSFetchRequest * request = [[NSFetchRequest alloc] init];
+
+    NSEntityDescription * entityDescription = [NSEntityDescription entityForName:@"HeartRateEvent" inManagedObjectContext:moc];
+    [request setEntity:entityDescription];
+
+    NSSortDescriptor * sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    [request setSortDescriptors:@[sortDescriptor]];
+
+    NSError * error;
+    NSArray * array = [moc executeFetchRequest:request error:&error];
+
+    return array;
+}
+
++ (void)deleteHeartRateEventsFromCoreData:(NSArray *)events
+{
+    NSManagedObjectContext *context = [[CBCAppDelegate appDelegate] managedObjectContext];
+
+    for (CBCHeartRateEvent * event in events)
+    {
+        [context deleteObject:event];
+    }
+    
+    NSError *error = nil;
+    if (![context save:&error])
+    {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
 @end
