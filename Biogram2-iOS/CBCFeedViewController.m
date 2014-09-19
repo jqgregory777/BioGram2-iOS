@@ -506,6 +506,9 @@
                      else
                      {
                          [wSelf.data removeObject:post];
+                         
+                         [wSelf.tableView deleteRowsAtIndexPaths:@[indexPath]
+                                                withRowAnimation:UITableViewRowAnimationFade];
                      }
                  }];
             }
