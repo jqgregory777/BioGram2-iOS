@@ -16,4 +16,6 @@
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:indexPath;
 - (void)stopEditingTableView;
 
+- (void)addNewPost:(MDPost*)post;
+
 @end
