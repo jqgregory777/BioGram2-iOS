@@ -1326,11 +1326,11 @@
             </objects>
             <point key="canvasLocation" x="1177" y="306"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation Controller - Settings-->
         <scene sceneID="9Hj-8y-L1Z">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="otJ-aZ-jq9" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="tabbar_settings" id="l2b-zd-MuM"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="tabbar_settings" id="l2b-zd-MuM"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zGM-Tt-2mV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
