@@ -12,8 +12,7 @@
 @interface CBCMedableMainTableViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *accountCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *loginCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *logoutCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *logInOutCell;
 
 @end
 
@@ -68,13 +67,7 @@
     self.accountCell.textLabel.enabled = loggedIn;
     self.accountCell.detailTextLabel.enabled = loggedIn;
 
-    self.loginCell.userInteractionEnabled = !loggedIn;
-    self.loginCell.textLabel.enabled = !loggedIn;
-    self.loginCell.detailTextLabel.enabled = !loggedIn;
-
-    self.logoutCell.userInteractionEnabled = loggedIn;
-    self.logoutCell.textLabel.enabled = loggedIn;
-    self.logoutCell.detailTextLabel.enabled = loggedIn;
+    self.logInOutCell.textLabel.text = NSLocalizedString(loggedIn ? @"Log Out" : @"Log In", nil);
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,14 +81,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-    if ([cell.textLabel.text isEqualToString:@"Log In"])
+    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([cell.reuseIdentifier isEqualToString:@"medableLogInOut"])
     {
-        [[CBCAppDelegate appDelegate] showMedableLoginDialog];
-    }
-    else if ([cell.textLabel.text isEqualToString:@"Log Out"])
-    {
-        [[CBCAppDelegate appDelegate] logoutMedable];
+        if ( ![[CBCAppDelegate appDelegate] isLoggedInToMedable] )
+        {
+            [[CBCAppDelegate appDelegate] showMedableLoginDialog];
+        }
+        else
+        {
+            [[CBCAppDelegate appDelegate] logoutMedable];
+        }
     }
 }
 
