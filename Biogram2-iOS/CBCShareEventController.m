@@ -20,16 +20,12 @@
 
 - (IBAction)saveButtonTouched:(id)sender
 {
-    if ([[MDAPIClient sharedClient] localUser])
+    if ([[CBCAppDelegate appDelegate] isLoggedInToMedable])
     {
-        [CBCSocialUtilities postToMedable:self.displayedEvent postToPublicFeed:YES sender:self];
+        // when in medable mode, we never save to Core Data, so clean up the pending object
+        [[CBCAppDelegate appDelegate] cancelPendingHeartRateEvent];
     }
-    else
-    {
-        // the user is not logged in, so we must either be in trial mode
-        // or the user should not even be able to create new events
-    }
-
+    
     // Also activate the feed view in the tab bar.
     self.tabBarController.selectedIndex = 0;
 

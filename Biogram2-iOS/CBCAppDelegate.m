@@ -262,25 +262,33 @@
     }
 }
 
-- (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
+- (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
 {
     if (heartRateEvent != nil)
     {
-        NSManagedObjectContext *context = [self managedObjectContext];
-        NSError *error = nil;
-        if (![context save:&error])
+        BOOL inTrialMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"InTrialMode"];
+        if (inTrialMode)
         {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate.
-            // You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-            return NO; // won't get here until abort() above is removed -- TO DO: handle these errors properly
+            NSManagedObjectContext *context = [self managedObjectContext];
+            NSError *error = nil;
+            if (![context save:&error])
+            {
+                // Replace this implementation with code to handle the error appropriately.
+                // abort() causes the application to generate a crash log and terminate.
+                // You should not use this function in a shipping application, although it may be useful during development.
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+                return NO; // won't get here until abort() above is removed -- TO DO: handle these errors properly
+            }
+            
+            NSManagedObjectID * permanentId = heartRateEvent.objectID;
+            NSURL * url = [permanentId URIRepresentation];
+            NSLog(@"Saved CBCHeartRateEvent with URL = %@", url);
         }
-        
-        NSManagedObjectID * permanentId = heartRateEvent.objectID;
-        NSURL * url = [permanentId URIRepresentation];
-        NSLog(@"Saved CBCHeartRateEvent with URL = %@", url);
+        else
+        {
+            // TO DO: figure out how to update an already-posted event in medable
+        }
     }
     return YES;
 }
@@ -291,14 +299,22 @@
     
     if (self.pendingHeartRateEvent != nil)
     {
-        success = [self saveHeartRateEvent:self.pendingHeartRateEvent];
-
-        if (success)
+        BOOL inTrialMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"InTrialMode"];
+        if (inTrialMode)
         {
-            // nothing to do right now
+            // in Core Data (Trial mode), update and save are the same thing
+            success = [self updateHeartRateEvent:self.pendingHeartRateEvent];
+        }
+        else
+        {
+            // in Medable, to save is to post an event to the user's feed
+            [CBCSocialUtilities postToMedable:self.pendingHeartRateEvent postToPublicFeed:YES sender:self];
+            success = YES;
         }
         
-        self.pendingHeartRateEvent = nil; // release the strong reference
+        // release the strong reference - if there are views open that still reference the object
+        // they will also have strong references to it so it'll be retained until they're done
+        self.pendingHeartRateEvent = nil;
     }
     
     return success;
@@ -377,7 +393,8 @@
 
 - (void)medableLoginStateDidChange
 {
-    BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
+    BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
+    
     NSLog(@"medableLoginStateDidChange - loggedIn = %s", loggedIn?"YES":"NO");
     [[NSUserDefaults standardUserDefaults] setBool:loggedIn forKey:@"LoggedInToMedable"];
     
@@ -444,6 +461,11 @@
             [wSelf displayAlertWithMedableFault:fault];
         }
     }];
+}
+
+- (BOOL)isLoggedInToMedable
+{
+    return ([[MDAPIClient sharedClient] localUser] != nil);
 }
 
 - (void)showMedableLoginDialog

@@ -23,9 +23,6 @@
 
 - (void)viewDidLoad
 {
-    CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
-    appDelegate.detailViewController = self;
-    
     [super viewDidLoad];
 
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
@@ -34,26 +31,18 @@
     [self updateUI];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
-    appDelegate.detailViewController = nil;
-    
-    [super viewWillDisappear:animated];
-}
-
 - (void)updateUI
 {
-    self.postedToFacebookImgView.hidden = !self.displayedEvent.postedToFacebook.boolValue;
-    self.postedToTwitterImgView.hidden = !self.displayedEvent.postedToTwitter.boolValue;
-    self.postedToMedableImgView.hidden = !self.displayedEvent.postedToMedable.boolValue;
-    
-    self.postToFacebookButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] && !(self.displayedEvent.postedToFacebook.boolValue));
-    self.postToTwitterButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(self.displayedEvent.postedToTwitter.boolValue));
-    self.postToMedableButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(self.displayedEvent.postedToMedable.boolValue));
-    
     if (self.displayedEvent)
     {
+        self.postedToFacebookImgView.hidden = !self.displayedEvent.postedToFacebook.boolValue;
+        self.postedToTwitterImgView.hidden = !self.displayedEvent.postedToTwitter.boolValue;
+        self.postedToMedableImgView.hidden = !self.displayedEvent.postedToMedable.boolValue;
+        
+        self.postToFacebookButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] && !(self.displayedEvent.postedToFacebook.boolValue));
+        self.postToTwitterButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(self.displayedEvent.postedToTwitter.boolValue));
+        self.postToMedableButton.enabled = NO;
+
         self.timeStampLabel.text = self.displayedEvent.timeStampAsString;
         self.captionLabel.text = self.displayedEvent.eventDescription;
         
@@ -65,6 +54,14 @@
     }
     else if (self.displayedPost)
     {
+        self.postedToFacebookImgView.hidden = YES;
+        self.postedToTwitterImgView.hidden = YES;
+        self.postedToMedableImgView.hidden = NO;
+        
+        self.postToFacebookButton.enabled = [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook];
+        self.postToTwitterButton.enabled = [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter];
+        self.postToMedableButton.enabled = NO;
+
         NSUInteger heartbeat = 0;
         
         NSArray* body = [self.displayedPost body];
@@ -120,14 +117,6 @@
     if (self.displayedEvent)
     {
         [CBCSocialUtilities postToTwitter:self.displayedEvent sender:self];
-    }
-}
-
-- (IBAction)postToMedableTouched:(id)sender
-{
-    if (self.displayedEvent)
-    {
-        [CBCSocialUtilities postToMedable:self.displayedEvent postToPublicFeed:YES sender:self];
     }
 }
 

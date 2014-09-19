@@ -36,15 +36,15 @@ typedef NSInteger SocialServiceID;
     {
         case SocialServiceIDFacebook:
             heartRateEvent.postedToFacebook = @YES;
-            [appDelegate saveHeartRateEvent:heartRateEvent];
+            [appDelegate updateHeartRateEvent:heartRateEvent];
             break;
         case SocialServiceIDTwitter:
             heartRateEvent.postedToTwitter = @YES;
-            [appDelegate saveHeartRateEvent:heartRateEvent];
+            [appDelegate updateHeartRateEvent:heartRateEvent];
             break;
         case SocialServiceIDMedable:
             heartRateEvent.postedToMedable = @YES;
-            [appDelegate saveHeartRateEvent:heartRateEvent];
+            [appDelegate updateHeartRateEvent:heartRateEvent];
             break;
     }
 

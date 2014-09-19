@@ -178,30 +178,20 @@
     self.displayedEvent.thumbnail = nil;
 }
 
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    //if ([segue.identifier isEqualToString:@"aSpecificSegue"])
-    {
-        CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
-        
-        [self updatePendingEventFromUI];
-        
-        if ([appDelegate savePendingHeartRateEvent])
-        {
-            // yay
-            return YES;
-        }
-        else
-        {
-            [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
-            return NO;
-        }
-    }
-    return YES;
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    [self updatePendingEventFromUI];
+    
+    CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
+    if ([appDelegate savePendingHeartRateEvent])
+    {
+        // yay
+    }
+    else
+    {
+        [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
+    }
+
     CBCDetailViewController * controller = [segue destinationViewController];
     controller.displayedEvent = self.displayedEvent;
 }

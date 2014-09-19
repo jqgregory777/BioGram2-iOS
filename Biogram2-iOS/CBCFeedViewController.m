@@ -11,11 +11,13 @@
 #import "CBCHeartRateEvent.h"
 #import "CBCImageUtilities.h"
 #import "CBCDetailViewController.h"
+#import "CBCSocialUtilities.h"
 
 
 typedef enum : NSInteger
 {
-    CBCFeedFilterMe = 0,
+    CBCFeedFilterPrivate = 0,
+    CBCFeedFilterPublic,
     CBCFeedFilterCollective
 } CBCFeedFilter;
 
@@ -84,8 +86,9 @@ typedef enum : NSInteger
     
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(updateMedableLoggedIn) name:kMDNotificationUserDidLogin object:nil];
+    [defaultCenter addObserver:self selector:@selector(feedSourceDidChange) name:kCBCSocialPostDidComplete object:nil];
     
-    self.currentFeedFilter = CBCFeedFilterMe;
+    self.currentFeedFilter = CBCFeedFilterPrivate;
     
     self.feedFilterControl.selectedSegmentIndex = self.currentFeedFilter;
     
@@ -98,15 +101,7 @@ typedef enum : NSInteger
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    if (self.isMovingToParentViewController == NO)
-    {
-        // we're already on the navigation stack
-        // another controller must have been popped off
-        [self updateMedableLoggedIn];
-    }
-    
-    [self feedSourceDidChange];
+    [self updateMedableLoggedIn];
 }
 
 - (void)didReceiveMemoryWarning
@@ -117,9 +112,11 @@ typedef enum : NSInteger
 
 - (void)updateMedableLoggedIn
 {
+    BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
     BOOL inTrialMode = [[NSUserDefaults standardUserDefaults] boolForKey:@"InTrialMode"];
     
-    BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
+    self.currentFeedSource = (inTrialMode) ? CBCFeedSourceCoreData : CBCFeedSourceMedable;
+    
     self.medableLoggedInButton.enabled = loggedIn;
     [self.feedFilterControl setEnabled:loggedIn forSegmentAtIndex:CBCFeedFilterCollective];
     
@@ -135,23 +132,31 @@ typedef enum : NSInteger
 #ifdef DEBUG
     self.resetTrialModeButton.enabled = !inTrialMode;
 #endif
-
-    self.currentFeedSource = (inTrialMode) ? CBCFeedSourceCoreData : CBCFeedSourceMedable;
-    [self feedSourceDidChange];
     
-    if (!inTrialMode)
-    {
-        self.fetchedResultsController.delegate = nil;
-    }
+    [self feedSourceDidChange];
 }
 
 - (void)updateEditButton
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
+    NSUInteger numberOfRows;
+    
+    switch (self.currentFeedSource)
+    {
+        case CBCFeedSourceMedable:
+            numberOfRows = [self.data count];
+            break;
+            
+        case CBCFeedSourceCoreData:
+        default:
+            {
+                id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+                numberOfRows = [sectionInfo numberOfObjects];
+            }
+            break;
+    }
     
     UITableView *tableView = [self tableView];
-    if (![tableView isEditing] || numberOfObjects == 0)
+    if (![tableView isEditing] || numberOfRows == 0)
     {
         [self.editButton setTitle:@"Edit"];
     }
@@ -160,7 +165,7 @@ typedef enum : NSInteger
         [self.editButton setTitle:@"Done"];
     }
     
-    [self.editButton setEnabled:(numberOfObjects != 0)];
+    [self.editButton setEnabled:(numberOfRows != 0)];
 }
 
 
@@ -490,6 +495,7 @@ typedef enum : NSInteger
     else if (editingStyle == UITableViewCellEditingStyleInsert)
     {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        NSLog(@"We don't support UITableViewCellEditingStyleInsert");
     }
 }
 
@@ -515,10 +521,21 @@ typedef enum : NSInteger
     }
 }
 
+#pragma mark - Trial Mode
+
 - (IBAction)resetTrialModeTouched:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"InTrialMode"];
-    [self updateMedableLoggedIn];
+
+    BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
+    if (loggedIn)
+    {
+        [[CBCAppDelegate appDelegate] logoutMedable];
+    }
+    else
+    {
+        [self updateMedableLoggedIn];
+    }
 }
 
 - (IBAction)medableInfoTouched:(id)sender
@@ -540,6 +557,23 @@ typedef enum : NSInteger
     [alert show];
 }
 
+- (IBAction)goToMedableTouched:(id)sender
+{
+    NSLog(@"goToMedableTouched:");
+    
+    // go to settings tab
+    self.tabBarController.selectedIndex = 2;
+    
+    // go to medable settings page
+    UINavigationController * settingsNavControl = self.tabBarController.viewControllers[2];
+    UIViewController * settingsControl = settingsNavControl.childViewControllers[0];
+    if (![settingsNavControl.visibleViewController.restorationIdentifier isEqualToString:@"medableMainTableViewController"])
+    {
+        [settingsControl performSegueWithIdentifier:@"goToMedableSettingsSegue" sender:self];
+        
+    }
+}
+
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -551,23 +585,6 @@ typedef enum : NSInteger
     else
     {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.medable.com"]];
-    }
-}
-
-- (IBAction)goToMedableTouched:(id)sender
-{
-    NSLog(@"goToMedableTouched:");
-
-    // go to settings tab
-    self.tabBarController.selectedIndex = 2;
-
-    // go to medable settings page
-    UINavigationController * settingsNavControl = self.tabBarController.viewControllers[2];
-    UIViewController * settingsControl = settingsNavControl.childViewControllers[0];
-    if (![settingsNavControl.visibleViewController.restorationIdentifier isEqualToString:@"medableMainTableViewController"])
-    {
-        [settingsControl performSegueWithIdentifier:@"goToMedableSettingsSegue" sender:self];
-
     }
 }
 
@@ -584,11 +601,14 @@ typedef enum : NSInteger
     switch (self.currentFeedSource)
     {
         case CBCFeedSourceCoreData:
+            self.fetchedResultsController.delegate = self;
             [self.tableView reloadData];
             break;
             
         case CBCFeedSourceMedable:
+            self.fetchedResultsController.delegate = nil;
             [self updateMedableFeed];
+            [self.tableView reloadData];
             break;
             
         default:
@@ -606,12 +626,16 @@ typedef enum : NSInteger
     {
         switch (self.currentFeedFilter)
         {
-            case CBCFeedFilterCollective:
+            case CBCFeedFilterPrivate:
+                [self listFeedWithPublic:NO];
+                break;
+                
+            case CBCFeedFilterPublic:
                 [self listFeedWithPublic:YES];
                 break;
                 
-            case CBCFeedFilterMe:
-                [self listFeedWithPublic:NO];
+            case CBCFeedFilterCollective:
+                [self listCollectiveFeed];
                 break;
                 
             default:
@@ -634,11 +658,13 @@ typedef enum : NSInteger
             MDAPIParameters* parameters = nil;
             if (publicFeed)
             {
-                parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPublicFeedKey] excludePostTypes:@[kPrivateFeedKey]];
+                //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPublicFeedKey] excludePostTypes:@[kPrivateFeedKey]]; // WORK AROUND API BUG
+                parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,-privateHeartrate" }];
             }
             else
             {
-                parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]];
+                //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]]; // WORK AROUND API BUG
+                parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,privateHeartrate" }];
             }
             
             [[MDAPIClient sharedClient]

@@ -62,7 +62,7 @@
 - (void)updateAccountDetailsButton
 {
     // Grey out the Account cell if there's no account to view
-    BOOL loggedIn = ([[MDAPIClient sharedClient] localUser] != nil);
+    BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
 
     self.accountCell.userInteractionEnabled = loggedIn;
     self.accountCell.textLabel.enabled = loggedIn;

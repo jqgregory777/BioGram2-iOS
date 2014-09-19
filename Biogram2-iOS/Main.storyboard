@@ -796,13 +796,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6t-IA-ZC2">
+                                <rect key="frame" x="54" y="220" width="246" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="medableInfoTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="bS2-HN-YRc"/>
+                                </connections>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo_biogram-2" translatesAutoresizingMaskIntoConstraints="NO" id="u3P-VY-IkX">
                                 <rect key="frame" x="54" y="66" width="212" height="160"/>
                             </imageView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
-                                <rect key="frame" x="54" y="221" width="212" height="29"/>
+                                <rect key="frame" x="49" y="221" width="223" height="29"/>
                                 <segments>
-                                    <segment title="Me"/>
+                                    <segment title="Private"/>
+                                    <segment title="Public"/>
                                     <segment title="Collective"/>
                                 </segments>
                                 <connections>
@@ -844,14 +855,14 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PlN-lC-s3P">
-                                <rect key="frame" x="271" y="220" width="30" height="30"/>
+                                <rect key="frame" x="278" y="220" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="logo_medable">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N4q-NS-rBR">
-                                <rect key="frame" x="272" y="221" width="29" height="29"/>
+                                <rect key="frame" x="279" y="221" width="29" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -867,16 +878,6 @@
                                 <state key="normal" title="Reset to Trial Mode"/>
                                 <connections>
                                     <action selector="resetTrialModeTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="i91-4f-Asr"/>
-                                </connections>
-                            </button>
-                            <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6t-IA-ZC2">
-                                <rect key="frame" x="54" y="220" width="246" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="medableInfoTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="bS2-HN-YRc"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1292,9 +1293,6 @@
                                 <state key="normal" title="Button" image="logo_medable">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="postToMedableTouched:" destination="yeV-0U-bxB" eventType="touchUpInside" id="ZTg-Q8-P2Z"/>
-                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="n8e-QD-X97">
                                 <rect key="frame" x="93" y="439" width="32" height="32"/>
@@ -1453,9 +1451,6 @@
                                 <state key="normal" title="Button" image="logo_medable">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="postToMedableTouched:" destination="4s8-If-xKu" eventType="touchUpInside" id="uOs-eb-eTH"/>
-                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="is0-DL-6Kz">
                                 <rect key="frame" x="93" y="446" width="32" height="32"/>

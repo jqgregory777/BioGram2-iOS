@@ -16,7 +16,6 @@
 @interface CBCAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (weak, nonatomic) CBCDetailViewController *detailViewController;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
@@ -41,7 +40,7 @@
 - (CBCHeartRateEvent *)createPendingHeartRateEvent;
 - (void)cancelPendingHeartRateEvent;
 - (BOOL)savePendingHeartRateEvent;
-- (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
+- (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 
 
 #pragma mark - Medable
@@ -49,6 +48,7 @@
 - (void)showMedableLoginDialog;
 - (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken;
 - (void)logoutMedable;
+- (BOOL)isLoggedInToMedable;
 - (void)displayAlertWithMedableFault:(MDFault*)fault;
 
 #pragma mark - Utilities

@@ -27,6 +27,5 @@
 - (void)updateUI;
 - (IBAction)postToFacebookTouched:(id)sender;
 - (IBAction)postToTwitterTouched:(id)sender;
-- (IBAction)postToMedableTouched:(id)sender;
 
 @end
