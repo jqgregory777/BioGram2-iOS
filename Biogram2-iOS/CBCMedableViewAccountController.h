@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CBCTableViewController.h"
 
-@interface CBCMedableViewAccountController : UITableViewController
+@interface CBCMedableViewAccountController : CBCTableViewController
 
 @end

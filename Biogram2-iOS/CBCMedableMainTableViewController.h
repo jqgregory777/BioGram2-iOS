@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CBCTableViewController.h"
 
-@interface CBCMedableMainTableViewController : UITableViewController
+@interface CBCMedableMainTableViewController : CBCTableViewController
 
 - (void)updateAccountDetailsButton;
 

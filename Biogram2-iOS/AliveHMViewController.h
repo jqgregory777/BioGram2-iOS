@@ -14,7 +14,7 @@ typedef void(^AliveCompletionHandler)(NSString *inputText);
 @protocol AliveHMDelegate <NSObject>
 
 -(void)didCloseAliveViewWithHeartRate:(NSString*)heartRate;
-//-(void)didCloseAliveViewWithoutHeartRate;
+-(void)didAbortAliveView;
 
 @end
 

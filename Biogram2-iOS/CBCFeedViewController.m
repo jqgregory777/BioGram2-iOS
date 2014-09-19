@@ -96,6 +96,21 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 - (NSMutableArray*)data
 {
     if (!_data)
@@ -116,7 +131,7 @@
     if (inTrialMode)
         self.feedFilterControl.selectedSegmentIndex = CBCFeedFilterPrivate;
     [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedFilterPublic];
-    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedFilterCollective];
+    [self.feedFilterControl setEnabled:NO/*!inTrialMode*/ forSegmentAtIndex:CBCFeedFilterCollective]; // FIXME -- this crashes right now
     
     // when in trial mode, the medableInfoButton brings up info on medable
     // when in full medable mode, the goToMedableButton takes the user directly

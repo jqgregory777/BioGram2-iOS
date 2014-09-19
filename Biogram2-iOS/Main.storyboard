@@ -28,7 +28,7 @@
         <!--Table View Controller - Settings-->
         <scene sceneID="eYC-PU-Znn">
             <objects>
-                <tableViewController id="TR0-Xh-Nxg" sceneMemberID="viewController">
+                <tableViewController id="TR0-Xh-Nxg" customClass="CBCTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="7NL-Le-3rs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -542,7 +542,7 @@
         <!--Table View Controller - Preferences-->
         <scene sceneID="WRz-ka-FOM">
             <objects>
-                <tableViewController id="4eN-wD-ynh" sceneMemberID="viewController">
+                <tableViewController id="4eN-wD-ynh" customClass="CBCTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Drv-Ps-fs3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -701,7 +701,7 @@
         <!--Table View Controller - About-->
         <scene sceneID="pNp-pn-iJn">
             <objects>
-                <tableViewController id="LyE-Tp-Rki" sceneMemberID="viewController">
+                <tableViewController id="LyE-Tp-Rki" customClass="CBCTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="S56-gg-o4j">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -893,6 +893,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="editButton" destination="6AN-4Q-orO" id="NUX-lF-MnF"/>
                         <outlet property="feedFilterControl" destination="uZQ-D2-eX5" id="c8Q-wF-Ug9"/>
@@ -976,9 +977,6 @@
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="mBs-VM-LHn" kind="push" identifier="aliveCorSegue" id="t3d-9f-z5s"/>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -989,6 +987,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Heart Rate" id="kkO-vX-q1V"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <connections>
+                        <segue destination="l3R-YC-rtF" kind="push" identifier="aliveCorNextSegue" id="7Dt-TR-Q38"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pj7-og-HCD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1038,6 +1040,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="heartRateLabel" destination="2oW-jQ-IVH" id="kqC-KX-7Ru"/>
                         <outlet property="heartRatePicker" destination="9MT-v7-jlx" id="Hw1-N5-wwJ"/>
@@ -1045,12 +1048,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MzX-rd-DXv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1355" y="1026"/>
+            <point key="canvasLocation" x="1348" y="977"/>
         </scene>
-        <!--AliveHM View Controller - AliveCor-->
+        <!--AliveHM View Controller-->
         <scene sceneID="wfj-Aa-qYf">
             <objects>
-                <viewController id="mBs-VM-LHn" customClass="AliveHMViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="aliveController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mBs-VM-LHn" customClass="AliveHMViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0i3-z3-DJi"/>
                         <viewControllerLayoutGuide type="bottom" id="aDj-Ai-4c5"/>
@@ -1060,54 +1063,64 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="heart_large" translatesAutoresizingMaskIntoConstraints="NO" id="AMu-00-k3n" userLabel="imgHeart">
-                                <rect key="frame" x="263" y="71" width="205" height="205"/>
+                                <rect key="frame" x="263" y="90" width="205" height="205"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="---" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X3z-Q7-PtE" userLabel="lblHeartRate">
-                                <rect key="frame" x="311" y="133" width="109" height="73"/>
+                                <rect key="frame" x="311" y="152" width="109" height="73"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="93"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="alivecor_leads_off" translatesAutoresizingMaskIntoConstraints="NO" id="fUO-VI-wtm">
-                                <rect key="frame" x="143" y="176" width="45" height="23"/>
+                                <rect key="frame" x="143" y="195" width="45" height="23"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="alivecor_leads_on" translatesAutoresizingMaskIntoConstraints="NO" id="ddj-T2-FJZ" userLabel="imgLeadsOn">
-                                <rect key="frame" x="143" y="176" width="45" height="23"/>
+                                <rect key="frame" x="143" y="195" width="45" height="23"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Measuring Heart Rate" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" minimumFontSize="10" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="104" translatesAutoresizingMaskIntoConstraints="NO" id="JGR-9I-Chy">
-                                <rect key="frame" x="113" y="101" width="104" height="86"/>
+                                <rect key="frame" x="113" y="120" width="104" height="86"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bx7-Iv-nPb" userLabel="lblLastHeartRate">
-                                <rect key="frame" x="344" y="111" width="42" height="22"/>
+                                <rect key="frame" x="344" y="130" width="42" height="22"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="bpm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="tDf-u7-rdF">
-                                <rect key="frame" x="343" y="199" width="44" height="23"/>
+                                <rect key="frame" x="343" y="218" width="44" height="23"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="AliveCor_Instructions" translatesAutoresizingMaskIntoConstraints="NO" id="TwY-Jo-BG8">
-                                <rect key="frame" x="0.0" y="63" width="568" height="209"/>
+                                <rect key="frame" x="0.0" y="64" width="568" height="257"/>
                             </imageView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VgI-xc-4kC">
+                                <rect key="frame" x="0.0" y="20" width="568" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="AliveCor" id="QNd-on-iws">
+                                        <barButtonItem key="leftBarButtonItem" title="Heart Rate" id="bhB-kz-Nil">
+                                            <connections>
+                                                <action selector="backButtonPressed:" destination="mBs-VM-LHn" id="moA-c8-obh"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Confirm" id="b7m-9g-lDc">
+                                            <connections>
+                                                <action selector="confirmButtonPressed:" destination="mBs-VM-LHn" id="aQo-74-guU"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <navigationItem key="navigationItem" title="AliveCor" id="HTK-yf-s7g">
-                        <barButtonItem key="rightBarButtonItem" title="Confirm" id="VS9-dJ-xfK">
-                            <connections>
-                                <segue destination="l3R-YC-rtF" kind="push" id="wKO-gj-FVW"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
-                        <outlet property="buttonConfirm" destination="VS9-dJ-xfK" id="BTi-jW-dOG"/>
                         <outlet property="imgHRInstructions" destination="TwY-Jo-BG8" id="nrk-I7-JwO"/>
                         <outlet property="imgHeart" destination="AMu-00-k3n" id="pHa-PW-xF4"/>
                         <outlet property="imgLeadsOn" destination="ddj-T2-FJZ" id="6Lm-Ks-q38"/>
@@ -1229,6 +1242,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="captionTextField" destination="85k-mv-ey0" id="c7d-SH-kDl"/>
                         <outlet property="overlayImageView" destination="4ec-IW-9dL" id="dqX-gY-s9f"/>
@@ -1310,6 +1324,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Detail" id="xPN-Vg-K8F"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="captionLabel" destination="7fZ-zG-ZX9" id="LX0-TB-rxJ"/>
                         <outlet property="photoImageView" destination="siU-y7-OHz" id="7rr-kp-Swu"/>
@@ -1329,7 +1344,7 @@
         <!--Navigation Controller - Settings-->
         <scene sceneID="9Hj-8y-L1Z">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="otJ-aZ-jq9" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="otJ-aZ-jq9" customClass="CBCNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="tabbar_settings" id="l2b-zd-MuM"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zGM-Tt-2mV">
@@ -1366,7 +1381,7 @@
         <!--Navigation Controller - Feed-->
         <scene sceneID="uF0-qe-2Eb">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2xh-t7-SiL" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2xh-t7-SiL" customClass="CBCNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Feed" image="tabbar_feed" id="6lP-tt-VU1"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DYm-J6-sSu">
@@ -1385,7 +1400,7 @@
         <!--Navigation Controller - Heart Rate-->
         <scene sceneID="ysp-LL-IDn">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nLi-rV-jeS" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nLi-rV-jeS" customClass="CBCNavigationController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Heart Rate" image="tabbar_heartrate" id="xR6-wr-nLx"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1SB-ZF-rUC">
@@ -1474,6 +1489,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="captionLabel" destination="FZd-up-rKc" id="S5b-vw-kJc"/>
                         <outlet property="photoImageView" destination="4iN-Sl-FTC" id="elF-3D-Isy"/>
@@ -1517,6 +1533,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="wKO-gj-FVW"/>
+        <segue reference="C7n-Hc-6L0"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CBCTableViewController.h"
 
 @class CBCMedableCreateAccountController;
 
-@interface CBCMedableCreateAccountController : UITableViewController <UITextFieldDelegate>
+@interface CBCMedableCreateAccountController : CBCTableViewController <UITextFieldDelegate>
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)done:(id)sender;

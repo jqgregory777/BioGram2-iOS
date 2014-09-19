@@ -182,21 +182,19 @@ void statusCallback(void *clientData, AliveHMStatus status)
 }
 
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (IBAction)confirmButtonPressed:(id)sender {
     NSString *finalHeartRate = lblLastHeartRate.text;
     [_delegate didCloseAliveViewWithHeartRate:finalHeartRate];
 }
 
-//- (IBAction)confirmButtonPressed:(id)sender {
-//    NSString *finalHeartRate = lblLastHeartRate.text;
-//    [_delegate didCloseAliveViewWithHeartRate:finalHeartRate];
-//}
-//
-//
-//
-//- (IBAction)backButtonPressed:(id)sender {
-//    [_delegate didCloseAliveViewWithoutHeartRate];
-//}
+- (IBAction)backButtonPressed:(id)sender {
+    [_delegate didAbortAliveView];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSString *finalHeartRate = lblLastHeartRate.text;
+    [_delegate didCloseAliveViewWithHeartRate:finalHeartRate];
+}
 
 - (void)setup {
     // Non-UI initialization goes here. It will only ever be called once.
@@ -260,13 +258,13 @@ void statusCallback(void *clientData, AliveHMStatus status)
     return YES;
 }
 
-
-- (NSUInteger)supportedInterfaceOrientations {
+- (NSUInteger)supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskLandscapeLeft;
 }
 
-
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
     return UIInterfaceOrientationLandscapeLeft;
 }
 

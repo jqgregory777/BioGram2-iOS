@@ -33,6 +33,8 @@
 		545C5B8A19C504D100FC704D /* CBCCreateHeartRateEventController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545C5B8919C504D100FC704D /* CBCCreateHeartRateEventController.m */; };
 		545C5B8E19C5096600FC704D /* CBCSelectPhotoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 545C5B8D19C5096600FC704D /* CBCSelectPhotoController.m */; };
 		54607A5719CBB2280054D1E4 /* CBCHeartRateFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 54607A5619CBB2280054D1E4 /* CBCHeartRateFeed.m */; };
+		54607A5D19CC0F5F0054D1E4 /* CBCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54607A5C19CC0F5F0054D1E4 /* CBCNavigationController.m */; };
+		54607A6019CC13BB0054D1E4 /* CBCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54607A5F19CC13BB0054D1E4 /* CBCTableViewController.m */; };
 		547A7BA019C8ABA8004543EE /* CBCSocialUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7B9F19C8ABA8004543EE /* CBCSocialUtilities.m */; };
 		5495F86C19C2779E00E5937E /* CBCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5495F86B19C2779E00E5937E /* CBCDetailViewController.m */; };
 		549727A719C7F21C00DAF814 /* AliveHMLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727A619C7F21C00DAF814 /* AliveHMLibrary.framework */; };
@@ -105,6 +107,10 @@
 		545C5B8D19C5096600FC704D /* CBCSelectPhotoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCSelectPhotoController.m; sourceTree = "<group>"; };
 		54607A5519CBB2280054D1E4 /* CBCHeartRateFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCHeartRateFeed.h; sourceTree = "<group>"; };
 		54607A5619CBB2280054D1E4 /* CBCHeartRateFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCHeartRateFeed.m; sourceTree = "<group>"; };
+		54607A5B19CC0F5F0054D1E4 /* CBCNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCNavigationController.h; sourceTree = "<group>"; };
+		54607A5C19CC0F5F0054D1E4 /* CBCNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCNavigationController.m; sourceTree = "<group>"; };
+		54607A5E19CC13BB0054D1E4 /* CBCTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCTableViewController.h; sourceTree = "<group>"; };
+		54607A5F19CC13BB0054D1E4 /* CBCTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCTableViewController.m; sourceTree = "<group>"; };
 		547A7B9E19C8ABA8004543EE /* CBCSocialUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCSocialUtilities.h; sourceTree = "<group>"; };
 		547A7B9F19C8ABA8004543EE /* CBCSocialUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCSocialUtilities.m; sourceTree = "<group>"; };
 		5495F86A19C2779E00E5937E /* CBCDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCDetailViewController.h; sourceTree = "<group>"; };
@@ -233,6 +239,10 @@
 				547A7B9F19C8ABA8004543EE /* CBCSocialUtilities.m */,
 				54FDF7CC19C7B1EC001928AF /* CBCTabBarController.h */,
 				54FDF7CD19C7B1EC001928AF /* CBCTabBarController.m */,
+				54607A5B19CC0F5F0054D1E4 /* CBCNavigationController.h */,
+				54607A5C19CC0F5F0054D1E4 /* CBCNavigationController.m */,
+				54607A5E19CC13BB0054D1E4 /* CBCTableViewController.h */,
+				54607A5F19CC13BB0054D1E4 /* CBCTableViewController.m */,
 				545C5B7C19C4361300FC704D /* Data Model */,
 				545C5B8B19C505C900FC704D /* Heart Rate Feed */,
 				545C5B8319C4F77E00FC704D /* Create Heart Rate Event */,
@@ -442,6 +452,7 @@
 				545C5B8E19C5096600FC704D /* CBCSelectPhotoController.m in Sources */,
 				547A7BA019C8ABA8004543EE /* CBCSocialUtilities.m in Sources */,
 				54607A5719CBB2280054D1E4 /* CBCHeartRateFeed.m in Sources */,
+				54607A6019CC13BB0054D1E4 /* CBCTableViewController.m in Sources */,
 				545C5B7319C3874400FC704D /* CBCMedableViewAccountController.m in Sources */,
 				54C7FFAC19C5E3B7008BB7AE /* CBCImageUtilities.m in Sources */,
 				54F0D75E19CA9A850008945A /* CBCShareEventController.m in Sources */,
@@ -452,6 +463,7 @@
 				54FDF7CE19C7B1EC001928AF /* CBCTabBarController.m in Sources */,
 				54A266D419C2B69F00BE5834 /* CBCMedableMainTableViewController.m in Sources */,
 				5495F86C19C2779E00E5937E /* CBCDetailViewController.m in Sources */,
+				54607A5D19CC0F5F0054D1E4 /* CBCNavigationController.m in Sources */,
 				545C5B8619C4F7B200FC704D /* CBCManualHeartRateController.m in Sources */,
 				545C5B7919C3A00A00FC704D /* EXTPhoneNumberFormatter.m in Sources */,
 				541AD55A19C21A840083FDD1 /* CBCAppDelegate.m in Sources */,

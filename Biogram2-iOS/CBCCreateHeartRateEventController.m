@@ -53,19 +53,27 @@
     }
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([segue.identifier isEqualToString:@"aliveCorSegue"])
+    switch(indexPath.row)
     {
-        AliveHMViewController * aliveController = [segue destinationViewController];
-        aliveController.delegate = self;
+        case 1:
+        {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            AliveHMViewController *aliveController = [storyboard instantiateViewControllerWithIdentifier:@"aliveController"];
 
-        //
-        // Create a new pending heart rate event (for manual entry)
-        //
-        
-        CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-        [appDelegate createPendingHeartRateEvent];
+            //
+            // Create a new pending heart rate event (for manual entry)
+            //
+            
+            CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+            [appDelegate createPendingHeartRateEvent];
+            
+            // Now fake a segue to the view (needed to keep the landscape orientation)
+            [aliveController setDelegate:self];
+            [self presentViewController:aliveController animated:YES completion:nil];
+            break;
+        }
     }
 }
 
@@ -84,6 +92,18 @@
     {
         appDelegate.pendingHeartRateEvent.heartRate = heartRate;
     }
+
+    [self dismissViewControllerAnimated:YES completion:
+        ^
+        {
+            [self performSegueWithIdentifier:@"aliveCorNextSegue" sender:self];
+        }
+    ];
+}
+
+-(void)didAbortAliveView
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
