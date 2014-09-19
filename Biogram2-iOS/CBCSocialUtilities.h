@@ -33,10 +33,12 @@ extern NSString* const kCBCSocialPostDidComplete;
 #pragma mark - Facebook
 
 + (void)postToFacebook:(CBCHeartRateEvent *)pendingEvent sender:(id)sender;
++ (void)postMDPostToFacebook:(MDPost *)post sender:(id)sender;
 
 #pragma mark - Twitter
 
 + (void)postToTwitter:(CBCHeartRateEvent *)pendingEvent sender:(id)sender;
++ (void)postMDPostToTwitter:(MDPost *)post sender:(id)sender;
 
 #pragma mark - Medable
 

@@ -121,9 +121,13 @@
 
 - (IBAction)postToFacebookTouched:(id)sender
 {
-    if (self.displayedEvent)
+    if (self.displayedEvent != nil)
     {
         [CBCSocialUtilities postToFacebook:self.displayedEvent sender:self];
+    }
+    else if (self.displayedPost != nil)
+    {
+        [CBCSocialUtilities postMDPostToFacebook:self.displayedPost sender:self];
     }
 }
 
@@ -132,6 +136,10 @@
     if (self.displayedEvent)
     {
         [CBCSocialUtilities postToTwitter:self.displayedEvent sender:self];
+    }
+    else if (self.displayedPost)
+    {
+        [CBCSocialUtilities postMDPostToTwitter:self.displayedPost sender:self];
     }
 }
 

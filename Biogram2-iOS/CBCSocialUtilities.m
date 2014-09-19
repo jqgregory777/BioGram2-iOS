@@ -43,6 +43,39 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
 #pragma mark - Facebook
 
++ (void)postMDPostToFacebook:(MDPost *)heartRatePost sender:(id)sender
+{
+    /*
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+    {
+        NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
+        NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        
+        if (g_useSLComposeViewController)
+        {
+            // show a pop-up dialog to allow the user the post manually
+            
+            UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
+            
+            SLComposeViewController * slComposeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+            [slComposeViewController addImage:image];
+            [slComposeViewController setInitialText:message];
+            slComposeViewController.completionHandler =
+            ^(SLComposeViewControllerResult result)
+            {
+                if (result == SLComposeViewControllerResultDone)
+                {
+                    [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
+                                               forEvent:heartRateEvent];
+                }
+            };
+            
+            [sender presentViewController:slComposeViewController animated:YES completion:nil];
+        }
+    }
+    */
+}
+
 + (void)postToFacebook:(CBCHeartRateEvent *)heartRateEvent sender:(id)sender
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
@@ -204,6 +237,39 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
 #pragma mark - Twitter
 
++ (void)postMDPostToTwitter:(MDPost *)heartRatePost sender:(id)sender
+{
+    /*
+    if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+    {
+        NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
+        NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        
+        if (g_useSLComposeViewController)
+        {
+            // show a pop-up dialog to allow the user the post manually
+            
+            UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
+            
+            SLComposeViewController * slComposeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+            [slComposeViewController addImage:image];
+            [slComposeViewController setInitialText:message];
+            slComposeViewController.completionHandler =
+            ^(SLComposeViewControllerResult result)
+            {
+                if (result == SLComposeViewControllerResultDone)
+                {
+                    [CBCSocialUtilities postDidComplete:SocialServiceIDTwitter
+                                               forEvent:heartRateEvent];
+                }
+            };
+            
+            [sender presentViewController:slComposeViewController animated:YES completion:nil];
+        }
+    }
+    */
+}
+
 + (void)postToTwitter:(CBCHeartRateEvent *)heartRateEvent sender:(id)sender
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
@@ -213,12 +279,6 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
         if (g_useSLComposeViewController)
         {
-            // OLD WAY
-            //self.slComposeViewController    = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-            //[self.slComposeViewController addImage:image];
-            //[self.slComposeViewController setInitialText:message];
-            //[self presentViewController:self.slComposeViewController animated:YES completion:NULL];
-
             // show a pop-up dialog to allow the user the post manually
             
             UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
