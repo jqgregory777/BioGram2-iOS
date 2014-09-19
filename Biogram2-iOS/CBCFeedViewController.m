@@ -540,9 +540,8 @@
     NSLog(@"medableInfoTouched:");
 
     NSString * message = [NSString stringWithCString:
-        "Secure your heart rate data with Medable. "
-        "Create an account or log in to unlock all "
-        "of the features of Biogram."
+        "Protect your heart rate data with Medable, the world’s first HIPAA-compliant medical data service. "
+        "Create an account and log in to unlock all of the features of Biogram."
         encoding:NSUTF8StringEncoding];
     
     UIAlertView* alert = [[UIAlertView alloc]
@@ -563,11 +562,24 @@
     
     // go to medable settings page
     UINavigationController * settingsNavControl = self.tabBarController.viewControllers[2];
-    UIViewController * settingsControl = settingsNavControl.childViewControllers[0];
-    if (![settingsNavControl.visibleViewController.restorationIdentifier isEqualToString:@"medableMainTableViewController"])
+    NSArray * presentedSettingsControllers = settingsNavControl.viewControllers;
+    
+    BOOL foundMedableController = NO;
+    int count = presentedSettingsControllers.count;
+    for (int i = 0; i < count; i++)
     {
-        [settingsControl performSegueWithIdentifier:@"goToMedableSettingsSegue" sender:self];
-        
+        UIViewController * controller = [presentedSettingsControllers objectAtIndex:i];
+        if ([controller.restorationIdentifier isEqualToString:@"medableMainTableViewController"])
+        {
+            foundMedableController = YES;
+            break;
+        }
+    }
+    
+    if (!foundMedableController)
+    {
+        UIViewController * settingsViewControl = settingsNavControl.childViewControllers[0];
+        [settingsViewControl performSegueWithIdentifier:@"goToMedableSettingsSegue" sender:self];
     }
 }
 
@@ -581,7 +593,7 @@
     }
     else
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.medable.com"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.medable.com/about.html"]];
     }
 }
 

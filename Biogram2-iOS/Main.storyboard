@@ -1124,7 +1124,7 @@
         <!--Select Photo Controller - Photo-->
         <scene sceneID="cvp-uQ-GEo">
             <objects>
-                <viewController id="l3R-YC-rtF" customClass="CBCSelectPhotoController" sceneMemberID="viewController">
+                <viewController title="Photo" id="l3R-YC-rtF" customClass="CBCSelectPhotoController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8Vd-Hs-vRl"/>
                         <viewControllerLayoutGuide type="bottom" id="vnv-8c-Bym"/>
@@ -1178,7 +1178,7 @@
         <!--Edit Photo Controller - Edit-->
         <scene sceneID="2Qt-FI-Q5l">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="zxF-Qw-ZDf" customClass="CBCEditPhotoController" sceneMemberID="viewController">
+                <viewController title="Edit" automaticallyAdjustsScrollViewInsets="NO" id="zxF-Qw-ZDf" customClass="CBCEditPhotoController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FAY-v2-FZD"/>
                         <viewControllerLayoutGuide type="bottom" id="JKs-lE-bFm"/>
@@ -1223,9 +1223,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Edit" id="t5n-Bd-TCt">
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="sAG-LM-mf9">
+                        <barButtonItem key="rightBarButtonItem" title="Save" style="done" id="sAG-LM-mf9">
                             <connections>
-                                <segue destination="4s8-If-xKu" kind="push" id="8vq-1g-FyX"/>
+                                <segue destination="4s8-If-xKu" kind="push" id="uO1-3G-lQ5"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1404,7 +1404,7 @@
         <!--Share Event Controller - Share-->
         <scene sceneID="4Wg-e1-Om1">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="4s8-If-xKu" customClass="CBCShareEventController" sceneMemberID="viewController">
+                <viewController title="Share" automaticallyAdjustsScrollViewInsets="NO" id="4s8-If-xKu" customClass="CBCShareEventController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MEv-LB-qLE"/>
                         <viewControllerLayoutGuide type="bottom" id="x0R-5g-8au"/>
@@ -1468,7 +1468,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Share" id="dVD-rB-Rpz">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="c8M-s8-wx1">
+                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="c8M-s8-wx1">
                             <connections>
                                 <action selector="saveButtonTouched:" destination="4s8-If-xKu" id="nN6-32-kpp"/>
                             </connections>

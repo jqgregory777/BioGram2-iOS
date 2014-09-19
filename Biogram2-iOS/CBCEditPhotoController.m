@@ -192,6 +192,12 @@
         [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
     }
 
+    if ([[CBCAppDelegate appDelegate] isLoggedInToMedable])
+    {
+        // when in medable mode, we never save to Core Data, so clean up the pending object
+        [[CBCAppDelegate appDelegate] cancelPendingHeartRateEvent];
+    }
+
     CBCDetailViewController * controller = [segue destinationViewController];
     controller.displayedEvent = self.displayedEvent;
 }

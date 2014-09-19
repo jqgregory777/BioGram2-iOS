@@ -14,21 +14,44 @@
 
 #import <Social/Social.h>
 
+@interface CBCShareEventController ()
+
+@property (strong, nonatomic) UIViewController * originalRootController;
+
+@end
+
 @implementation CBCShareEventController
 
 #pragma mark - Save Button
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"CBCShareEventController viewDidAppear:%s", animated?"YES":"NO");
+    NSArray * existingControllers = self.navigationController.viewControllers;
+    if ([existingControllers lastObject] == self)
+        NSLog(@"As I thought!");
+    
+    self.originalRootController = [existingControllers firstObject];
+    
+    NSArray * newControllers = [NSArray arrayWithObject:self];
+    [self.navigationController setViewControllers:newControllers animated:NO];
+}
+
 - (IBAction)saveButtonTouched:(id)sender
 {
-    if ([[CBCAppDelegate appDelegate] isLoggedInToMedable])
-    {
-        // when in medable mode, we never save to Core Data, so clean up the pending object
-        [[CBCAppDelegate appDelegate] cancelPendingHeartRateEvent];
-    }
+//    if ([[CBCAppDelegate appDelegate] isLoggedInToMedable])
+//    {
+//        // when in medable mode, we never save to Core Data, so clean up the pending object
+//        [[CBCAppDelegate appDelegate] cancelPendingHeartRateEvent];
+//    }
     
-    // Also activate the feed view in the tab bar.
+    // Activate the feed view in the tab bar.
     self.tabBarController.selectedIndex = 0;
 
+    // Put the original root controller back into the stack.
+    NSArray * newControllers = [NSArray arrayWithObjects:self.originalRootController, self, nil];
+    [self.navigationController setViewControllers:newControllers animated:NO];
+    
     // Jump back to start of the "create heart rate event" page sequence.
     [self.navigationController popToRootViewControllerAnimated:NO];
     //[self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
