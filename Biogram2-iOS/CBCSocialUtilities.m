@@ -43,191 +43,198 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
 #pragma mark - Facebook
 
++ (void)postToFacebookWithCaption:(NSString*)caption photo:(UIImage*)photo sender:(id)sender finishCallback:(void (^)())callback
+{
+    if (g_useSLComposeViewController)
+    {
+        // show a pop-up dialog to allow the user the post manually
+        
+        SLComposeViewController * slComposeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        [slComposeViewController addImage:photo];
+        [slComposeViewController setInitialText:caption];
+        slComposeViewController.completionHandler =
+        ^(SLComposeViewControllerResult result)
+        {
+            if (result == SLComposeViewControllerResultDone)
+            {
+                callback();
+            }
+        };
+        
+        [sender presentViewController:slComposeViewController animated:YES completion:nil];
+    }
+    else
+    {
+        // auto-post based on the user's choices (via the green check boxes in CBCEditEventController)...
+        
+        ACAccountStore* fbAccountStore = [[ACAccountStore alloc] init];
+        ACAccountType* fbAccountType = [fbAccountStore accountTypeWithAccountTypeIdentifier: ACAccountTypeIdentifierFacebook];
+        
+        // Specify App ID and permissions
+        
+        NSString* fbAppId = @"1538350369730665";
+        NSString* fbAudienceKey = ACFacebookAudienceOnlyMe; // HACK FOR TESTING
+        
+        NSDictionary * optionsRead = @{
+                                       ACFacebookAppIdKey: fbAppId,
+                                       ACFacebookPermissionsKey: @[@"email"],
+                                       ACFacebookAudienceKey: fbAudienceKey };
+        
+        // Frist ask for read permissions (email), then if that's granted ask for write (publish)...
+        
+        NSLog(@"FB: requesting read permissions...");
+        
+        [fbAccountStore requestAccessToAccountsWithType:fbAccountType options:optionsRead completion:
+         ^(BOOL granted, NSError *error)
+         {
+             NSLog(@"FB: read permission completion: granted = %s", granted?"YES":"NO");
+             if (granted && error == nil)
+             {
+                 /**
+                  * The user granted us the basic read permission.
+                  * Now we can ask for more permissions
+                  **/
+                 NSDictionary * optionsWrite = @{
+                                                 ACFacebookAppIdKey: fbAppId,
+                                                 ACFacebookPermissionsKey: @[@"publish_actions"],
+                                                 ACFacebookAudienceKey: fbAudienceKey };
+                 
+                 [fbAccountStore requestAccessToAccountsWithType:fbAccountType options:optionsWrite completion:
+                  ^(BOOL granted, NSError *error)
+                  {
+                      NSLog(@"FB: write permission completion: granted = %s", granted?"YES":"NO");
+                      if (granted && error == nil)
+                      {
+                          /**
+                           * We now should have some read permission
+                           * Now we may ask for write permissions or
+                           * do something else.
+                           **/
+                          NSArray * accountsArray = [fbAccountStore accountsWithAccountType:fbAccountType];
+                          if ([accountsArray count] > 0)
+                          {
+                              ACAccount * fbAccount = [accountsArray objectAtIndex:0];
+                              
+                              NSDictionary * parameters = nil; //@{@"message": sendmessage};
+                              
+                              SLRequest * fbRequest
+                              = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                   requestMethod:SLRequestMethodPOST
+                                                             URL:[NSURL URLWithString:@"https://graph.facebook.com/me/photos"]
+                                                      parameters:parameters];
+                              
+                              [fbRequest addMultipartData:UIImagePNGRepresentation(photo)
+                                                 withName:@"source"
+                                                     type:@"multipart/form-data"
+                                                 filename:@"BioGramPhoto"];
+                              [fbRequest addMultipartData:[caption dataUsingEncoding:NSUTF8StringEncoding]
+                                                 withName:@"message"
+                                                     type:@"multipart/form-data"
+                                                 filename:nil];
+                              
+                              [fbRequest setAccount:fbAccount];
+                              
+                              NSLog(@"FB: performing request...");
+                              [fbRequest performRequestWithHandler:
+                               ^(NSData* responseData, NSHTTPURLResponse* urlResponse, NSError* error)
+                               {
+                                   if (error == nil)
+                                   {
+                                       NSString* responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                                       NSLog(@"FB response data is: %@", responseString);
+                                       
+                                       callback();
+                                   }
+                                   else
+                                   {
+                                       NSLog(@"FB request failed -- error is: %@",error.description);
+                                       NSString * message = [NSString stringWithFormat:@"An error occurred while\nposting to Facebook:\n%@",
+                                                             [error description]];
+                                       [CBCAppDelegate showMessage:message withTitle:@"Posting Error"];
+                                   }
+                               }
+                               ];
+                          }
+                          else
+                          {
+                              NSLog(@"FB: no facebook accounts found");
+                              [CBCAppDelegate showMessage:@"Please configure a Facebook account in Settings." withTitle:@"No Account Found"];
+                          }
+                      }
+                      else
+                      {
+                          NSLog(@"FB post not granted -- error is: %@",[error description]);
+                          if (error != nil)
+                          {
+                              NSString * message = [NSString stringWithFormat:@"An error occurred while\nrequesting Facebook permissions:\n%@",
+                                                    [error description]];
+                              [CBCAppDelegate showMessage:message withTitle:@"Permissions Error"];
+                          }
+                      }
+                  }
+                  ];
+             }
+             else
+             {
+                 NSLog(@"FB read not granted -- error is: %@",[error description]);
+                 if (error != nil)
+                 {
+                     NSString * message = [NSString stringWithFormat:@"An error occurred while\nrequesting Facebook permissions:\n%@",
+                                           [error description]];
+                     [CBCAppDelegate showMessage:message withTitle:@"Permissions Error"];
+                 }
+             }
+         }
+         ];
+    }
+}
+
 + (void)postMDPostToFacebook:(MDPost *)heartRatePost sender:(id)sender
 {
-    /*
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
-        NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
-        NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        NSString* biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
+        NSString* message = [NSString stringWithFormat:@"%@\n%@", heartRatePost.text, biogramTagLine];
         
-        if (g_useSLComposeViewController)
+        [heartRatePost postPicsWithUpdateBlock:^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
         {
-            // show a pop-up dialog to allow the user the post manually
+            [CBCSocialUtilities
+             postToFacebookWithCaption:message
+             photo:image
+             sender:sender
+             finishCallback:^
+             {
+                 // TODO: is this needed?
+//                 [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
+//                                            forEvent:??];
+             }];
             
-            UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
-            
-            SLComposeViewController * slComposeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-            [slComposeViewController addImage:image];
-            [slComposeViewController setInitialText:message];
-            slComposeViewController.completionHandler =
-            ^(SLComposeViewControllerResult result)
-            {
-                if (result == SLComposeViewControllerResultDone)
-                {
-                    [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
-                                               forEvent:heartRateEvent];
-                }
-            };
-            
-            [sender presentViewController:slComposeViewController animated:YES completion:nil];
-        }
+            return YES;
+        }];
     }
-    */
+    else
+    {
+        [CBCAppDelegate showMessage:@"Please configure a Facebook account in Settings." withTitle:@"No Account Found"];
+    }
 }
 
 + (void)postToFacebook:(CBCHeartRateEvent *)heartRateEvent sender:(id)sender
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
-        NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
-        NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        NSString* biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
+        NSString* message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        UIImage* photo = [UIImage imageWithData:heartRateEvent.photo];
         
-        if (g_useSLComposeViewController)
-        {
-            // show a pop-up dialog to allow the user the post manually
-            
-            UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
-
-            SLComposeViewController * slComposeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-            [slComposeViewController addImage:image];
-            [slComposeViewController setInitialText:message];
-            slComposeViewController.completionHandler =
-                ^(SLComposeViewControllerResult result)
-                {
-                    if (result == SLComposeViewControllerResultDone)
-                    {
-                        [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
-                                                   forEvent:heartRateEvent];
-                    }
-                };
-
-            [sender presentViewController:slComposeViewController animated:YES completion:nil];
-        }
-        else
-        {
-            // auto-post based on the user's choices (via the green check boxes in CBCEditEventController)...
-            
-            ACAccountStore * fbAccountStore = [[ACAccountStore alloc] init];
-            ACAccountType * fbAccountType = [fbAccountStore accountTypeWithAccountTypeIdentifier: ACAccountTypeIdentifierFacebook];
-            
-            // Specify App ID and permissions
-            
-            NSString * fbAppId = @"1538350369730665";
-            NSString * fbAudienceKey = ACFacebookAudienceOnlyMe; // HACK FOR TESTING
-            
-            NSDictionary * optionsRead = @{
-                                       ACFacebookAppIdKey: fbAppId,
-                                       ACFacebookPermissionsKey: @[@"email"],
-                                       ACFacebookAudienceKey: fbAudienceKey };
-
-            // Frist ask for read permissions (email), then if that's granted ask for write (publish)...
-            
-            NSLog(@"FB: requesting read permissions...");
-
-            [fbAccountStore requestAccessToAccountsWithType:fbAccountType options:optionsRead completion:
-                ^(BOOL granted, NSError *error)
-                {
-                    NSLog(@"FB: read permission completion: granted = %s", granted?"YES":"NO");
-                    if (granted && error == nil)
-                    {
-                        /**
-                         * The user granted us the basic read permission.
-                         * Now we can ask for more permissions
-                         **/
-                        NSDictionary * optionsWrite = @{
-                                                   ACFacebookAppIdKey: fbAppId,
-                                                   ACFacebookPermissionsKey: @[@"publish_actions"],
-                                                   ACFacebookAudienceKey: fbAudienceKey };
-                        
-                        [fbAccountStore requestAccessToAccountsWithType:fbAccountType options:optionsWrite completion:
-                            ^(BOOL granted, NSError *error)
-                            {
-                                NSLog(@"FB: write permission completion: granted = %s", granted?"YES":"NO");
-                                if (granted && error == nil)
-                                {
-                                    /**
-                                     * We now should have some read permission
-                                     * Now we may ask for write permissions or
-                                     * do something else.
-                                     **/
-                                    NSArray * accountsArray = [fbAccountStore accountsWithAccountType:fbAccountType];
-                                    if ([accountsArray count] > 0)
-                                    {
-                                        ACAccount * fbAccount = [accountsArray objectAtIndex:0];
-                                        
-                                        NSDictionary * parameters = nil; //@{@"message": sendmessage};
-                                        
-                                        SLRequest * fbRequest
-                                         = [SLRequest requestForServiceType:SLServiceTypeFacebook
-                                                              requestMethod:SLRequestMethodPOST
-                                                                        URL:[NSURL URLWithString:@"https://graph.facebook.com/me/photos"]
-                                                                 parameters:parameters];
-                                        
-                                        [fbRequest addMultipartData:heartRateEvent.photo
-                                                           withName:@"source"
-                                                               type:@"multipart/form-data"
-                                                           filename:@"BioGramPhoto"];
-                                        [fbRequest addMultipartData:[message dataUsingEncoding:NSUTF8StringEncoding]
-                                                           withName:@"message"
-                                                               type:@"multipart/form-data"
-                                                           filename:nil];
-                                        
-                                        [fbRequest setAccount:fbAccount];
-                                        
-                                         NSLog(@"FB: performing request...");
-                                         [fbRequest performRequestWithHandler:
-                                             ^(NSData* responseData, NSHTTPURLResponse* urlResponse, NSError* error)
-                                             {
-                                                 if (error == nil)
-                                                 {
-                                                     NSString * responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                                                     NSLog(@"FB response data is: %@", responseString);
-                                                     [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
-                                                                                forEvent:heartRateEvent];
-                                                 }
-                                                 else
-                                                 {
-                                                     NSLog(@"FB request failed -- error is: %@",error.description);
-                                                     NSString * message = [NSString stringWithFormat:@"An error occurred while\nposting to Facebook:\n%@",
-                                                                           [error description]];
-                                                     [CBCAppDelegate showMessage:message withTitle:@"Posting Error"];
-                                                 }
-                                             }
-                                         ];
-                                    }
-                                    else
-                                    {
-                                        NSLog(@"FB: no facebook accounts found");
-                                        [CBCAppDelegate showMessage:@"Please configure a Facebook account in Settings." withTitle:@"No Account Found"];
-                                    }
-                                }
-                                else
-                                {
-                                    NSLog(@"FB post not granted -- error is: %@",[error description]);
-                                    if (error != nil)
-                                    {
-                                        NSString * message = [NSString stringWithFormat:@"An error occurred while\nrequesting Facebook permissions:\n%@",
-                                                              [error description]];
-                                        [CBCAppDelegate showMessage:message withTitle:@"Permissions Error"];
-                                    }
-                                }
-                            }
-                        ];
-                    }
-                    else
-                    {
-                        NSLog(@"FB read not granted -- error is: %@",[error description]);
-                        if (error != nil)
-                        {
-                            NSString * message = [NSString stringWithFormat:@"An error occurred while\nrequesting Facebook permissions:\n%@",
-                                                  [error description]];
-                            [CBCAppDelegate showMessage:message withTitle:@"Permissions Error"];
-                        }
-                    }
-                }
-            ];
-        }
+        [CBCSocialUtilities
+         postToFacebookWithCaption:message
+         photo:photo
+         sender:sender
+         finishCallback:^
+         {
+             [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
+                                        forEvent:heartRateEvent];
+         }];
     }
     else
     {
@@ -237,122 +244,129 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
 #pragma mark - Twitter
 
++ (void)postToTwitterWithCaption:(NSString*)caption photo:(UIImage*)photo sender:(id)sender finishCallback:(void (^)())callback
+{
+    if (g_useSLComposeViewController)
+    {
+        // show a pop-up dialog to allow the user the post manually
+        
+        SLComposeViewController * slComposeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        [slComposeViewController addImage:photo];
+        [slComposeViewController setInitialText:caption];
+        slComposeViewController.completionHandler =
+        ^(SLComposeViewControllerResult result)
+        {
+            if (result == SLComposeViewControllerResultDone)
+            {
+                callback();
+            }
+        };
+        
+        [sender presentViewController:slComposeViewController animated:YES completion:nil];
+    }
+    else
+    {
+        // auto-post based on the user's choices (via the green check boxes in CBCEditEventController)...
+        
+        // THIS DOES NOT WORK BECAUSE IT LACKS OAUTH AUTHORIZATION, WHICH APPEARS TO BE IMPOSSIBLE WITHOUT
+        // REDIRECTING THE USER TO A WEB PAGE (THREE-LEGGED AUTH OR PIN-BASED AUTH).
+        
+        ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+        ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:
+                                      ACAccountTypeIdentifierTwitter];
+        
+        NSLog(@"TWTR: requesting access");
+        [accountStore requestAccessToAccountsWithType:accountType options:nil
+                                           completion:
+         ^(BOOL granted, NSError *error)
+         {
+             NSLog(@"FB: access completion: granted = %s", granted?"YES":"NO");
+             if (granted == YES)
+             {
+                 // Get account and communicate with Twitter API
+                 NSArray *arrayOfAccounts = [accountStore
+                                             accountsWithAccountType:accountType];
+                 
+                 if ([arrayOfAccounts count] > 0)
+                 {
+                     ACAccount *twitterAccount = [arrayOfAccounts lastObject];
+                     
+                     NSDictionary *parametersDict = @{@"status": caption};
+                     
+                     NSURL *requestURL = [NSURL
+                                          URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+                     
+                     SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                                 requestMethod:SLRequestMethodPOST
+                                                                           URL:requestURL
+                                                                    parameters:parametersDict];
+                     
+                     postRequest.account = twitterAccount;
+                     
+                     NSLog(@"TWTR: sending post request");
+                     [postRequest performRequestWithHandler:
+                      ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
+                      {
+                          NSLog(@"TWTR: post response: %i", [urlResponse statusCode]);
+                      }
+                      ];
+                 }
+                 else
+                 {
+                     [CBCAppDelegate showMessage:@"Please configure a Twitter account in Settings." withTitle:@"No Account Found"];
+                 }
+             }
+         }
+         ];
+    }
+}
+
 + (void)postMDPostToTwitter:(MDPost *)heartRatePost sender:(id)sender
 {
-    /*
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
-        NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
-        NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        NSString* biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
+        NSString* message = [NSString stringWithFormat:@"%@\n%@", heartRatePost.text, biogramTagLine];
         
-        if (g_useSLComposeViewController)
-        {
-            // show a pop-up dialog to allow the user the post manually
-            
-            UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
-            
-            SLComposeViewController * slComposeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-            [slComposeViewController addImage:image];
-            [slComposeViewController setInitialText:message];
-            slComposeViewController.completionHandler =
-            ^(SLComposeViewControllerResult result)
-            {
-                if (result == SLComposeViewControllerResultDone)
-                {
-                    [CBCSocialUtilities postDidComplete:SocialServiceIDTwitter
-                                               forEvent:heartRateEvent];
-                }
-            };
-            
-            [sender presentViewController:slComposeViewController animated:YES completion:nil];
-        }
+        [heartRatePost postPicsWithUpdateBlock:^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
+         {
+             [CBCSocialUtilities
+              postToTwitterWithCaption:message
+              photo:image
+              sender:sender
+              finishCallback:^
+              {
+                  // TODO: is this needed?
+                  //                  [CBCSocialUtilities postDidComplete:SocialServiceIDTwitter
+                  //                                             forEvent:???];
+              }];
+             
+             return YES;
+         }];
     }
-    */
+    else
+    {
+        [CBCAppDelegate showMessage:@"Please configure a Twitter account in Settings." withTitle:@"No Account Found"];
+    }
 }
 
 + (void)postToTwitter:(CBCHeartRateEvent *)heartRateEvent sender:(id)sender
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
-        NSString * biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
-        NSString * message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
-
-        if (g_useSLComposeViewController)
-        {
-            // show a pop-up dialog to allow the user the post manually
-            
-            UIImage * image = [UIImage imageWithData:heartRateEvent.photo];
-            
-            SLComposeViewController * slComposeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-            [slComposeViewController addImage:image];
-            [slComposeViewController setInitialText:message];
-            slComposeViewController.completionHandler =
-                ^(SLComposeViewControllerResult result)
-                {
-                    if (result == SLComposeViewControllerResultDone)
-                    {
-                        [CBCSocialUtilities postDidComplete:SocialServiceIDTwitter
-                                                   forEvent:heartRateEvent];
-                    }
-                };
-            
-            [sender presentViewController:slComposeViewController animated:YES completion:nil];
-        }
-        else
-        {
-            // auto-post based on the user's choices (via the green check boxes in CBCEditEventController)...
-            
-            // THIS DOES NOT WORK BECAUSE IT LACKS OAUTH AUTHORIZATION, WHICH APPEARS TO BE IMPOSSIBLE WITHOUT
-            // REDIRECTING THE USER TO A WEB PAGE (THREE-LEGGED AUTH OR PIN-BASED AUTH).
-            
-            ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-            ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:
-                                          ACAccountTypeIdentifierTwitter];
-            
-            NSLog(@"TWTR: requesting access");
-            [accountStore requestAccessToAccountsWithType:accountType options:nil
-                                          completion:
-                ^(BOOL granted, NSError *error)
-                {
-                    NSLog(@"FB: access completion: granted = %s", granted?"YES":"NO");
-                    if (granted == YES)
-                    {
-                        // Get account and communicate with Twitter API
-                        NSArray *arrayOfAccounts = [accountStore
-                                                    accountsWithAccountType:accountType];
-                        
-                        if ([arrayOfAccounts count] > 0)
-                        {
-                            ACAccount *twitterAccount = [arrayOfAccounts lastObject];
-                            
-                            NSDictionary *parametersDict = @{@"status": message};
-                            
-                            NSURL *requestURL = [NSURL
-                                                 URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
-                            
-                            SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
-                                                                        requestMethod:SLRequestMethodPOST
-                                                                                  URL:requestURL
-                                                                           parameters:parametersDict];
-                            
-                            postRequest.account = twitterAccount;
-                            
-                            NSLog(@"TWTR: sending post request");
-                            [postRequest performRequestWithHandler:
-                                ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
-                                {
-                                    NSLog(@"TWTR: post response: %i", [urlResponse statusCode]);
-                                }
-                            ];
-                        }
-                        else
-                        {
-                            [CBCAppDelegate showMessage:@"Please configure a Twitter account in Settings." withTitle:@"No Account Found"];
-                        }
-                    }
-                }
-            ];
-        }
+        NSString* biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
+        NSString* message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        UIImage* photo = [UIImage imageWithData:heartRateEvent.photo];
+        
+        [CBCSocialUtilities
+         postToTwitterWithCaption:message
+         photo:photo
+         sender:sender
+         finishCallback:^
+         {
+             [CBCSocialUtilities postDidComplete:SocialServiceIDTwitter
+                                        forEvent:heartRateEvent];
+         }];
     }
     else
     {
