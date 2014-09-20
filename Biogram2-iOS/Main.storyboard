@@ -880,9 +880,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="pg4-7B-00C">
-                                <rect key="frame" x="2" y="75" width="65" height="51"/>
+                                <rect key="frame" x="2" y="75" width="65" height="53"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Reset Trial Mode"/>
                                 <connections>
                                     <action selector="resetTrialModeTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="i91-4f-Asr"/>
@@ -899,13 +899,24 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6t-IA-ZC2">
-                                <rect key="frame" x="20" y="75" width="280" height="157"/>
+                                <rect key="frame" x="20" y="188" width="280" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="medableInfoTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="bS2-HN-YRc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="DeC-33-weU">
+                                <rect key="frame" x="234" y="75" width="71" height="53"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Switch to Memory Store">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="switchCoreDataStoresTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="a5w-Dp-vXE"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -926,6 +937,7 @@
                         <outlet property="medableInfoButton" destination="P6t-IA-ZC2" id="4A9-6f-h6Q"/>
                         <outlet property="medableLoggedInButton" destination="PlN-lC-s3P" id="Ibr-KQ-StN"/>
                         <outlet property="resetTrialModeButton" destination="pg4-7B-00C" id="gRG-1Y-zae"/>
+                        <outlet property="switchCoreDataStoresButton" destination="DeC-33-weU" id="ya3-qj-fae"/>
                         <outlet property="tableView" destination="PtP-Or-cTL" id="nGX-Z4-xDP"/>
                     </connections>
                 </viewController>

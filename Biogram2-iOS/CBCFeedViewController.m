@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *goToMedableButton;
 @property (weak, nonatomic) IBOutlet UIButton *medableInfoButton;
 @property (weak, nonatomic) IBOutlet UIButton *resetTrialModeButton;
+@property (weak, nonatomic) IBOutlet UIButton *switchCoreDataStoresButton;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
 
@@ -33,6 +34,7 @@
 - (IBAction)medableInfoTouched:(id)sender;
 - (IBAction)goToMedableTouched:(id)sender;
 - (IBAction)resetTrialModeTouched:(id)sender;
+- (IBAction)switchCoreDataStoresTouched:(id)sender;
 
 - (void)feedSourceDidChange;
 
@@ -552,6 +554,36 @@
     // reset the number of events created to extend the trial period
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"TrialEventCount"];
 #endif
+}
+
+- (IBAction)switchCoreDataStoresTouched:(id)sender
+{
+    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
+    {
+        CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
+        
+        _fetchedResultsController = nil; // kill fetched results controller
+
+        [appDelegate toggleUsingInMemoryStore];
+        BOOL usingInMemoryStore = appDelegate.usingInMemoryStore;
+        
+        self.fetchedResultsController.delegate = self; // and re-create it
+        [self.tableView reloadData];
+        
+        self.switchCoreDataStoresButton.enabled = YES;
+        if (usingInMemoryStore)
+        {
+            [self.switchCoreDataStoresButton setTitle:@"Switch to File Store" forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.switchCoreDataStoresButton setTitle:@"Switch to Memory Store" forState:UIControlStateNormal];
+        }
+    }
+    else
+    {
+        self.switchCoreDataStoresButton.enabled = NO;
+    }
 }
 
 - (IBAction)medableInfoTouched:(id)sender

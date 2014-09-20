@@ -29,6 +29,7 @@
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize usingInMemoryStore = _usingInMemoryStore;
 
 + (CBCAppDelegate*)appDelegate
 {
@@ -50,6 +51,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    _usingInMemoryStore = NO;
+    
     // Setup network calls. Log to console in debug builds.
 #ifdef DEBUG
     [[AFNetworkActivityLogger sharedLogger] startLogging];
@@ -164,6 +167,16 @@
     return _managedObjectModel;
 }
 
+- addPersistentStoreWithUrl:(NSURL *)storeURL error:(NSError **)pError;
+{
+    NSPersistentStore * store = nil;
+    if (storeURL == nil)
+        store = [_persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:pError];
+    else
+        store = [_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:pError];
+    return store;
+}
+
 // Returns the persistent store coordinator for the application.
 // If the coordinator doesn't already exist, it is created and the application's store added to it.
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator
@@ -172,18 +185,24 @@
         return _persistentStoreCoordinator;
     }
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Biogram2_iOS.sqlite"];
+    NSURL *storeURL = (self.usingInMemoryStore) ? nil : [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Biogram2_iOS.sqlite"];
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
-    {
-        // The schema for the persistent store is probably incompatible with current managed object model,
-        // because we changed it (during development). Delete it and try again.
-        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
 
-        if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
+    NSPersistentStore * store = [self addPersistentStoreWithUrl:storeURL error:&error];
+    
+    if (!store)
+    {
+        if (!self.usingInMemoryStore)
+        {
+            // The schema for the persistent store is probably incompatible with current managed object model,
+            // because we changed it (during development). Delete it and try again.
+            [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+            store = [self addPersistentStoreWithUrl:storeURL error:&error];
+        }
+
+        if (!store)
         {
             /*
              Replace this implementation with code to handle the error appropriately.
@@ -236,6 +255,27 @@
             }
         }
     }
+}
+
+- (BOOL)usingInMemoryStore
+{
+    return _usingInMemoryStore;
+}
+
+- (void)toggleUsingInMemoryStore
+{
+    [self setUsingInMemoryStore:!_usingInMemoryStore];
+}
+
+- (void)setUsingInMemoryStore:(BOOL)wantInMemory
+{
+    [self saveContext];
+    
+    _persistentStoreCoordinator = nil;
+    _managedObjectContext = nil;
+
+    _usingInMemoryStore = wantInMemory;
+    [self saveContext];
 }
 
 #pragma mark - Heart Rate Event Creation
@@ -325,7 +365,6 @@
 
 - (void)medableUserDidLogIn
 {
-    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
     BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];
     
     NSLog(@"medableUserDidLogIn - loggedIn = %s", loggedIn?"YES":"NO");
@@ -350,7 +389,7 @@
                         NSLog(@"BATCH POST: DONE: count = %d", count);
                         [CBCHeartRateFeed deleteHeartRateEventsFromCoreData:coreDataEvents];
 
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kCBCSocialPostDidComplete object:appDelegate];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kCBCSocialPostDidComplete object:self];
                     }
                 }
             ];

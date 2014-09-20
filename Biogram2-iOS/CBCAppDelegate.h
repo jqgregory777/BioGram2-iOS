@@ -20,6 +20,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property BOOL usingInMemoryStore;
 
 + (CBCAppDelegate*)appDelegate;
 
@@ -42,6 +43,9 @@
 - (BOOL)savePendingHeartRateEvent;
 - (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 
+- (BOOL)usingInMemoryStore;
+- (void)setUsingInMemoryStore:(BOOL)wantInMemory;
+- (void)toggleUsingInMemoryStore;
 
 #pragma mark - Utilities
 

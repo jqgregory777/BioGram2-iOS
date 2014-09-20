@@ -263,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				541AD55119C21A840083FDD1 /* Biogram2-iOS-Info.plist */,
+				C13622C719C8BEA700B31E82 /* Environments.plist */,
 				541AD55219C21A840083FDD1 /* InfoPlist.strings */,
 				541AD55519C21A840083FDD1 /* main.m */,
 				541AD55719C21A840083FDD1 /* Biogram2-iOS-Prefix.pch */,
@@ -341,6 +342,8 @@
 		54A266D119C2B67200BE5834 /* Medable */ = {
 			isa = PBXGroup;
 			children = (
+				54607A6419CDF9F90054D1E4 /* CBCMedable.h */,
+				54607A6519CDF9F90054D1E4 /* CBCMedable.m */,
 				54A266D219C2B69F00BE5834 /* CBCMedableMainTableViewController.h */,
 				54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */,
 				545C5B7119C3874400FC704D /* CBCMedableViewAccountController.h */,
@@ -349,9 +352,6 @@
 				54A266CF19C2B1A300BE5834 /* CBCMedableCreateAccountController.m */,
 				54607A6119CC19580054D1E4 /* CBCMedableSettingsController.h */,
 				54607A6219CC19580054D1E4 /* CBCMedableSettingsController.m */,
-				C13622C719C8BEA700B31E82 /* Environments.plist */,
-				54607A6419CDF9F90054D1E4 /* CBCMedable.h */,
-				54607A6519CDF9F90054D1E4 /* CBCMedable.m */,
 			);
 			name = Medable;
 			sourceTree = "<group>";
