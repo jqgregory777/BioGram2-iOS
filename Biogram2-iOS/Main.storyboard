@@ -1127,12 +1127,12 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="AliveCor" id="QNd-on-iws">
-                                        <barButtonItem key="leftBarButtonItem" title="Heart Rate" id="bhB-kz-Nil">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="bhB-kz-Nil">
                                             <connections>
                                                 <action selector="backButtonPressed:" destination="mBs-VM-LHn" id="moA-c8-obh"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" title="Confirm" id="b7m-9g-lDc">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="b7m-9g-lDc">
                                             <connections>
                                                 <action selector="confirmButtonPressed:" destination="mBs-VM-LHn" id="aQo-74-guU"/>
                                             </connections>

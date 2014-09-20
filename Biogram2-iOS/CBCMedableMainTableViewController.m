@@ -8,6 +8,7 @@
 
 #import "CBCMedableMainTableViewController.h"
 #import "CBCAppDelegate.h"
+#import "CBCMedable.h"
 
 @interface CBCMedableMainTableViewController ()
 
@@ -61,7 +62,7 @@
 - (void)updateAccountDetailsButton
 {
     // Grey out the Account cell if there's no account to view
-    BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
+    BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];
 
     self.accountCell.userInteractionEnabled = loggedIn;
     self.accountCell.textLabel.enabled = loggedIn;
@@ -84,14 +85,11 @@
     UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
     if ([cell.reuseIdentifier isEqualToString:@"medableLogInOut"])
     {
-        if ( ![[CBCAppDelegate appDelegate] isLoggedInToMedable] )
-        {
-            [[CBCAppDelegate appDelegate] showMedableLoginDialog];
-        }
+        CBCMedable * medable = [CBCMedable singleton];
+        if ([medable isLoggedIn])
+            [medable logout];
         else
-        {
-            [[CBCAppDelegate appDelegate] logoutMedable];
-        }
+            [medable showLoginDialog];
     }
 }
 

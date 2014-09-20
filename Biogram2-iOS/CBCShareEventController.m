@@ -39,7 +39,7 @@
 
 - (IBAction)saveButtonTouched:(id)sender
 {
-//    if ([[CBCAppDelegate appDelegate] isLoggedInToMedable])
+//    if ([[CBCMedable singleton] isLoggedIn])
 //    {
 //        // when in medable mode, we never save to Core Data, so clean up the pending object
 //        [[CBCAppDelegate appDelegate] cancelPendingHeartRateEvent];

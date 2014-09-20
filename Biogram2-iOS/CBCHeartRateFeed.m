@@ -8,6 +8,7 @@
 
 #import "CBCHeartRateFeed.h"
 #import "CBCAppDelegate.h"
+#import "CBCMedable.h"
 
 @implementation CBCHeartRateFeed
 
@@ -17,7 +18,7 @@ static CBCFeedFilter _currentFeedFilter;
 
 + (CBCFeedSource)currentFeedSource
 {
-    BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
+    BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];
     return (loggedIn) ? CBCFeedSourceMedable : CBCFeedSourceCoreData;
 }
 

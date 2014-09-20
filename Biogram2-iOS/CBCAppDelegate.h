@@ -13,7 +13,7 @@
 
 @class CBCDetailViewController;
 
-@interface CBCAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
+@interface CBCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -42,14 +42,6 @@
 - (BOOL)savePendingHeartRateEvent;
 - (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 
-
-#pragma mark - Medable
-
-- (void)showMedableLoginDialog;
-- (void)loginMedableWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken;
-- (void)logoutMedable;
-- (BOOL)isLoggedInToMedable;
-- (void)displayAlertWithMedableFault:(MDFault*)fault;
 
 #pragma mark - Utilities
 

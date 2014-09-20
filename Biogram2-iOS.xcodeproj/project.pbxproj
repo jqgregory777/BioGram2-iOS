@@ -36,6 +36,7 @@
 		54607A5D19CC0F5F0054D1E4 /* CBCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54607A5C19CC0F5F0054D1E4 /* CBCNavigationController.m */; };
 		54607A6019CC13BB0054D1E4 /* CBCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54607A5F19CC13BB0054D1E4 /* CBCTableViewController.m */; };
 		54607A6319CC19580054D1E4 /* CBCMedableSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54607A6219CC19580054D1E4 /* CBCMedableSettingsController.m */; };
+		54607A6619CDF9F90054D1E4 /* CBCMedable.m in Sources */ = {isa = PBXBuildFile; fileRef = 54607A6519CDF9F90054D1E4 /* CBCMedable.m */; };
 		547A7BA019C8ABA8004543EE /* CBCSocialUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 547A7B9F19C8ABA8004543EE /* CBCSocialUtilities.m */; };
 		5495F86C19C2779E00E5937E /* CBCDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5495F86B19C2779E00E5937E /* CBCDetailViewController.m */; };
 		549727A719C7F21C00DAF814 /* AliveHMLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 549727A619C7F21C00DAF814 /* AliveHMLibrary.framework */; };
@@ -114,6 +115,8 @@
 		54607A5F19CC13BB0054D1E4 /* CBCTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCTableViewController.m; sourceTree = "<group>"; };
 		54607A6119CC19580054D1E4 /* CBCMedableSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedableSettingsController.h; sourceTree = "<group>"; };
 		54607A6219CC19580054D1E4 /* CBCMedableSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedableSettingsController.m; sourceTree = "<group>"; };
+		54607A6419CDF9F90054D1E4 /* CBCMedable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCMedable.h; sourceTree = "<group>"; };
+		54607A6519CDF9F90054D1E4 /* CBCMedable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCMedable.m; sourceTree = "<group>"; };
 		547A7B9E19C8ABA8004543EE /* CBCSocialUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCSocialUtilities.h; sourceTree = "<group>"; };
 		547A7B9F19C8ABA8004543EE /* CBCSocialUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBCSocialUtilities.m; sourceTree = "<group>"; };
 		5495F86A19C2779E00E5937E /* CBCDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBCDetailViewController.h; sourceTree = "<group>"; };
@@ -347,6 +350,8 @@
 				54607A6119CC19580054D1E4 /* CBCMedableSettingsController.h */,
 				54607A6219CC19580054D1E4 /* CBCMedableSettingsController.m */,
 				C13622C719C8BEA700B31E82 /* Environments.plist */,
+				54607A6419CDF9F90054D1E4 /* CBCMedable.h */,
+				54607A6519CDF9F90054D1E4 /* CBCMedable.m */,
 			);
 			name = Medable;
 			sourceTree = "<group>";
@@ -460,6 +465,7 @@
 				54607A6019CC13BB0054D1E4 /* CBCTableViewController.m in Sources */,
 				545C5B7319C3874400FC704D /* CBCMedableViewAccountController.m in Sources */,
 				54C7FFAC19C5E3B7008BB7AE /* CBCImageUtilities.m in Sources */,
+				54607A6619CDF9F90054D1E4 /* CBCMedable.m in Sources */,
 				54F0D75E19CA9A850008945A /* CBCShareEventController.m in Sources */,
 				541AD55619C21A840083FDD1 /* main.m in Sources */,
 				541AD55D19C21A840083FDD1 /* Biogram2_iOS.xcdatamodeld in Sources */,

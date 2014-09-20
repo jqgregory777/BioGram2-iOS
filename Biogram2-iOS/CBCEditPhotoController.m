@@ -8,6 +8,7 @@
 
 #import "CBCEditPhotoController.h"
 #import "CBCAppDelegate.h"
+#import "CBCMedable.h"
 #import "CBCHeartRateEvent.h"
 #import "CBCImageUtilities.h"
 #import "CBCSocialUtilities.h"
@@ -192,7 +193,7 @@
         [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
     }
 
-    if ([[CBCAppDelegate appDelegate] isLoggedInToMedable])
+    if ([[CBCMedable singleton] isLoggedIn])
     {
         // when in medable mode, we never save to Core Data, so clean up the pending object
         [[CBCAppDelegate appDelegate] cancelPendingHeartRateEvent];

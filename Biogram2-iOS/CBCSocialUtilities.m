@@ -8,6 +8,7 @@
 
 #import "CBCSocialUtilities.h"
 #import "CBCAppDelegate.h"
+#import "CBCMedable.h"
 #import "CBCDetailViewController.h"
 #import <Social/Social.h>
 
@@ -473,8 +474,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
         {
             if (fault)
             {
-                CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-                [appDelegate displayAlertWithMedableFault:fault];
+                [[CBCMedable singleton] displayAlertWithFault:fault];
             }
             else
             {

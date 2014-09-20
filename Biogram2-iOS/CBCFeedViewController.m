@@ -8,6 +8,7 @@
 
 #import "CBCFeedViewController.h"
 #import "CBCAppDelegate.h"
+#import "CBCMedable.h"
 #import "CBCHeartRateFeed.h"
 #import "CBCHeartRateEvent.h"
 #import "CBCImageUtilities.h"
@@ -123,7 +124,7 @@
 
 - (void)updateMedableLoggedIn
 {
-    BOOL loggedIn = [[CBCAppDelegate appDelegate] isLoggedInToMedable];
+    BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];
     BOOL inTrialMode = !loggedIn;
 
     self.medableLoggedInButton.enabled = loggedIn;
@@ -501,7 +502,7 @@
                  {
                      if (fault)
                      {
-                         [[CBCAppDelegate appDelegate] displayAlertWithMedableFault:fault];
+                         [[CBCMedable singleton] displayAlertWithFault:fault];
                      }
                      else
                      {
