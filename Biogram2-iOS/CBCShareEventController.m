@@ -37,6 +37,17 @@
     [self.navigationController setViewControllers:newControllers animated:NO];
 }
 
+- (void)resetUIFlow
+{
+    // Put the original root controller back into the stack.
+    NSArray * newControllers = [NSArray arrayWithObjects:self.originalRootController, self, nil];
+    [self.navigationController setViewControllers:newControllers animated:NO];
+    
+    // Jump back to start of the "create heart rate event" page sequence.
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    //[self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
+}
+
 - (IBAction)saveButtonTouched:(id)sender
 {
 //    if ([[CBCMedable singleton] isLoggedIn])
@@ -48,13 +59,8 @@
     // Activate the feed view in the tab bar.
     self.tabBarController.selectedIndex = 0;
 
-    // Put the original root controller back into the stack.
-    NSArray * newControllers = [NSArray arrayWithObjects:self.originalRootController, self, nil];
-    [self.navigationController setViewControllers:newControllers animated:NO];
-    
-    // Jump back to start of the "create heart rate event" page sequence.
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    //[self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
+    // Reset to start of the "create heart rate event" page sequence.
+    [self resetUIFlow];
 }
 
 @end

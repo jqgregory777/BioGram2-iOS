@@ -8,6 +8,7 @@
 
 #import "CBCTabBarController.h"
 #import "CBCFeedViewController.h"
+#import "CBCShareEventController.h"
 
 @interface CBCTabBarController ()
 
@@ -22,6 +23,15 @@
     if ([navController.viewControllers[0] respondsToSelector:@selector(stopEditingTableView)])
     {
         [navController.viewControllers[0] performSelector:@selector(stopEditingTableView)];
+    }
+    
+    // also reset the CBCSharePhotoController if it's currently displayed
+    navController = self.viewControllers[1];
+    UIViewController * viewController = navController.viewControllers[0];
+    if ([viewController respondsToSelector:@selector(resetUIFlow)])
+    {
+        // it's a CBCShareEventController
+        [viewController performSelector:@selector(resetUIFlow)];
     }
 }
 
