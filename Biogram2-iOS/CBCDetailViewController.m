@@ -7,8 +7,15 @@
 //
 
 #import "CBCDetailViewController.h"
+#import "CBCHeartRateFeed.h"
 #import "CBCAppDelegate.h"
 #import "CBCSocialUtilities.h"
+
+@interface CBCDetailViewController ()
+
+- (void)updateUI:(NSNotification *)notification;
+
+@end
 
 @implementation CBCDetailViewController
 
@@ -24,11 +31,30 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if (self.displayedEvent == nil)
+    {
+        // if no one explicitly set my displayed event, assume we're editing the pending event
+        CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+        self.displayedEvent = [feed pendingHeartRateEvent];
+    }
+    NSAssert(self.displayedEvent != nil, @"CBCDetailViewController: self.displayedEvent == nil");
+    
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(updateUI) name:kCBCSocialPostDidComplete object:nil];
+    [defaultCenter addObserver:self selector:@selector(updateUI:) name:kCBCSocialPostDidComplete object:nil];
+    
+    [self updateUI:nil];
+}
 
-    [self updateUI];
+- (void)viewWillDisappear:(BOOL)animated
+{
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter removeObserver:self name:kCBCSocialPostDidComplete object:nil];
 }
 
 - (BOOL)shouldAutorotate
@@ -46,68 +72,25 @@
     return UIInterfaceOrientationPortrait;
 }
 
-- (void)updateUI
+- (void)updateUI:(NSNotification *)notification
 {
-    if (self.displayedEvent)
-    {
-        self.postedToFacebookImgView.hidden = !self.displayedEvent.postedToFacebook.boolValue;
-        self.postedToTwitterImgView.hidden = !self.displayedEvent.postedToTwitter.boolValue;
-        self.postedToMedableImgView.hidden = !self.displayedEvent.postedToMedable.boolValue;
-        
-        self.postToFacebookButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] && !(self.displayedEvent.postedToFacebook.boolValue));
-        self.postToTwitterButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(self.displayedEvent.postedToTwitter.boolValue));
-        self.postToMedableButton.enabled = NO;
+    NSAssert(self.displayedEvent != nil, @"CBCDetailViewController: self.displayedEvent == nil");
 
-        self.timeStampLabel.text = self.displayedEvent.timeStampAsString;
-        self.captionLabel.text = self.displayedEvent.eventDescription;
-        
-        UIImage* image = [UIImage imageWithData:self.displayedEvent.photo];
-        if (image != nil)
-        {
-            self.photoImageView.image = image;
-        }
-    }
-    else if (self.displayedPost)
-    {
-        self.postedToFacebookImgView.hidden = YES;
-        self.postedToTwitterImgView.hidden = YES;
-        self.postedToMedableImgView.hidden = NO;
-        
-        self.postToFacebookButton.enabled = [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook];
-        self.postToTwitterButton.enabled = [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter];
-        self.postToMedableButton.enabled = NO;
+    self.postedToFacebookImgView.hidden = !self.displayedEvent.postedToFacebook.boolValue;
+    self.postedToTwitterImgView.hidden = !self.displayedEvent.postedToTwitter.boolValue;
+    self.postedToMedableImgView.hidden = !self.displayedEvent.postedToMedable.boolValue;
+    
+    self.postToFacebookButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] && !(self.displayedEvent.postedToFacebook.boolValue));
+    self.postToTwitterButton.enabled = ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] && !(self.displayedEvent.postedToTwitter.boolValue));
+    self.postToMedableButton.enabled = NO;
 
-        NSUInteger heartbeat = 0;
-        
-        NSArray* body = [self.displayedPost body];
-        for (NSDictionary* bodyDict in body)
-        {
-            NSString* segmentType = [bodyDict objectForKey:kTypeKey];
-            if ([segmentType isEqualToString:kIntegerKey])
-            {
-                NSNumber* heartbeatNumber = [bodyDict objectForKey:kValueKey];
-                heartbeat = [heartbeatNumber unsignedIntegerValue];
-            }
-        }
-        
-        self.timeStampLabel.text = [NSDateFormatter
-                                    localizedStringFromDate:self.displayedPost.created
-                                    dateStyle:NSDateFormatterMediumStyle
-                                    timeStyle:NSDateFormatterShortStyle];
-        
-        self.captionLabel.text = self.displayedPost.text;
-        
-        __weak typeof (self) wSelf = self;
-        
-        [self.displayedPost postPicsWithUpdateBlock:^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
-         {
-             dispatch_async(dispatch_get_main_queue(), ^
-                            {
-                                wSelf.photoImageView.image = image;
-                            });
-             
-             return YES;
-         }];
+    self.timeStampLabel.text = self.displayedEvent.timeStampAsString;
+    self.captionLabel.text = self.displayedEvent.eventDescription;
+    
+    UIImage* image = [UIImage imageWithData:self.displayedEvent.photo];
+    if (image != nil)
+    {
+        self.photoImageView.image = image;
     }
 }
 
@@ -121,26 +104,14 @@
 
 - (IBAction)postToFacebookTouched:(id)sender
 {
-    if (self.displayedEvent != nil)
-    {
-        [CBCSocialUtilities postToFacebook:self.displayedEvent sender:self];
-    }
-    else if (self.displayedPost != nil)
-    {
-        [CBCSocialUtilities postMDPostToFacebook:self.displayedPost sender:self];
-    }
+    NSAssert(self.displayedEvent != nil, @"CBCDetailViewController: self.displayedEvent == nil");
+    [CBCSocialUtilities postToFacebook:self.displayedEvent sender:self];
 }
 
 - (IBAction)postToTwitterTouched:(id)sender
 {
-    if (self.displayedEvent)
-    {
-        [CBCSocialUtilities postToTwitter:self.displayedEvent sender:self];
-    }
-    else if (self.displayedPost)
-    {
-        [CBCSocialUtilities postMDPostToTwitter:self.displayedPost sender:self];
-    }
+    NSAssert(self.displayedEvent != nil, @"CBCDetailViewController: self.displayedEvent == nil");
+    [CBCSocialUtilities postToTwitter:self.displayedEvent sender:self];
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "CBCCreateHeartRateEventController.h"
 #import "CBCAppDelegate.h"
 #import "CBCHeartRateEvent.h"
+#import "CBCHearTRateFeed.h"
 #import "AliveHMViewController.h"
 
 @interface CBCCreateHeartRateEventController ()
@@ -48,8 +49,8 @@
         // we're already on the navigation stack
         // another controller must have been popped off
         // so, cancel the pending heart rate event
-        CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-        [appDelegate cancelPendingHeartRateEvent];
+        CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+        [feed cancelPendingHeartRateEvent];
     }
 }
 
@@ -66,8 +67,8 @@
             // Create a new pending heart rate event (for manual entry)
             //
             
-            CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-            [appDelegate createPendingHeartRateEvent];
+            CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+            [feed createPendingHeartRateEvent];
             
             // Now fake a segue to the view (needed to keep the landscape orientation)
             [aliveController setDelegate:self];
@@ -87,16 +88,21 @@
 
 -(void)didCloseAliveViewWithHeartRate:(NSString*)heartRate
 {
-    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-    if (appDelegate.pendingHeartRateEvent != nil)
+    CBCHeartRateEvent * pendingEvent = [[[CBCFeedManager singleton] currentFeed] pendingHeartRateEvent];
+    if (pendingEvent != nil)
     {
-        appDelegate.pendingHeartRateEvent.heartRate = heartRate;
+        pendingEvent.heartRate = [heartRate copy];
+        NSLog(@"CBCCreateHeartRateEventController: didCloseAliveViewWithHeartRate: pendingEvent.heartRate = %@", pendingEvent.heartRate);
     }
 
+    [self performSegueWithIdentifier:@"aliveCorNextSegue" sender:self];
+    
     [self dismissViewControllerAnimated:YES completion:
         ^
         {
-            [self performSegueWithIdentifier:@"aliveCorNextSegue" sender:self];
+            CBCHeartRateEvent * pendingEvent2 = [[[CBCFeedManager singleton] currentFeed] pendingHeartRateEvent];
+            NSLog(@"pendingEvent2 = %p, pendingEvent = %p", pendingEvent2, pendingEvent);
+            NSLog(@"CBCCreateHeartRateEventController: performed segue... pendingEvent2.heartRate = %@, pendingEvent.heartRate = %@", pendingEvent2.heartRate, pendingEvent.heartRate);
         }
     ];
 }

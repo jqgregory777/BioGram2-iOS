@@ -10,12 +10,6 @@
 
 @interface CBCFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITabBarDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-
-- (IBAction)editList:(id)sender;
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:indexPath;
 - (void)stopEditingTableView;
-
-- (void)addNewPost:(MDPost*)post;
 
 @end

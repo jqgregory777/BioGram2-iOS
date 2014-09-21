@@ -32,7 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self updateAccountDetailsButton];
+    [self updateAccountDetailsButton:nil];
     
 }
 
@@ -44,12 +44,12 @@
     {
         // we're already on the navigation stack
         // another controller must have been popped off
-        [self updateAccountDetailsButton];
+        [self updateAccountDetailsButton:nil];
     }
 
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton) name:kMDNotificationUserDidLogin object:nil];
-    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton) name:kMDNotificationUserDidLogout object:nil];
+    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton:) name:kMDNotificationUserDidLogin object:nil];
+    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton:) name:kMDNotificationUserDidLogout object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -59,7 +59,7 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)updateAccountDetailsButton
+- (void)updateAccountDetailsButton:(NSNotification *)notification
 {
     // Grey out the Account cell if there's no account to view
     BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];

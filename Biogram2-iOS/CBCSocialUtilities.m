@@ -8,6 +8,7 @@
 
 #import "CBCSocialUtilities.h"
 #import "CBCAppDelegate.h"
+#import "CBCHeartRateFeed.h"
 #import "CBCMedable.h"
 #import "CBCDetailViewController.h"
 #import <Social/Social.h>
@@ -21,25 +22,26 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
 + (void)postDidComplete:(SocialServiceID)serviceId forEvent:(CBCHeartRateEvent *)heartRateEvent
 {
-    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
 
     switch (serviceId)
     {
         case SocialServiceIDFacebook:
             heartRateEvent.postedToFacebook = @YES;
-            [appDelegate updateHeartRateEvent:heartRateEvent];
+            [feed updateHeartRateEvent:heartRateEvent];
             break;
         case SocialServiceIDTwitter:
             heartRateEvent.postedToTwitter = @YES;
-            [appDelegate updateHeartRateEvent:heartRateEvent];
+            [feed updateHeartRateEvent:heartRateEvent];
             break;
         case SocialServiceIDMedable:
             heartRateEvent.postedToMedable = @YES;
-            [appDelegate updateHeartRateEvent:heartRateEvent];
+            [feed updateHeartRateEvent:heartRateEvent];
             break;
     }
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kCBCSocialPostDidComplete object:appDelegate];
+    NSDictionary * userInfo = @{ @"SocialServiceID" : [NSNumber numberWithInt:serviceId] };
+    [[NSNotificationCenter defaultCenter] postNotificationName:kCBCSocialPostDidComplete object:nil userInfo:userInfo];
 }
 
 #pragma mark - Facebook

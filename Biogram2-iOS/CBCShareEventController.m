@@ -9,6 +9,7 @@
 #import "CBCShareEventController.h"
 #import "CBCAppDelegate.h"
 #import "CBCHeartRateEvent.h"
+#import "CBCHeartRateFeed.h"
 #import "CBCImageUtilities.h"
 #import "CBCSocialUtilities.h"
 
@@ -18,11 +19,19 @@
 
 @property (strong, nonatomic) UIViewController * originalRootController;
 
+- (void)willSwitchFeed:(NSNotification *)notification;
+
 @end
 
 @implementation CBCShareEventController
 
-#pragma mark - Save Button
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(willSwitchFeed:) name:kCBCWillSwitchFeed object:nil];
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -48,14 +57,15 @@
     //[self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
 }
 
-- (IBAction)saveButtonTouched:(id)sender
+- (void)willSwitchFeed:(NSNotification *)notification
 {
-//    if ([[CBCMedable singleton] isLoggedIn])
-//    {
-//        // when in medable mode, we never save to Core Data, so clean up the pending object
-//        [[CBCAppDelegate appDelegate] cancelPendingHeartRateEvent];
-//    }
-    
+    // whenever the feed changes, any pending heart rate event is canceled,
+    // so reset our UI flow to the start of the event creation sequence
+    [self resetUIFlow];
+}
+
+- (IBAction)doneButtonTouched:(id)sender
+{
     // Activate the feed view in the tab bar.
     self.tabBarController.selectedIndex = 0;
 

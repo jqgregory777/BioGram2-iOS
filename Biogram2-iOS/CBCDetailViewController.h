@@ -12,7 +12,6 @@
 @interface CBCDetailViewController : UIViewController
 
 @property (strong, nonatomic) CBCHeartRateEvent* displayedEvent;
-@property (strong, nonatomic) MDPost* displayedPost;
 
 @property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
@@ -24,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *postedToTwitterImgView;
 @property (weak, nonatomic) IBOutlet UIImageView *postedToMedableImgView;
 
-- (void)updateUI;
 - (IBAction)postToFacebookTouched:(id)sender;
 - (IBAction)postToTwitterTouched:(id)sender;
 

@@ -252,7 +252,7 @@
 				545C5B7C19C4361300FC704D /* Data Model */,
 				545C5B8B19C505C900FC704D /* Heart Rate Feed */,
 				545C5B8319C4F77E00FC704D /* Create Heart Rate Event */,
-				54A266D119C2B67200BE5834 /* Medable */,
+				54A266D119C2B67200BE5834 /* Medable Settings */,
 				545C5B8719C5041100FC704D /* External Utilities */,
 				541AD55019C21A840083FDD1 /* Supporting Files */,
 			);
@@ -296,6 +296,8 @@
 				545C5B7E19C4368800FC704D /* CBCHeartRateEvent.m */,
 				54607A5519CBB2280054D1E4 /* CBCHeartRateFeed.h */,
 				54607A5619CBB2280054D1E4 /* CBCHeartRateFeed.m */,
+				54607A6419CDF9F90054D1E4 /* CBCMedable.h */,
+				54607A6519CDF9F90054D1E4 /* CBCMedable.m */,
 			);
 			name = "Data Model";
 			sourceTree = "<group>";
@@ -339,11 +341,9 @@
 			name = "Heart Rate Feed";
 			sourceTree = "<group>";
 		};
-		54A266D119C2B67200BE5834 /* Medable */ = {
+		54A266D119C2B67200BE5834 /* Medable Settings */ = {
 			isa = PBXGroup;
 			children = (
-				54607A6419CDF9F90054D1E4 /* CBCMedable.h */,
-				54607A6519CDF9F90054D1E4 /* CBCMedable.m */,
 				54A266D219C2B69F00BE5834 /* CBCMedableMainTableViewController.h */,
 				54A266D319C2B69F00BE5834 /* CBCMedableMainTableViewController.m */,
 				545C5B7119C3874400FC704D /* CBCMedableViewAccountController.h */,
@@ -353,7 +353,7 @@
 				54607A6119CC19580054D1E4 /* CBCMedableSettingsController.h */,
 				54607A6219CC19580054D1E4 /* CBCMedableSettingsController.m */,
 			);
-			name = Medable;
+			name = "Medable Settings";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

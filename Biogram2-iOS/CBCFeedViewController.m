@@ -24,19 +24,22 @@
 @property (weak, nonatomic) IBOutlet UIButton *goToMedableButton;
 @property (weak, nonatomic) IBOutlet UIButton *medableInfoButton;
 @property (weak, nonatomic) IBOutlet UIButton *resetTrialModeButton;
-@property (weak, nonatomic) IBOutlet UIButton *switchCoreDataStoresButton;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
 
 @property (nonatomic, strong) NSMutableArray* data;
 
+- (IBAction)editList:(id)sender;
 - (IBAction)feedFilterChanged:(id)sender;
 - (IBAction)medableInfoTouched:(id)sender;
 - (IBAction)goToMedableTouched:(id)sender;
 - (IBAction)resetTrialModeTouched:(id)sender;
-- (IBAction)switchCoreDataStoresTouched:(id)sender;
 
-- (void)feedSourceDidChange;
+- (NSFetchedResultsController *)fetchedResultsController;
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:indexPath;
+
+- (void)medableLoggedInDidChange:(NSNotification *)notification;
+- (void)didSwitchFeed:(NSNotification *)notification;
 
 @end
 
@@ -69,28 +72,17 @@
     self.resetTrialModeButton.userInteractionEnabled = NO;
 #endif
     
-    [self updateEditButton];
-    [self updateMedableLoggedIn];
-    
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(updateMedableLoggedIn) name:kMDNotificationUserDidLogin object:nil];
-    [defaultCenter addObserver:self selector:@selector(updateMedableLoggedIn) name:kMDNotificationUserDidLogout object:nil];
-    [defaultCenter addObserver:self selector:@selector(feedSourceDidChange) name:kCBCSocialPostDidComplete object:nil];
+    [defaultCenter addObserver:self selector:@selector(medableLoggedInDidChange:) name:kMDNotificationUserDidLogin object:nil];
+    [defaultCenter addObserver:self selector:@selector(medableLoggedInDidChange:) name:kMDNotificationUserDidLogout object:nil];
+    [defaultCenter addObserver:self selector:@selector(didSwitchFeed:) name:kCBCDidSwitchFeed object:nil];
     
-    CBCHeartRateFeed.currentFeedFilter = CBCFeedFilterPrivate;
-    
-    self.feedFilterControl.selectedSegmentIndex = CBCHeartRateFeed.currentFeedFilter;
-    
-    // Testing Facebook
-//    FBLoginView *loginView = [[FBLoginView alloc] init];
-//    loginView.center = self.view.center;
-//    [self.view addSubview:loginView];
+    [self medableLoggedInDidChange:nil]; // OK - the NSNotification is not used anyway
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self updateMedableLoggedIn];
 }
 
 - (void)didReceiveMemoryWarning
@@ -124,52 +116,11 @@
     return _data;
 }
 
-- (void)updateMedableLoggedIn
-{
-    BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];
-    BOOL inTrialMode = !loggedIn;
-
-    self.medableLoggedInButton.enabled = loggedIn;
-
-    if (inTrialMode)
-        self.feedFilterControl.selectedSegmentIndex = CBCFeedFilterPrivate;
-    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedFilterPublic];
-    [self.feedFilterControl setEnabled:NO/*!inTrialMode*/ forSegmentAtIndex:CBCFeedFilterCollective]; // FIXME -- this crashes right now
-    
-    // when in trial mode, the medableInfoButton brings up info on medable
-    // when in full medable mode, the goToMedableButton takes the user directly
-    // to the Medable settings page
-    self.goToMedableButton.userInteractionEnabled = !inTrialMode;
-    self.goToMedableButton.hidden = inTrialMode;
-
-    self.medableInfoButton.userInteractionEnabled = inTrialMode;
-    self.medableInfoButton.hidden = !inTrialMode;
-
-#ifdef DEBUG
-    self.resetTrialModeButton.enabled = ([[NSUserDefaults standardUserDefaults] integerForKey:@"TrialEventCount"] != 0);
-#endif
-
-    [self feedSourceDidChange];
-}
-
 - (void)updateEditButton
 {
-    NSUInteger numberOfRows;
-    
-    switch (CBCHeartRateFeed.currentFeedSource)
-    {
-        case CBCFeedSourceMedable:
-            numberOfRows = [self.data count];
-            break;
-            
-        case CBCFeedSourceCoreData:
-        default:
-            {
-                id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
-                numberOfRows = [sectionInfo numberOfObjects];
-            }
-            break;
-    }
+    NSLog(@">> updateEditButton");
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][0];
+    NSUInteger numberOfRows = [sectionInfo numberOfObjects];
     
     UITableView *tableView = [self tableView];
     if (![tableView isEditing] || numberOfRows == 0)
@@ -185,54 +136,21 @@
 }
 
 
-#pragma mark - Core Data Fetched Results Controller
+#pragma mark - Core Data Fetched Results Controller Delegate
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
-    if (_fetchedResultsController != nil) {
-        return _fetchedResultsController;
-    }
-    
-    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
 
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"HeartRateEvent" inManagedObjectContext:appDelegate.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:20];
-    
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
-    NSArray *sortDescriptors = @[sortDescriptor];
-    
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // NB: nil for section name key path means "no sections".
-    NSFetchedResultsController *controller = [[NSFetchedResultsController alloc]
-                                              initWithFetchRequest:fetchRequest
-                                              managedObjectContext:appDelegate.managedObjectContext
-                                                sectionNameKeyPath:nil
-                                                         cacheName:@"Master"];
+    NSFetchedResultsController * controller = feed.fetchedResultsController;
     controller.delegate = self;
-    self.fetchedResultsController = controller; // sets _fetchedResultsController
-    
-	NSError *error = nil;
-	if (![_fetchedResultsController performFetch:&error])
-    {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
-	}
-    
-    return _fetchedResultsController;
+
+    return controller;
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    //NSLog(@"controllerWillChangeContent:\n");
+    NSLog(@">> controllerWillChangeContent:\n");
     [self.tableView beginUpdates];
 }
 
@@ -241,7 +159,7 @@
            atIndex:(NSUInteger)sectionIndex
      forChangeType:(NSFetchedResultsChangeType)type
 {
-    //NSLog(@"controller:didChangeSection:\n");
+    NSLog(@"  >> controller:didChangeSection:\n");
 
     switch (type)
     {
@@ -268,7 +186,7 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    //NSLog(@"controller:didChangeObject:\n");
+    NSLog(@"  >> controller:didChangeObject:\n");
     
     UITableView *tableView = self.tableView;
     
@@ -300,7 +218,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    //NSLog(@"controllerDidChangeContent:\n");
+    NSLog(@">> controllerDidChangeContent:\n");
     [self.tableView endUpdates];
     [self updateEditButton];
 }
@@ -310,48 +228,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger numberOfSections = 0;
-    
-    switch (CBCHeartRateFeed.currentFeedSource)
-    {
-        case CBCFeedSourceMedable:
-            numberOfSections = 1;
-            break;
-            
-        case CBCFeedSourceCoreData:
-            numberOfSections = [[self.fetchedResultsController sections] count];
-            break;
-            
-        default:
-            break;
-    }
-    
+    NSInteger numberOfSections = [[self.fetchedResultsController sections] count];
     return numberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    
-    NSInteger numberOfRows = 0;
-    
-    switch (CBCHeartRateFeed.currentFeedSource)
-    {
-        case CBCFeedSourceMedable:
-            numberOfRows = [self.data count];
-            break;
-            
-        case CBCFeedSourceCoreData:
-        {
-            id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-            numberOfRows = [sectionInfo numberOfObjects];
-        }
-            break;
-            
-        default:
-            break;
-    }
-    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    NSInteger numberOfRows = [sectionInfo numberOfObjects];
     return numberOfRows;
 }
 
@@ -364,72 +248,31 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
+    CBCHeartRateEvent* event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    cell.textLabel.text = [NSDateFormatter localizedStringFromDate:event.timeStamp
+                                                         dateStyle:NSDateFormatterMediumStyle
+                                                         timeStyle:NSDateFormatterShortStyle];
+    
+    UIImage* thumbnail = event.thumbnail;
+    if (thumbnail == nil)
     {
-        MDPost* post = [self.data objectAtIndex:indexPath.row];
-        
-        if (post.typeEnumerated == MDPostTypeHeartrate)
+        UIImage* image = [UIImage imageWithData:event.photo];
+        if (image != nil)
         {
-            NSUInteger heartbeat = 0;
+            CGRect cellBounds = cell.bounds;
+            CGSize size;
+            size.width = size.height = cellBounds.size.height - 2;
             
-            NSArray* body = [post body];
-            for (NSDictionary* bodyDict in body)
-            {
-                NSString* segmentType = [bodyDict objectForKey:kTypeKey];
-                if ([segmentType isEqualToString:kIntegerKey])
-                {
-                    NSNumber* heartbeatNumber = [bodyDict objectForKey:kValueKey];
-                    heartbeat = [heartbeatNumber unsignedIntegerValue];
-                }
-            }
+            thumbnail = [CBCImageUtilities scaleImage:image toSize:size];
             
-            cell.textLabel.text = [NSDateFormatter
-                                   localizedStringFromDate:post.created
-                                   dateStyle:NSDateFormatterMediumStyle
-                                   timeStyle:NSDateFormatterShortStyle];
-            
-            cell.imageView.image = [UIImage imageNamed:@"tabbar_heartrate"]; // cells are reused so it could have the image of another post, remove it
-            
-            [post postPicsWithUpdateBlock:^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
-             {
-                 dispatch_async(dispatch_get_main_queue(), ^
-                                {
-                                    cell.imageView.image = image;
-                                });
-                 
-                 return YES;
-             }];
-            
+            event.thumbnail = thumbnail;
         }
     }
-    else if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
+    
+    if (thumbnail != nil)
     {
-        CBCHeartRateEvent* event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        
-        cell.textLabel.text = [NSDateFormatter localizedStringFromDate:event.timeStamp
-                                                             dateStyle:NSDateFormatterMediumStyle
-                                                             timeStyle:NSDateFormatterShortStyle];
-        
-        UIImage* thumbnail = event.thumbnail;
-        if (thumbnail == nil)
-        {
-            UIImage* image = [UIImage imageWithData:event.photo];
-            if (image != nil)
-            {
-                CGRect cellBounds = cell.bounds;
-                CGSize size;
-                size.width = size.height = cellBounds.size.height - 2;
-                
-                thumbnail = [CBCImageUtilities scaleImage:image toSize:size];
-                
-                event.thumbnail = thumbnail;
-            }
-        }
-        
-        if (thumbnail != nil)
-        {
-            cell.imageView.image = thumbnail;
-        }
+        cell.imageView.image = thumbnail;
     }
 }
 
@@ -460,61 +303,23 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         // Delete from CoreData
-        if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
+
+        CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+
+        // Delete the row from the data source
+        //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        NSManagedObjectContext *context = [feed managedObjectContext];
+        CBCHeartRateEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        [context deleteObject:event];
+        
+        NSError *error = nil;
+        if (![context save:&error])
         {
-            // Delete the row from the data source
-            //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-            CBCHeartRateEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            
-            [context deleteObject:event];
-            
-            NSError *error = nil;
-            if (![context save:&error])
-            {
-                // Replace this implementation with code to handle the error appropriately.
-                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                abort();
-            }
-        }
-        else if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
-        {
-            __weak typeof (self) wSelf = self;
-            
-            // Delete from Medable
-            MDPost* post = [self.data objectAtIndex:indexPath.row];
-            
-            NSString* creatorId = nil;
-            if ([post.creator isExpanded])
-            {
-                creatorId = [post.creator.value objectForKey:kIDKey];
-            }
-            else
-            {
-                creatorId = post.creator.value;
-            }
-            
-            if ([creatorId isEqualToString:[[MDAPIClient sharedClient] localUser].Id])
-            {
-                [[MDAPIClient sharedClient]
-                 deletePostWithId:post.Id
-                 commentId:nil
-                 callback:^(MDFault *fault)
-                 {
-                     if (fault)
-                     {
-                         [[CBCMedable singleton] displayAlertWithFault:fault];
-                     }
-                     else
-                     {
-                         [wSelf.data removeObject:post];
-                         
-                         [wSelf.tableView deleteRowsAtIndexPaths:@[indexPath]
-                                                withRowAnimation:UITableViewRowAnimationFade];
-                     }
-                 }];
-            }
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
         }
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
@@ -529,21 +334,14 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    CBCDetailViewController *detailController = [segue destinationViewController];
     NSIndexPath* indexPath = [self.tableView indexPathForSelectedRow];
+    CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
-    {
-        CBCHeartRateEvent * event = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        detailController.displayedEvent = event;
-        detailController.displayedPost = nil;
-    }
-    else if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
-    {
-        MDPost* selectedPost = [self.data objectAtIndex:indexPath.row];
-        detailController.displayedPost = selectedPost;
-        detailController.displayedEvent = nil;
-    }
+    // tell the details view controller which heart rate event to display
+    CBCDetailViewController *detailController = [segue destinationViewController];
+    detailController.displayedEvent = event;
+
+    NSLog(@"CBCFeedViewController: prepareForSegue: detailController.displayedEvent.heartRate = %@", detailController.displayedEvent.heartRate);
 }
 
 #pragma mark - Trial Mode
@@ -554,36 +352,6 @@
     // reset the number of events created to extend the trial period
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"TrialEventCount"];
 #endif
-}
-
-- (IBAction)switchCoreDataStoresTouched:(id)sender
-{
-    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceCoreData)
-    {
-        CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
-        
-        _fetchedResultsController = nil; // kill fetched results controller
-
-        [appDelegate toggleUsingInMemoryStore];
-        BOOL usingInMemoryStore = appDelegate.usingInMemoryStore;
-        
-        self.fetchedResultsController.delegate = self; // and re-create it
-        [self.tableView reloadData];
-        
-        self.switchCoreDataStoresButton.enabled = YES;
-        if (usingInMemoryStore)
-        {
-            [self.switchCoreDataStoresButton setTitle:@"Switch to File Store" forState:UIControlStateNormal];
-        }
-        else
-        {
-            [self.switchCoreDataStoresButton setTitle:@"Switch to Memory Store" forState:UIControlStateNormal];
-        }
-    }
-    else
-    {
-        self.switchCoreDataStoresButton.enabled = NO;
-    }
 }
 
 - (IBAction)medableInfoTouched:(id)sender
@@ -652,157 +420,58 @@
 
 - (IBAction)feedFilterChanged:(id)sender
 {
-    CBCHeartRateFeed.currentFeedFilter = self.feedFilterControl.selectedSegmentIndex;
-    [self feedSourceDidChange]; // I suppose this is all we need
+    BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];
+    
+    NSLog(@">> feedFilterChanged loggedIn=%s selectedSegmentIndex=%d", loggedIn?"YES":"NO", self.feedFilterControl.selectedSegmentIndex);
+
+    if (!loggedIn)
+        [[CBCFeedManager singleton] switchToFeed:CBCFeedLocal];
+    else
+        [[CBCFeedManager singleton] switchToFeed:self.feedFilterControl.selectedSegmentIndex];
 }
 
-- (void)feedSourceDidChange
+- (void)medableLoggedInDidChange:(NSNotification *)notification
 {
-    switch (CBCHeartRateFeed.currentFeedSource)
-    {
-        case CBCFeedSourceCoreData:
-            self.fetchedResultsController.delegate = self;
-            [self.tableView reloadData];
-            break;
-            
-        case CBCFeedSourceMedable:
-            self.fetchedResultsController.delegate = nil;
-            [self updateMedableFeed];
-            [self.tableView reloadData];
-            break;
-            
-        default:
-            NSLog(@"Invalid feed source!");
-            break;
-    }
+    BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];
+    BOOL inTrialMode = !loggedIn;
+
+    NSLog(@">> medableLoggedInDidChange: loggedIn=%s inTrialMode=%s", loggedIn?"YES":"NO", inTrialMode?"YES":"NO");
+    
+    self.medableLoggedInButton.enabled = loggedIn;
+    
+    if (inTrialMode || self.feedFilterControl.selectedSegmentIndex < 0)
+        self.feedFilterControl.selectedSegmentIndex = CBCFeedPrivate;
+    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPrivate];
+    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPublic];
+    [self.feedFilterControl setEnabled:NO/*!inTrialMode*/ forSegmentAtIndex:CBCFeedCollective]; // FIXME -- this crashes right now
+    
+    // when in trial mode, the medableInfoButton brings up info on medable
+    // when in full medable mode, the goToMedableButton takes the user directly
+    // to the Medable settings page
+    self.goToMedableButton.userInteractionEnabled = !inTrialMode;
+    self.goToMedableButton.hidden = inTrialMode;
+    
+    self.medableInfoButton.userInteractionEnabled = inTrialMode;
+    self.medableInfoButton.hidden = !inTrialMode;
+    
+#ifdef DEBUG
+    self.resetTrialModeButton.enabled = ([[NSUserDefaults standardUserDefaults] integerForKey:@"TrialEventCount"] != 0);
+#endif
+
+    if (!loggedIn)
+        [[CBCFeedManager singleton] switchToFeed:CBCFeedLocal];
+    else
+        [[CBCFeedManager singleton] switchToFeed:self.feedFilterControl.selectedSegmentIndex];
 }
 
+- (void)didSwitchFeed:(NSNotification *)notification
+{
+    NSLog(@">> didSwitchFeed");
+    self.fetchedResultsController.delegate = self;
+    [self.tableView reloadData];
+}
 
 #pragma mark - Medable feed
 
-- (void)addNewPost:(MDPost*)post
-{
-    [self.data addObject:post];
-}
-
-- (void)updateMedableFeed
-{
-    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
-    {
-        switch (CBCHeartRateFeed.currentFeedFilter)
-        {
-            case CBCFeedFilterPrivate:
-                [self listFeedWithPublic:NO];
-                break;
-                
-            case CBCFeedFilterPublic:
-                [self listFeedWithPublic:YES];
-                break;
-                
-            case CBCFeedFilterCollective:
-                [self listCollectiveFeed];
-                break;
-                
-            default:
-                break;
-        }
-    }
-}
-
-- (void)listFeedWithPublic:(BOOL)publicFeed
-{
-    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
-    {
-        __weak typeof (self) wSelf = self;
-        
-        MDAccount* currentAccount = [MDAPIClient sharedClient].localUser;
-        if (currentAccount)
-        {
-            NSString* biogramId = [currentAccount biogramId];
-            
-            MDAPIParameters* parameters = nil;
-            if (publicFeed)
-            {
-                //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPublicFeedKey] excludePostTypes:@[kPrivateFeedKey]]; // WORK AROUND API BUG
-                parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,-privateHeartrate" }];
-            }
-            else
-            {
-                //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]]; // WORK AROUND API BUG
-                parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,privateHeartrate" }];
-            }
-            
-            [[MDAPIClient sharedClient]
-             listFeedWithBiogramId:biogramId
-             parameters:parameters
-             callback:^(NSArray *feed, MDFault *fault)
-             {
-                 if (!fault)
-                 {
-                     [wSelf.data removeAllObjects];
-                     [wSelf.data addObjectsFromArray:feed];
-                     
-                     [wSelf.tableView reloadData];
-                 }
-             }];
-        }
-    }
-}
-
-- (void)listCollectiveFeed
-{
-    if (CBCHeartRateFeed.currentFeedSource == CBCFeedSourceMedable)
-    {
-        __weak typeof (self) wSelf = self;
-        
-        MDAPIClient* apiClient = [MDAPIClient sharedClient];
-        
-        // Current account
-        MDAccount* currentAccount = apiClient.localUser;
-        if (currentAccount)
-        {
-            // i.e. First Page
-            // GET /feed/biogram/53e29340247fdb7b5c00010e?contexts[]=biogram&postTypes=heartrate&filterCaller=true&limit=2
-            
-            MDAPIParameters* contextsParameter = [MDAPIParameterFactory parametersWithContexts:@[ kBiogramKey ]];
-            MDAPIParameters* postTypeParameter = [MDAPIParameterFactory parametersWithIncludePostTypes:@[ kHeartrateKey ] excludePostTypes:nil];
-            MDAPIParameters* filterCallerParameter = [MDAPIParameterFactory parametersWithFilterCaller:YES];
-            MDAPIParameters* limitParameter = [MDAPIParameterFactory parametersWithLimitResultsTo:2];
-            
-            MDAPIParameters* parameters = [MDAPIParameterFactory parametersWithParameters:
-                                           contextsParameter,
-                                           postTypeParameter,
-                                           filterCallerParameter,
-                                           limitParameter,
-                                           nil];
-            
-            // GET /feed?contexts[]=biogram&postTypes=heartrate&filterCaller=true
-            [[MDAPIClient sharedClient]
-             listFeedWithBiogramId:[currentAccount biogramId]
-             parameters:parameters
-             callback:^(NSArray *feed, MDFault *fault)
-             {
-                 if (!fault)
-                 {
-                     [wSelf.tableView reloadData];
-                 }
-             }];
-            
-            
-            [[MDAPIClient sharedClient]
-             listPublicBiogramObjectsWithParameters:parameters
-             callback:^(NSArray* feed, MDFault *fault)
-             {
-                 if (!fault)
-                 {
-                     [wSelf.data removeAllObjects];
-                     [wSelf.data addObjectsFromArray:feed];
-                     
-                     [wSelf.tableView reloadData];
-                 }
-             }];
-        }
-    }
-}
     
 @end

@@ -9,6 +9,7 @@
 #import "CBCManualHeartRateController.h"
 #import "CBCAppDelegate.h"
 #import "CBCHeartRateEvent.h"
+#import "CBCHeartRateFeed.h"
 
 @interface CBCManualHeartRateController ()
 @property (weak, nonatomic) IBOutlet UIPickerView *heartRatePicker;
@@ -46,8 +47,8 @@
     // Create a new pending heart rate event (for manual entry)
     //
     
-    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-    [appDelegate createPendingHeartRateEvent];
+    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+    [feed createPendingHeartRateEvent];
 }
 
 - (BOOL)shouldAutorotate
@@ -107,8 +108,9 @@
     {
         NSString *finalHeartRate = self.heartRateLabel.text;
 
-        CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-        appDelegate.pendingHeartRateEvent.heartRate = finalHeartRate;
+        CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+        CBCHeartRateEvent * pendingEvent = [feed pendingHeartRateEvent];
+        pendingEvent.heartRate = finalHeartRate;
     }
 }
 

@@ -10,6 +10,7 @@
 #import "CBCAppDelegate.h"
 #import "CBCMedable.h"
 #import "CBCHeartRateEvent.h"
+#import "CBCHeartRateFeed.h"
 #import "CBCImageUtilities.h"
 #import "CBCSocialUtilities.h"
 
@@ -45,11 +46,11 @@
     [self registerForKeyboardNotifications];
     
     // retrieve the pending heart rate event
-    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
-    CBCHeartRateEvent *pendingEvent = appDelegate.pendingHeartRateEvent;
+    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+    CBCHeartRateEvent * pendingEvent = [feed pendingHeartRateEvent];
     
     // crop image to a square
-    UIImage *croppedImage = [CBCImageUtilities cropImage:appDelegate.pendingRawImage];
+    UIImage *croppedImage = [CBCImageUtilities cropImage:feed.pendingRawImage];
     
     CGSize size = CGSizeMake(self.photoImageView.frame.size.width*2,self.photoImageView.frame.size.height*2);
     
@@ -72,6 +73,7 @@
     self.timeStampLabel.text = [pendingEvent timeStampAsString];
 
     self.displayedEvent = pendingEvent;
+    NSLog(@"CBCEditPhotoController: viewDidLoad: pendingEvent.heartRate = %@", pendingEvent.heartRate);
 }
 
 - (void)didReceiveMemoryWarning
@@ -141,12 +143,6 @@
 
 #pragma mark - Posting (aka Sharing)
 
-- (void)updateUI
-{
-    // nothing to customize here (yet)
-    [super updateUI];
-}
-
 #pragma mark - Save Button
 
 - (void)updatePendingEventFromUI
@@ -183,8 +179,8 @@
 {
     [self updatePendingEventFromUI];
     
-    CBCAppDelegate * appDelegate = [CBCAppDelegate appDelegate];
-    if ([appDelegate savePendingHeartRateEvent])
+    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+    if ([feed savePendingHeartRateEvent])
     {
         // yay
     }
@@ -193,14 +189,10 @@
         [CBCAppDelegate showMessage:@"Unable to save event to Core Data." withTitle:@"Save Failure"];
     }
 
-    if ([[CBCMedable singleton] isLoggedIn])
-    {
-        // when in medable mode, we never save to Core Data, so clean up the pending object
-        [[CBCAppDelegate appDelegate] cancelPendingHeartRateEvent];
-    }
-
     CBCDetailViewController * controller = [segue destinationViewController];
     controller.displayedEvent = self.displayedEvent;
+
+    NSLog(@"CBCEditPhotoController: prepareForSegue: self.displayedEvent.heartRate = %@", self.displayedEvent.heartRate);
 }
 
 @end

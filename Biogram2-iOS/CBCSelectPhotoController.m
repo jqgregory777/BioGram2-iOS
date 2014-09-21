@@ -9,6 +9,7 @@
 #import "CBCSelectPhotoController.h"
 #import "CBCAppDelegate.h"
 #import "CBCHeartRateEvent.h"
+#import "CBCHeartRateFeed.h"
 
 @interface CBCSelectPhotoController ()
 
@@ -31,9 +32,10 @@
 {
     [super viewDidLoad];
 
-    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+    CBCHeartRateEvent * pendingEvent = [feed pendingHeartRateEvent];
     
-    self.timeStampLabel.text = [appDelegate.pendingHeartRateEvent timeStampAsString];
+    self.timeStampLabel.text = [pendingEvent timeStampAsString];
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,11 +96,11 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 
-    CBCAppDelegate *appDelegate = [CBCAppDelegate appDelegate];
+    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
     
     // extract the raw image from the info dict and cache it in the pending heart rate event
     // for processing by the CBCEditPhotoController page
-    appDelegate.pendingRawImage = [info valueForKey:UIImagePickerControllerEditedImage];
+    feed.pendingRawImage = [info valueForKey:UIImagePickerControllerEditedImage];
     
     // move to the next and final page in the creation sequence
     [self performSegueWithIdentifier:@"editPhotoAndCaptionSegue" sender:self];

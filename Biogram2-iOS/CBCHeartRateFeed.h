@@ -7,34 +7,71 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CBCHeartRateEvent.h"
 
 typedef enum : NSInteger
 {
-    CBCFeedFilterPrivate = 0,
-    CBCFeedFilterPublic,
-    CBCFeedFilterCollective
-} CBCFeedFilter;
+    CBCFeedNone = -1,
+    CBCFeedPrivate = 0,
+    CBCFeedPublic,
+    CBCFeedCollective,
+    CBCFeedLocal // used only in trial mode
+} CBCFeedType;
 
-typedef enum : NSInteger
-{
-    CBCFeedSourceCoreData = 0,
-    CBCFeedSourceMedable
-} CBCFeedSource;
+extern NSString* const kCBCWillSwitchFeed;
+extern NSString* const kCBCDidSwitchFeed;
 
-@interface CBCHeartRateFeed : NSObject
+// ----------------------------------------------------------------------------------------------------------------------------
+// Abstract class for any type of feed (a local Core Data feed, or a Medable feed)
+// ----------------------------------------------------------------------------------------------------------------------------
 
-# pragma mark - Feed Source and Trial Mode
+#pragma mark - CBCFeed
 
-+ (CBCFeedSource)currentFeedSource;
+@interface CBCFeed : NSObject
 
-# pragma mark - Feed Filter
+@property (readonly) CBCFeedType type;
+@property (readonly, strong, nonatomic) NSManagedObjectContext * managedObjectContext;
+@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator * persistentStoreCoordinator;
+@property (readonly, strong, nonatomic) NSFetchedResultsController * fetchedResultsController;
 
-+ (CBCFeedFilter)currentFeedFilter;
-+ (void)setCurrentFeedFilter:(CBCFeedFilter)filter;
+- (CBCFeed *)initWithType:(CBCFeedType)type;
+- (void)dealloc;
+- (void)save;
+- (NSArray *)fetchAllHeartRateEvents;
+- (void)deleteHeartRateEvents:(NSArray *)events;
 
-#pragma mark - Core Data
++ (NSString *)typeAsString:(CBCFeedType)type;
 
-+ (NSArray *)fetchHeartRateEventsFromCoreData;
-+ (void)deleteHeartRateEventsFromCoreData:(NSArray *)events;
+#pragma mark - Heart Rate Event Creation
+
+@property (strong, nonatomic) CBCHeartRateEvent * pendingHeartRateEvent;
+@property UIImage * pendingRawImage;
+
+- (CBCHeartRateEvent *)createPendingHeartRateEvent;
+- (void)cancelPendingHeartRateEvent;
+- (BOOL)savePendingHeartRateEvent;
+- (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
+
+@end
+
+// ----------------------------------------------------------------------------------------------------------------------------
+
+#pragma mark - CBCFeedManager
+
+@interface CBCFeedManager : NSObject
+
+#pragma mark - General
+
++ (CBCFeedManager *)singleton;
+
+@property (readonly, strong, nonatomic) NSManagedObjectModel * managedObjectModel;
+@property (readonly, strong, nonatomic) CBCFeed * currentFeed;
+
+// Call this function to switch feeds. It is called whenever (a) the "filter" segmented
+// control is touched by the user, and (b) whenever the user logs in or out of Medable
+// (which takes us from public/private/collective to local and vice-versa).
+- (CBCFeed *)switchToFeed:(CBCFeedType)type;
+
++ (NSURL *)applicationDocumentsDirectory;
 
 @end
