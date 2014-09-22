@@ -465,9 +465,12 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
         
         NSString* biogramId = [currentAccount biogramId];
         
+        NSString* postText = [heartRateEvent.eventDescription length] ? heartRateEvent.eventDescription : nil;
+        
         [[MDAPIClient sharedClient]
          postHeartbeatWithBiogramId:biogramId
          heartbeat:[heartRateEvent.heartRate integerValue]
+         text:postText
          postToPublicFeed:postToPublicFeed
          image:backgroundImage
          overlay:overlayImage
@@ -487,9 +490,14 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
             }
             else
             {
-                [CBCSocialUtilities postDidComplete:SocialServiceIDMedable
-                                           forEvent:heartRateEvent
-                                           withPost:post];
+                // request timed out doesn't return a fault and there's no post
+                // then there's an exception trying to insert nil in the post/events dict
+                if (post)
+                {
+                    [CBCSocialUtilities postDidComplete:SocialServiceIDMedable
+                                               forEvent:heartRateEvent
+                                               withPost:post];
+                }
             }
         }
     ];

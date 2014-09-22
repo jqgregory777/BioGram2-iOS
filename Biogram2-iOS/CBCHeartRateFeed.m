@@ -612,13 +612,11 @@ static NSUInteger const kMedableFeedPageSize = 20;
         MDAPIParameters* parameters = nil;
         if (publicFeed)
         {
-            //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPublicFeedKey] excludePostTypes:@[kPrivateFeedKey]]; // WORK AROUND API BUG
-            parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,-privateHeartrate" }];
+            parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPublicFeedKey] excludePostTypes:@[kPrivateFeedKey]];
         }
         else
         {
-            //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]]; // WORK AROUND API BUG
-            parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,privateHeartrate" }];
+            parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]];
         }
         
         [parameters addParametersWithParameters:[MDAPIParameterFactory
