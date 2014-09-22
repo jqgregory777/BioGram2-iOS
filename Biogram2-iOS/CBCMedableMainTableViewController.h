@@ -11,6 +11,6 @@
 
 @interface CBCMedableMainTableViewController : CBCTableViewController
 
-- (void)updateAccountDetailsButton;
+- (void)updateAccountDetailsButton:(NSNotification *)notification;
 
 @end

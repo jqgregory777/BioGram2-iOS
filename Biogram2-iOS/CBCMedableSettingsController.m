@@ -16,6 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UISwitch *cacheLoginEmailSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *cacheLoginPasswordSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *autoLoginSwitch;
 
 @end
 
@@ -27,8 +28,21 @@
 
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     
-    self.cacheLoginEmailSwitch.on = [defaults boolForKey:@"CacheMedableLoginEmail"];
-    self.cacheLoginPasswordSwitch.on = [defaults boolForKey:@"CacheMedableLoginPassword"];
+    BOOL cacheLoginEmail = [defaults boolForKey:@"CacheMedableLoginEmail"];
+    BOOL cacheLoginPassword = [defaults boolForKey:@"CacheMedableLoginPassword"];
+    
+    BOOL allowAutoLogin = (cacheLoginEmail && cacheLoginPassword);
+    
+    BOOL autoLogin = [defaults boolForKey:@"MedableAutoLogin"];
+    if (!allowAutoLogin)
+    {
+        autoLogin = NO;
+        [defaults setBool:NO forKey:@"MedableAutoLogin"];
+    }
+
+    self.cacheLoginEmailSwitch.on = cacheLoginEmail;
+    self.cacheLoginPasswordSwitch.on = cacheLoginPassword;
+    self.autoLoginSwitch.on = autoLogin;
 }
 
 #pragma mark - Navigation
@@ -39,9 +53,19 @@
     
     BOOL cacheLoginEmail = self.cacheLoginEmailSwitch.on;
     BOOL cacheLoginPassword = self.cacheLoginPasswordSwitch.on;
-
+    BOOL autoLogin = self.autoLoginSwitch.on;
+    
+    BOOL allowAutoLogin = (cacheLoginEmail && cacheLoginPassword);
+    if (!allowAutoLogin)
+    {
+        self.autoLoginSwitch.on = NO;
+        autoLogin = NO;
+    }
+    self.autoLoginSwitch.enabled = allowAutoLogin;
+    
     [defaults setBool:cacheLoginEmail forKey:@"CacheMedableLoginEmail"];
     [defaults setBool:cacheLoginPassword forKey:@"CacheMedableLoginPassword"];
+    [defaults setBool:autoLogin forKey:@"MedableAutoLogin"];
 
     if (!cacheLoginEmail)
     {

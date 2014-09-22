@@ -54,6 +54,7 @@
     // Install defaults for NSUserDefaults
     NSDictionary * appDefaults = @{ @"CacheMedableLoginEmail" : @YES,
                                     @"CacheMedableLoginPassword" : @NO,
+                                    @"MedableAutoLogin" : @NO,
                                     @"LoggedInToMedable" : @NO,
                                     @"TrialEventCount" : @0 };
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
@@ -143,7 +144,7 @@
         NSArray * localEvents = [feed fetchAllHeartRateEvents];
         if (localEvents != nil && localEvents.count != 0)
         {
-            int __block count = localEvents.count;
+//            int __block count = localEvents.count;
             
 //            for (CBCHeartRateEvent * heartRateEvent in localEvents)
 //            {

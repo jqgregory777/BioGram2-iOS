@@ -182,28 +182,29 @@
          profileInfo:profileInfo
          thumbImage:nil
          progressCallback:nil
-         callback:^(NSDictionary *result, MDFault *fault)
-         {
-             void (^completion)() = nil;
-             
-             if (fault)
-             {
-                 [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Signup Failed", nil)
-                                             message:fault.text
-                                            delegate:nil
-                                   cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                   otherButtonTitles:nil, nil] show];
-             }
-             else
-             {
-                 completion = ^{
-                     [(CBCMedableMainTableViewController*)self.presentingViewController updateAccountDetailsButton];
-                 };
-             }
-             
-             [self dismissViewControllerAnimated:YES completion:completion];
-         }];
-
+         callback:
+            ^(NSDictionary *result, MDFault *fault)
+            {
+                void (^completion)() = nil;
+                
+                if (fault)
+                {
+                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Signup Failed", nil)
+                                                message:fault.text
+                                               delegate:nil
+                                      cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                      otherButtonTitles:nil, nil] show];
+                }
+                else
+                {
+                    completion = ^{
+                        [(CBCMedableMainTableViewController*)self.presentingViewController updateAccountDetailsButton:nil];
+                    };
+                }
+                
+                [self dismissViewControllerAnimated:YES completion:completion];
+            }
+        ];
     }
 }
 

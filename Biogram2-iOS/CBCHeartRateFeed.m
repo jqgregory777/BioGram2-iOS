@@ -549,7 +549,7 @@ static CBCFeedManager * _feedManager = nil;
         
         if ([creatorId isEqualToString:[[MDAPIClient sharedClient] localUser].Id])
         {
-            __weak typeof (self) wSelf = self;
+            //__weak typeof (self) wSelf = self;
             
             [[MDAPIClient sharedClient]
              deletePostWithId:post.Id
@@ -618,8 +618,6 @@ static CBCFeedManager * _feedManager = nil;
             //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]]; // WORK AROUND API BUG
             parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,privateHeartrate" }];
         }
-        
-        NSMutableDictionary * eventFromPost = [[NSMutableDictionary alloc] init];
         
         [[MDAPIClient sharedClient]
          listFeedWithBiogramId:biogramId

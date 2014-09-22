@@ -86,13 +86,26 @@ static CBCMedable * _medableSingleton = nil;
     [[MDAPIClient sharedClient]
      loginStatusWithParameters:[MDAPIParameterFactory parametersWithExpand]
      callback:
-         ^(MDAccount* account, MDFault* fault)
-         {
-             if (account == nil)
-             {
-                 [wSelf showLoginDialog];
-             }
-         }
+        ^(MDAccount* account, MDFault* fault)
+        {
+            if (account == nil)
+            {
+                NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+                if ([userDefaults boolForKey:@"MedableAutoLogin"])
+                {
+                    wSelf.email = [userDefaults stringForKey:@"MedableLoginEmail"];
+                    wSelf.password = [userDefaults stringForKey:@"MedableLoginPassword"];
+                    
+                    [wSelf loginWithEmail:wSelf.email
+                                 password:wSelf.password
+                        verificationToken:wSelf.verificationToken];
+                }
+                else
+                {
+                    [wSelf showLoginDialog];
+                }
+            }
+        }
     ];
 }
 
