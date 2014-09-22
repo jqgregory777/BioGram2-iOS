@@ -33,11 +33,14 @@ extern NSString* const kCBCDidSwitchFeed;
 @property (readonly, strong, nonatomic) NSFetchedResultsController * fetchedResultsController;
 
 - (CBCFeed *)initWithType:(CBCFeedType)type;
+- (void)willRetire;
 - (void)dealloc;
+
 - (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 - (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 - (void)deleteHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 - (void)deleteHeartRateEvents:(NSArray *)events;
+
 - (NSArray *)fetchAllHeartRateEvents;
 
 + (NSString *)typeAsString:(CBCFeedType)type;

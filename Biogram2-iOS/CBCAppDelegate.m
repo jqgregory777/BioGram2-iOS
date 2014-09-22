@@ -98,7 +98,7 @@
 {
     // Cancel any pending heart rate event before the application terminates.
     CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
-    [feed cancelPendingHeartRateEvent];
+    [feed willRetire];
     
     // Medable - Delete temp files
     [[NSFileManager defaultManager] deleteGeneralCacheDirectoryForUserID:[MDAPIClient sharedClient].currentUserEmail];
