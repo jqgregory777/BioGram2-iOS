@@ -55,6 +55,7 @@ NSString* const kCBCDidFinishSwitchingFeed  = @"kCBCDidFinishSwitchingFeed";
 @implementation CBCFeedManager
 
 static CBCFeedManager * _feedManager = nil;
+static NSUInteger const kMedableFeedPageSize = 20;
 
 + (CBCFeedManager *)singleton
 {
@@ -619,6 +620,9 @@ static CBCFeedManager * _feedManager = nil;
             //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]]; // WORK AROUND API BUG
             parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,privateHeartrate" }];
         }
+        
+        [parameters addParametersWithParameters:[MDAPIParameterFactory
+                                                 parametersWithLimitResultsTo:kMedableFeedPageSize]];
         
         [[MDAPIClient sharedClient]
          listFeedWithBiogramId:biogramId
