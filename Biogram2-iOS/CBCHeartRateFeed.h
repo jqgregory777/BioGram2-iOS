@@ -20,6 +20,7 @@ typedef enum : NSInteger
 
 extern NSString* const kCBCWillSwitchFeed;
 extern NSString* const kCBCDidSwitchFeed;
+extern NSString* const kCBCDidFinishSwitchingFeed;
 
 // ----------------------------------------------------------------------------------------------------------------------------
 // Abstract class for any type of feed (a local Core Data feed, or a Medable feed)
@@ -36,6 +37,7 @@ extern NSString* const kCBCDidSwitchFeed;
 - (void)willRetire;
 - (void)dealloc;
 
+- (CBCHeartRateEvent *)createHeartRateEvent;
 - (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 - (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 - (void)deleteHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;

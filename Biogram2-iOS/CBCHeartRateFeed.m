@@ -13,6 +13,7 @@
 
 NSString* const kCBCWillSwitchFeed = @"kCBCWillSwitchFeed";
 NSString* const kCBCDidSwitchFeed  = @"kCBCDidSwitchFeed";
+NSString* const kCBCDidFinishSwitchingFeed  = @"kCBCDidFinishSwitchingFeed";
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
@@ -734,6 +735,8 @@ static CBCFeedManager * _feedManager = nil;
 {
     NSMutableDictionary * eventFromPost = [[NSMutableDictionary alloc] init];
     
+    NSLog(@"&& createHeartRateEventsForPosts: count=%u", feed.count);
+    
     for (MDPost* post in feed)
     {
         if (post.typeEnumerated == MDPostTypeHeartrate)
@@ -760,6 +763,12 @@ static CBCFeedManager * _feedManager = nil;
                 [self.postFromEvent setObject:post forKey:eventKey];
             }
         }
+    }
+
+    {
+        NSDictionary * userInfo = @{ @"NewFeedType" : [NSNumber numberWithInt:self.type],
+                                           @"Count" : [NSNumber numberWithInt:feed.count] };
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCBCDidFinishSwitchingFeed object:nil userInfo:userInfo];
     }
 }
 

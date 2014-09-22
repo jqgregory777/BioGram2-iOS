@@ -132,40 +132,6 @@
     
     NSLog(@"medableUserDidLogIn - loggedIn = %s", loggedIn?"YES":"NO");
     [[NSUserDefaults standardUserDefaults] setBool:loggedIn forKey:@"LoggedInToMedable"];
-    
-    // if there are any saved events in the local Core Data store, automatically post them
-    // to the user's Medable feed
-    
-    // **** TO DO: fix this to fetch all events, then migrate them to the new data store ****
-
-    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
-    if (feed.type == CBCFeedLocal)
-    {
-        NSArray * localEvents = [feed fetchAllHeartRateEvents];
-        if (localEvents != nil && localEvents.count != 0)
-        {
-//            int __block count = localEvents.count;
-            
-//            for (CBCHeartRateEvent * heartRateEvent in localEvents)
-//            {
-//                [CBCSocialUtilities postToMedable:heartRateEvent postToPublicFeed:YES completion:
-//                    ^(MDPost *post, MDFault *fault)
-//                    {
-//                        NSLog(@"BATCH POST: decrementing count = %d", count);
-//                        --count;
-//                        if (count == 0)
-//                        {
-//                            NSLog(@"BATCH POST: DONE: count = %d", count);
-//                            [feed deleteHeartRateEvents:localEvents];
-//
-//                            NSDictionary * userInfo = @{ @"SocialServiceID" : [NSNumber numberWithInt:SocialServiceIDMedable] };
-//                            [[NSNotificationCenter defaultCenter] postNotificationName:kCBCSocialPostDidComplete object:nil userInfo:userInfo];
-//                        }
-//                    }
-//                ];
-//            }
-        }
-    }
 }
 
 - (void)medableUserDidLogOut:(NSNotification *)notification

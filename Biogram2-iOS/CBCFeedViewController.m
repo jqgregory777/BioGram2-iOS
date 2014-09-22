@@ -27,7 +27,8 @@
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
 
-@property (nonatomic, strong) NSMutableArray* data;
+@property (nonatomic) BOOL hasPendingEvents;
+@property (nonatomic) NSInteger pendingEventCount;
 
 - (IBAction)editList:(id)sender;
 - (IBAction)feedFilterChanged:(id)sender;
@@ -40,6 +41,7 @@
 
 - (void)medableLoggedInDidChange:(NSNotification *)notification;
 - (void)didSwitchFeed:(NSNotification *)notification;
+- (void)didFinishSwitchingFeed:(NSNotification *)notification;
 
 @end
 
@@ -61,6 +63,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.hasPendingEvents = NO;
+    self.pendingEventCount = 0;
 
 #ifdef DEBUG
     self.resetTrialModeButton.enabled = YES;
@@ -75,7 +80,9 @@
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(medableLoggedInDidChange:) name:kMDNotificationUserDidLogin object:nil];
     [defaultCenter addObserver:self selector:@selector(medableLoggedInDidChange:) name:kMDNotificationUserDidLogout object:nil];
+    [defaultCenter addObserver:self selector:@selector(willSwitchFeed:) name:kCBCWillSwitchFeed object:nil];
     [defaultCenter addObserver:self selector:@selector(didSwitchFeed:) name:kCBCDidSwitchFeed object:nil];
+    [defaultCenter addObserver:self selector:@selector(didFinishSwitchingFeed:) name:kCBCDidFinishSwitchingFeed object:nil];
     
     [self medableLoggedInDidChange:nil]; // OK - the NSNotification is not used anyway
 }
@@ -104,16 +111,6 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return UIInterfaceOrientationPortrait;
-}
-
-- (NSMutableArray*)data
-{
-    if (!_data)
-    {
-        _data = [NSMutableArray array];
-    }
-    
-    return _data;
 }
 
 - (void)updateEditButton
@@ -190,6 +187,9 @@
     
     UITableView *tableView = self.tableView;
     
+    if (self.pendingEventCount > 0)
+        self.pendingEventCount = self.pendingEventCount - 1;
+    
     switch(type)
     {
         case NSFetchedResultsChangeInsert:
@@ -221,6 +221,13 @@
     NSLog(@">> controllerDidChangeContent:\n");
     [self.tableView endUpdates];
     [self updateEditButton];
+    
+    if (self.hasPendingEvents && self.pendingEventCount == 0)
+    {
+        self.feedFilterControl.enabled = YES;
+        self.hasPendingEvents = NO;
+        self.pendingEventCount = 0;
+    }
 }
 
 
@@ -449,9 +456,58 @@
 #endif
 
     if (!loggedIn)
+    {
         [[CBCFeedManager singleton] switchToFeed:CBCFeedLocal];
+    }
     else
+    {
+        /*
+        CBCFeed * previousFeed = [[CBCFeedManager singleton] currentFeed];
+        */
+        
         [[CBCFeedManager singleton] switchToFeed:self.feedFilterControl.selectedSegmentIndex];
+
+        /*
+        CBCFeed * currentFeed = [[CBCFeedManager singleton] currentFeed];
+        
+        if (previousFeed != nil && previousFeed.type == CBCFeedLocal && currentFeed != nil)
+        {
+            // if there are any saved events in the local Core Data store, automatically post them
+            // to the user's Medable feed
+            
+            NSArray * localEvents = [previousFeed fetchAllHeartRateEvents];
+            
+            if (localEvents != nil && localEvents.count != 0)
+            {
+                //int __block count = localEvents.count;
+    
+                for (CBCHeartRateEvent * localEvent in localEvents)
+                {
+                    CBCHeartRateEvent * event = [currentFeed createHeartRateEvent];
+                    
+                    event.eventDescription = [localEvent.eventDescription copy];
+                    event.heartRate = [localEvent.heartRate copy];
+                    event.photo = [localEvent.photo copy];
+                    event.timeStamp = [localEvent.timeStamp copy];
+                    event.backgroundImage = [localEvent.backgroundImage copy];
+                    event.overlayImage = [localEvent.overlayImage copy];
+                    event.postedToFacebook = [localEvent.postedToFacebook copy];
+                    event.postedToTwitter = [localEvent.postedToTwitter copy];
+                    event.postedToMedable = NO;
+                    event.thumbnail = nil;
+                    
+                    [currentFeed saveHeartRateEvent:event];
+                }
+            }
+        }
+        */
+    }
+}
+
+- (void)willSwitchFeed:(NSNotification *)notification
+{
+    NSLog(@">> willSwitchFeed");
+    self.feedFilterControl.enabled = NO; // disable switching feeds again until we're done switching
 }
 
 - (void)didSwitchFeed:(NSNotification *)notification
@@ -459,6 +515,14 @@
     NSLog(@">> didSwitchFeed");
     self.fetchedResultsController.delegate = self;
     [self.tableView reloadData];
+}
+
+- (void)didFinishSwitchingFeed:(NSNotification *)notification
+{
+    NSNumber * count = [notification.userInfo objectForKey:@"Count"];
+    NSLog(@">> didFinishSwitchingFeed count = %d", count.intValue);
+    self.pendingEventCount = count.intValue;
+    self.hasPendingEvents = YES;
 }
 
 #pragma mark - Medable feed
