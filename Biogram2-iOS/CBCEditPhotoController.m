@@ -108,6 +108,8 @@
 
 - (void)keyboardWasShown:(NSNotification*)notification
 {
+    [self.view removeConstraints:self.view.constraints]; // do this to prevent the overlayImageView from getting reset whenever we scroll
+    
     NSDictionary* info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
