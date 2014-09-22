@@ -437,10 +437,13 @@
     self.medableLoggedInButton.enabled = loggedIn;
     
     if (inTrialMode || self.feedFilterControl.selectedSegmentIndex < 0)
+    {
         self.feedFilterControl.selectedSegmentIndex = CBCFeedPrivate;
+    }
+    
     [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPrivate];
     [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPublic];
-    [self.feedFilterControl setEnabled:NO/*!inTrialMode*/ forSegmentAtIndex:CBCFeedCollective]; // FIXME -- this crashes right now
+    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedCollective]; // FIXME -- this crashes right now
     
     // when in trial mode, the medableInfoButton brings up info on medable
     // when in full medable mode, the goToMedableButton takes the user directly
@@ -523,6 +526,7 @@
     NSLog(@">> didFinishSwitchingFeed count = %d", count.intValue);
     self.pendingEventCount = count.intValue;
     self.hasPendingEvents = YES;
+    self.feedFilterControl.enabled = YES;
 }
 
 #pragma mark - Medable feed
