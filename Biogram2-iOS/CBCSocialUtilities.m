@@ -20,7 +20,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
 @implementation CBCSocialUtilities
 
-+ (void)postDidComplete:(SocialServiceID)serviceId forEvent:(CBCHeartRateEvent *)heartRateEvent
++ (void)postDidComplete:(SocialServiceID)serviceId forEvent:(CBCHeartRateEvent *)heartRateEvent withPost:(MDPost *)post
 {
     CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
 
@@ -37,6 +37,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
         case SocialServiceIDMedable:
             heartRateEvent.postedToMedable = @YES;
             [feed updateHeartRateEvent:heartRateEvent];
+            [feed didPostEvent:heartRateEvent forMedablePost:post];
             break;
     }
 
@@ -210,7 +211,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
              {
                  // TODO: is this needed?
 //                 [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
-//                                            forEvent:??];
+//                                            forEvent:?? withPost:nil];
              }];
             
             return YES;
@@ -238,7 +239,8 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
          finishCallback:^
          {
              [CBCSocialUtilities postDidComplete:SocialServiceIDFacebook
-                                        forEvent:heartRateEvent];
+                                        forEvent:heartRateEvent
+                                        withPost:nil];
          }];
     }
     else
@@ -344,7 +346,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
               {
                   // TODO: is this needed?
                   //                  [CBCSocialUtilities postDidComplete:SocialServiceIDTwitter
-                  //                                             forEvent:???];
+                  //                                             forEvent:??? withPost:nil];
               }];
              
              return YES;
@@ -372,7 +374,8 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
          finishCallback:^
          {
              [CBCSocialUtilities postDidComplete:SocialServiceIDTwitter
-                                        forEvent:heartRateEvent];
+                                        forEvent:heartRateEvent
+                                        withPost:nil];
          }];
     }
     else
@@ -485,7 +488,8 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
             else
             {
                 [CBCSocialUtilities postDidComplete:SocialServiceIDMedable
-                                           forEvent:heartRateEvent];
+                                           forEvent:heartRateEvent
+                                           withPost:post];
             }
         }
     ];

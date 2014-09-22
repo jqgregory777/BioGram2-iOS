@@ -51,6 +51,10 @@ extern NSString* const kCBCDidSwitchFeed;
 - (void)cancelPendingHeartRateEvent;
 - (BOOL)savePendingHeartRateEvent;
 
+#pragma mark - Medable callback
+
+- (void)didPostEvent:(CBCHeartRateEvent *)heartRateEvent forMedablePost:(MDPost *)post;
+
 @end
 
 // ----------------------------------------------------------------------------------------------------------------------------

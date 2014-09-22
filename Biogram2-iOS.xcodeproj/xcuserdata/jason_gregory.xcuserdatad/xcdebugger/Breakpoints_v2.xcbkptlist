@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCFeedViewController.m"
-            timestampString = "433037747.797863"
+            filePath = "Biogram2-iOS/CBCHeartRateFeed.m"
+            timestampString = "433040748.644578"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "269"
-            endingLineNumber = "269"
-            landmarkName = "-configureCell:atIndexPath:"
+            startingLineNumber = "526"
+            endingLineNumber = "526"
+            landmarkName = "-deleteHeartRateEvent:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -437,7 +437,7 @@ static CBCFeedManager * _feedManager = nil;
         
         NSManagedObjectID * permanentId = heartRateEvent.objectID;
         NSURL * url = [permanentId URIRepresentation];
-        NSLog(@"Saved CBCHeartRateEvent with URL = %@", url);
+        NSLog(@"%% Saved CBCHeartRateEvent with URL = %@", url);
         
         return YES;
     }
@@ -457,6 +457,13 @@ static CBCFeedManager * _feedManager = nil;
         return YES;
     }
     return NO;
+}
+
+#pragma mark - Medable callback
+
+- (void)didPostEvent:(CBCHeartRateEvent *)heartRateEvent forMedablePost:(MDPost *)post
+{
+    // nothing to do - subclasses may override
 }
 
 @end
@@ -495,9 +502,6 @@ static CBCFeedManager * _feedManager = nil;
     
     self.postFromEvent = [[NSMutableDictionary alloc] init];
 
-    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(socialPostDidComplete:) name:kCBCSocialPostDidComplete object:nil];
-    
     [self updateFeedFromMedable];
     
     return self;
@@ -515,16 +519,6 @@ static CBCFeedManager * _feedManager = nil;
     }
     
     return success;
-}
-
-- (void)socialPostDidComplete:(NSNotification *)notification
-{
-    // TO DO: if the completed post was a medable post, handle it appropriately
-    NSNumber * serviceId = [notification.userInfo objectForKey:@"SocialServiceID"];
-    if ([serviceId intValue] == SocialServiceIDMedable)
-    {
-        NSLog(@"## DONE posting to Medable");
-    }
 }
 
 - (void)deleteHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
@@ -735,7 +729,8 @@ static CBCFeedManager * _feedManager = nil;
     event.backgroundImage = nil;
     event.overlayImage = nil;
     event.thumbnail = nil;
-    
+    event.postedToMedable = @YES;
+
     NSURL * eventKey = event.objectID.URIRepresentation;
     [self.postFromEvent setObject:post forKey:eventKey];
     
@@ -754,49 +749,12 @@ static CBCFeedManager * _feedManager = nil;
     ];
 }
 
-/*
- else if (self.displayedPost)
- {
- self.postedToFacebookImgView.hidden = YES;
- self.postedToTwitterImgView.hidden = YES;
- self.postedToMedableImgView.hidden = NO;
- 
- self.postToFacebookButton.enabled = [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook];
- self.postToTwitterButton.enabled = [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter];
- self.postToMedableButton.enabled = NO;
- 
- NSUInteger heartbeat = 0;
- 
- NSArray* body = [self.displayedPost body];
- for (NSDictionary* bodyDict in body)
- {
- NSString* segmentType = [bodyDict objectForKey:kTypeKey];
- if ([segmentType isEqualToString:kIntegerKey])
- {
- NSNumber* heartbeatNumber = [bodyDict objectForKey:kValueKey];
- heartbeat = [heartbeatNumber unsignedIntegerValue];
- }
- }
- 
- self.timeStampLabel.text = [NSDateFormatter
- localizedStringFromDate:self.displayedPost.created
- dateStyle:NSDateFormatterMediumStyle
- timeStyle:NSDateFormatterShortStyle];
- 
- self.captionLabel.text = self.displayedPost.text;
- 
- __weak typeof (self) wSelf = self;
- 
- [self.displayedPost postPicsWithUpdateBlock:^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
- {
- dispatch_async(dispatch_get_main_queue(), ^
- {
- wSelf.photoImageView.image = image;
- });
- 
- return YES;
- }];
- }
-*/
+#pragma mark - Medable callback
+
+- (void)didPostEvent:(CBCHeartRateEvent *)heartRateEvent forMedablePost:(MDPost *)post
+{
+    NSLog(@"%% CBCMedableFeed didPostEvent:%@ forMedablePost%@", heartRateEvent.objectID.URIRepresentation, post);
+    [self.postFromEvent setObject:post forKey:heartRateEvent.objectID.URIRepresentation];
+}
 
 @end
