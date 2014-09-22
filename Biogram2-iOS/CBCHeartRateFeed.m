@@ -20,6 +20,10 @@ NSString* const kCBCDidSwitchFeed  = @"kCBCDidSwitchFeed";
 
 @interface CBCFeed ()
 
+@property (readonly, strong, nonatomic) NSManagedObjectContext * managedObjectContext;
+@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator * persistentStoreCoordinator;
+
+- (void)save;
 - (void)willRetire;
 
 @end
@@ -36,7 +40,10 @@ NSString* const kCBCDidSwitchFeed  = @"kCBCDidSwitchFeed";
 
 @interface CBCMedableFeed : CBCFeed
 
+@property (strong, nonatomic) NSMutableDictionary * postFromEvent; // ability to look up an MDPost given the managed object id of an event
+
 - (CBCMedableFeed *)initWithType:(CBCFeedType)type;
+- (void) createHeartRateEventForPost:(MDPost *)post;
 
 @end
 
@@ -353,6 +360,13 @@ static CBCFeedManager * _feedManager = nil;
     return array;
 }
 
+- (void)deleteHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
+{
+    NSManagedObjectContext * context = [self managedObjectContext];
+    [context deleteObject:heartRateEvent];
+    [self save];
+}
+
 - (void)deleteHeartRateEvents:(NSArray *)events
 {
     NSManagedObjectContext *context = [self managedObjectContext];
@@ -367,17 +381,24 @@ static CBCFeedManager * _feedManager = nil;
 
 #pragma mark - Heart Rate Event Creation
 
+- (CBCHeartRateEvent *)createHeartRateEvent;
+{
+    NSManagedObjectContext *context = [self managedObjectContext];
+    CBCHeartRateEvent * event = [NSEntityDescription insertNewObjectForEntityForName:@"HeartRateEvent" inManagedObjectContext:context];
+    event.timeStamp = [NSDate date]; // current date
+    event.postedToFacebook = @NO;
+    event.postedToTwitter = @NO;
+    event.postedToMedable = @NO;
+    
+    return event;
+}
+
 - (CBCHeartRateEvent *)createPendingHeartRateEvent;
 {
     // cancel any pending event
     [self cancelPendingHeartRateEvent];
     
-    NSManagedObjectContext *context = [self managedObjectContext];
-    self.pendingHeartRateEvent = [NSEntityDescription insertNewObjectForEntityForName:@"HeartRateEvent" inManagedObjectContext:context];
-    self.pendingHeartRateEvent.timeStamp = [NSDate date]; // current date
-    self.pendingHeartRateEvent.postedToFacebook = @NO;
-    self.pendingHeartRateEvent.postedToTwitter = @NO;
-    self.pendingHeartRateEvent.postedToMedable = @NO;
+    self.pendingHeartRateEvent = [self createHeartRateEvent];
     
     return self.pendingHeartRateEvent;
 }
@@ -392,7 +413,23 @@ static CBCFeedManager * _feedManager = nil;
     }
 }
 
-- (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
+- (BOOL)savePendingHeartRateEvent
+{
+    BOOL success = NO;
+    
+    if (self.pendingHeartRateEvent != nil)
+    {
+        success = [self saveHeartRateEvent:self.pendingHeartRateEvent];
+        
+        // release the strong reference - if there are views open that still reference the object
+        // they will also have strong references to it so it'll be retained until they're done
+        self.pendingHeartRateEvent = nil;
+    }
+    
+    return success;
+}
+
+- (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
 {
     if (heartRateEvent != nil)
     {
@@ -401,24 +438,25 @@ static CBCFeedManager * _feedManager = nil;
         NSManagedObjectID * permanentId = heartRateEvent.objectID;
         NSURL * url = [permanentId URIRepresentation];
         NSLog(@"Saved CBCHeartRateEvent with URL = %@", url);
+        
+        return YES;
     }
-    return YES;
+    return NO;
 }
 
-- (BOOL)savePendingHeartRateEvent
+- (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
 {
-    BOOL success = NO;
-    
-    if (self.pendingHeartRateEvent != nil)
+    if (heartRateEvent != nil)
     {
-        success = [self updateHeartRateEvent:self.pendingHeartRateEvent];
+        [self save];
         
-        // release the strong reference - if there are views open that still reference the object
-        // they will also have strong references to it so it'll be retained until they're done
-        self.pendingHeartRateEvent = nil;
+        NSManagedObjectID * permanentId = heartRateEvent.objectID;
+        NSURL * url = [permanentId URIRepresentation];
+        NSLog(@"Updated CBCHeartRateEvent with URL = %@", url);
+
+        return YES;
     }
-    
-    return success;
+    return NO;
 }
 
 @end
@@ -453,59 +491,98 @@ static CBCFeedManager * _feedManager = nil;
 - (CBCMedableFeed *)initWithType:(CBCFeedType)type
 {
     self = [super initWithType:type];
-    [self save]; // establish connection to Core Data and refresh feed from Medable
+    [self save]; // establish connection to Core Data
+    
+    self.postFromEvent = [[NSMutableDictionary alloc] init];
 
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(socialPostDidComplete:) name:kCBCSocialPostDidComplete object:nil];  // TO DO: not needed anymore
+    [defaultCenter addObserver:self selector:@selector(socialPostDidComplete:) name:kCBCSocialPostDidComplete object:nil];
+    
+    [self updateFeedFromMedable];
     
     return self;
+}
+
+- (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
+{
+    BOOL success = [super saveHeartRateEvent:heartRateEvent];
+
+    if (success)
+    {
+        BOOL postToPublicFeed = (self.type != CBCFeedPrivate); // FOR NOW post new events to private feed only if current feed is private - later allow user to select
+        NSLog(@"## posting to Medable %s feed", postToPublicFeed?"public":"private");
+        [CBCSocialUtilities postToMedable:heartRateEvent postToPublicFeed:postToPublicFeed];
+    }
+    
+    return success;
 }
 
 - (void)socialPostDidComplete:(NSNotification *)notification
 {
     // TO DO: if the completed post was a medable post, handle it appropriately
+    NSNumber * serviceId = [notification.userInfo objectForKey:@"SocialServiceID"];
+    if ([serviceId intValue] == SocialServiceIDMedable)
+    {
+        NSLog(@"## DONE posting to Medable");
+    }
 }
 
-- (void)deleteFromMedable:(NSIndexPath *)indexPath
+- (void)deleteHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
 {
-    __weak typeof (self) wSelf = self;
-    
+    [super deleteHeartRateEvent:heartRateEvent];
+
     // Delete from Medable
-    MDPost* post = [self.data objectAtIndex:indexPath.row];
     
-    NSString* creatorId = nil;
-    if ([post.creator isExpanded])
-    {
-        creatorId = [post.creator.value objectForKey:kIDKey];
-    }
-    else
-    {
-        creatorId = post.creator.value;
-    }
+    NSLog(@"## deleting from Medable feed");
 
-    if ([creatorId isEqualToString:[[MDAPIClient sharedClient] localUser].Id])
+    NSURL * eventKey = heartRateEvent.objectID.URIRepresentation;
+    
+    MDPost * post = [self.postFromEvent objectForKey:eventKey];
+    if (post)
     {
-        [[MDAPIClient sharedClient]
-         deletePostWithId:post.Id
-         commentId:nil
-         callback:^(MDFault *fault)
-         {
-             if (fault)
-             {
-                 [[CBCMedable singleton] displayAlertWithFault:fault];
-             }
-             else
-             {
-                 [wSelf.data removeObject:post];
-
-//               [wSelf.tableView deleteRowsAtIndexPaths:@[indexPath]
-//                                        withRowAnimation:UITableViewRowAnimationFade];
-             }
-         }];
+        [self.postFromEvent removeObjectForKey:eventKey];
+        
+        NSString * creatorId = nil;
+        if ([post.creator isExpanded])
+        {
+            creatorId = [post.creator.value objectForKey:kIDKey];
+        }
+        else
+        {
+            creatorId = post.creator.value;
+        }
+        
+        if ([creatorId isEqualToString:[[MDAPIClient sharedClient] localUser].Id])
+        {
+            __weak typeof (self) wSelf = self;
+            
+            [[MDAPIClient sharedClient]
+             deletePostWithId:post.Id
+             commentId:nil
+             callback:
+                ^(MDFault *fault)
+                {
+                    NSLog(@"## delete from Medable feed completed %s", (fault != nil)?"(fault)":"");
+                    if (fault)
+                    {
+                        [[CBCMedable singleton] displayAlertWithFault:fault];
+                    }
+                    NSURL * eventKey = heartRateEvent.objectID.URIRepresentation;
+                    [wSelf.postFromEvent removeObjectForKey:eventKey];
+                }
+            ];
+        }
+        else
+        {
+            // if the creator id doesn't match, don't delete from medable, but do clean up the mapping dict
+            NSLog(@"## delete from Medable feed (but creator id didn't match)");
+            NSURL * eventKey = heartRateEvent.objectID.URIRepresentation;
+            [self.postFromEvent removeObjectForKey:eventKey];
+        }
     }
 }
 
-- (void)updateMedableFeed // TO DO: use this to gather Medable events and copy them into the in-memory Core Data store
+- (void)updateFeedFromMedable
 {
     switch (self.type)
     {
@@ -551,16 +628,22 @@ static CBCFeedManager * _feedManager = nil;
         [[MDAPIClient sharedClient]
          listFeedWithBiogramId:biogramId
          parameters:parameters
-         callback:^(NSArray *feed, MDFault *fault)
-         {
-             if (!fault)
-             {
-                 [wSelf.data removeAllObjects];
-                 [wSelf.data addObjectsFromArray:feed];
-                 
-                 //[wSelf.tableView reloadData]; // FIXME
-             }
-         }];
+         callback:
+            ^(NSArray* feed, MDFault* fault)
+            {
+                if (!fault)
+                {
+                    [wSelf.postFromEvent removeAllObjects];
+                    for (MDPost* post in feed)
+                    {
+                        if (post.typeEnumerated == MDPostTypeHeartrate)
+                        {
+                            [wSelf createHeartRateEventForPost:post];
+                        }
+                    }
+                }
+            }
+        ];
     }
 }
 
@@ -589,6 +672,8 @@ static CBCFeedManager * _feedManager = nil;
                                        limitParameter,
                                        nil];
         
+        [self.postFromEvent removeAllObjects];
+
         // GET /feed?contexts[]=biogram&postTypes=heartrate&filterCaller=true
         [[MDAPIClient sharedClient]
          listFeedWithBiogramId:[currentAccount biogramId]
@@ -597,7 +682,13 @@ static CBCFeedManager * _feedManager = nil;
          {
              if (!fault)
              {
-                 //[wSelf.tableView reloadData]; // FIXME
+                 for (MDPost* post in feed)
+                 {
+                     if (post.typeEnumerated == MDPostTypeHeartrate)
+                     {
+                         [wSelf createHeartRateEventForPost:post];
+                     }
+                 }
              }
          }];
         
@@ -608,55 +699,60 @@ static CBCFeedManager * _feedManager = nil;
          {
              if (!fault)
              {
-                 [wSelf.data removeAllObjects];
-                 [wSelf.data addObjectsFromArray:feed];
-                 
-                 //[wSelf.tableView reloadData]; // FIXME
+                 for (MDPost* post in feed)
+                 {
+                     if (post.typeEnumerated == MDPostTypeHeartrate)
+                     {
+                         [wSelf createHeartRateEventForPost:post];
+                     }
+                 }
              }
          }];
     }
 }
 
-/*
-- (BOOL)configureCellToDoToDo
+- (void) createHeartRateEventForPost:(MDPost *)post
 {
-    MDPost* post = [self.data objectAtIndex:indexPath.row];
+    // create a Core Data managed object for this post/event
+    CBCHeartRateEvent* event = [self createHeartRateEvent];
     
-    if (post.typeEnumerated == MDPostTypeHeartrate)
+    NSUInteger heartRate = 0;
+    
+    NSArray* body = [post body];
+    for (NSDictionary* bodyDict in body)
     {
-        NSUInteger heartbeat = 0;
-        
-        NSArray* body = [post body];
-        for (NSDictionary* bodyDict in body)
+        NSString* segmentType = [bodyDict objectForKey:kTypeKey];
+        if ([segmentType isEqualToString:kIntegerKey])
         {
-            NSString* segmentType = [bodyDict objectForKey:kTypeKey];
-            if ([segmentType isEqualToString:kIntegerKey])
-            {
-                NSNumber* heartbeatNumber = [bodyDict objectForKey:kValueKey];
-                heartbeat = [heartbeatNumber unsignedIntegerValue];
-            }
+            NSNumber* heartRateNumber = [bodyDict objectForKey:kValueKey];
+            heartRate = [heartRateNumber unsignedIntegerValue];
         }
-        
-        cell.textLabel.text = [NSDateFormatter
-                               localizedStringFromDate:post.created
-                               dateStyle:NSDateFormatterMediumStyle
-                               timeStyle:NSDateFormatterShortStyle];
-        
-        cell.imageView.image = [UIImage imageNamed:@"tabbar_heartrate"]; // cells are reused so it could have the image of another post, remove it
-        
-        [post postPicsWithUpdateBlock:^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
-         {
-             dispatch_async(dispatch_get_main_queue(), ^
-                            {
-                                cell.imageView.image = image;
-                            });
-             
-             return YES;
-         }];
-        
     }
+    
+    event.timeStamp = post.created;
+    event.heartRate = [NSString stringWithFormat:@"%u", heartRate];
+    event.eventDescription = post.text;
+    event.backgroundImage = nil;
+    event.overlayImage = nil;
+    event.thumbnail = nil;
+    
+    NSURL * eventKey = event.objectID.URIRepresentation;
+    [self.postFromEvent setObject:post forKey:eventKey];
+    
+    [post postPicsWithUpdateBlock:
+        ^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
+        {
+            dispatch_async(dispatch_get_main_queue(),
+                ^
+                {
+                    NSData * photoData = UIImagePNGRepresentation(image);
+                    event.photo = photoData;
+                }
+            );
+            return YES;
+        }
+    ];
 }
-*/
 
 /*
  else if (self.displayedPost)

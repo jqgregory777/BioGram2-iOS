@@ -30,15 +30,15 @@ extern NSString* const kCBCDidSwitchFeed;
 @interface CBCFeed : NSObject
 
 @property (readonly) CBCFeedType type;
-@property (readonly, strong, nonatomic) NSManagedObjectContext * managedObjectContext;
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator * persistentStoreCoordinator;
 @property (readonly, strong, nonatomic) NSFetchedResultsController * fetchedResultsController;
 
 - (CBCFeed *)initWithType:(CBCFeedType)type;
 - (void)dealloc;
-- (void)save;
-- (NSArray *)fetchAllHeartRateEvents;
+- (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
+- (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
+- (void)deleteHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 - (void)deleteHeartRateEvents:(NSArray *)events;
+- (NSArray *)fetchAllHeartRateEvents;
 
 + (NSString *)typeAsString:(CBCFeedType)type;
 
@@ -50,7 +50,6 @@ extern NSString* const kCBCDidSwitchFeed;
 - (CBCHeartRateEvent *)createPendingHeartRateEvent;
 - (void)cancelPendingHeartRateEvent;
 - (BOOL)savePendingHeartRateEvent;
-- (BOOL)updateHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent;
 
 @end
 

@@ -261,12 +261,15 @@
         if (image != nil)
         {
             CGRect cellBounds = cell.bounds;
-            CGSize size;
-            size.width = size.height = cellBounds.size.height - 2;
-            
-            thumbnail = [CBCImageUtilities scaleImage:image toSize:size];
-            
-            event.thumbnail = thumbnail;
+            if (cellBounds.size.width > 0 && cellBounds.size.height > 0)
+            {
+                CGSize size;
+                size.width = size.height = cellBounds.size.height - 2;
+                
+                thumbnail = [CBCImageUtilities scaleImage:image toSize:size];
+                
+                event.thumbnail = thumbnail;
+            }
         }
     }
     
@@ -302,25 +305,12 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        // Delete from CoreData
-
-        CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
-
         // Delete the row from the data source
         //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        NSManagedObjectContext *context = [feed managedObjectContext];
         CBCHeartRateEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
-        [context deleteObject:event];
-        
-        NSError *error = nil;
-        if (![context save:&error])
-        {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
+        CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+        [feed deleteHeartRateEvent:event];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
     {

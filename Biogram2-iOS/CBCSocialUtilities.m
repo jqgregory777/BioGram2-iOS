@@ -192,6 +192,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
     }
 }
 
+/*
 + (void)postMDPostToFacebook:(MDPost *)heartRatePost sender:(id)sender
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
@@ -220,6 +221,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
         [CBCAppDelegate showMessage:@"Please configure a Facebook account in Settings." withTitle:@"No Account Found"];
     }
 }
+*/
 
 + (void)postToFacebook:(CBCHeartRateEvent *)heartRateEvent sender:(id)sender
 {
@@ -324,6 +326,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
     }
 }
 
+/*
 + (void)postMDPostToTwitter:(MDPost *)heartRatePost sender:(id)sender
 {
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
@@ -352,6 +355,7 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
         [CBCAppDelegate showMessage:@"Please configure a Twitter account in Settings." withTitle:@"No Account Found"];
     }
 }
+*/
 
 + (void)postToTwitter:(CBCHeartRateEvent *)heartRateEvent sender:(id)sender
 {

@@ -96,8 +96,9 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Saves changes in the application's managed object context before the application terminates.
-    [[[CBCFeedManager singleton] currentFeed] save];
+    // Cancel any pending heart rate event before the application terminates.
+    CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+    [feed cancelPendingHeartRateEvent];
     
     // Medable - Delete temp files
     [[NSFileManager defaultManager] deleteGeneralCacheDirectoryForUserID:[MDAPIClient sharedClient].currentUserEmail];
