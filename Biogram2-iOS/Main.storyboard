@@ -1268,6 +1268,9 @@
                                     <segment title="Private"/>
                                     <segment title="Public"/>
                                 </segments>
+                                <connections>
+                                    <action selector="feedTypeChanged:" destination="zxF-Qw-ZDf" eventType="valueChanged" id="ceZ-NM-S2Z"/>
+                                </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Post to Medable as" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avJ-KK-u23">
                                 <rect key="frame" x="16" y="472" width="149" height="21"/>
@@ -1296,10 +1299,10 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="captionTextField" destination="85k-mv-ey0" id="c7d-SH-kDl"/>
+                        <outlet property="feedTypeSegmented" destination="NAa-dh-UCb" id="SA9-G6-w87"/>
                         <outlet property="overlayImageView" destination="4ec-IW-9dL" id="dqX-gY-s9f"/>
                         <outlet property="photoImageView" destination="2QY-zH-bEp" id="XUR-FA-d7c"/>
                         <outlet property="postToMedableLabel" destination="avJ-KK-u23" id="EUn-n3-Tq9"/>
-                        <outlet property="postToMedableSegmented" destination="NAa-dh-UCb" id="GVz-FV-lti"/>
                         <outlet property="scrollView" destination="Akc-3V-7Zv" id="F8R-gb-ATA"/>
                         <outlet property="timeStampLabel" destination="nOa-c3-2hN" id="ExA-3U-16w"/>
                         <segue destination="Fb1-fe-rON" kind="unwind" identifier="unwindToCreateHeartRateEventSegue" unwindAction="unwindToCreateHeartRateEvent:" id="fSi-iM-HtI"/>

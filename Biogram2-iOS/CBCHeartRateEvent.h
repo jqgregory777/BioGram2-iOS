@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSNumber * postedToFacebook;
 @property (nonatomic, strong) NSNumber * postedToTwitter;
 @property (nonatomic, strong) NSNumber * postedToMedable;
+@property (nonatomic, strong) NSNumber * medableFeedType;
 
 // transient properties (not even part of the data model actually)
 @property (nonatomic, strong) UIImage * thumbnail;

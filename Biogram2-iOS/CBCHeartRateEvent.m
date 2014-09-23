@@ -20,6 +20,7 @@
 @dynamic postedToFacebook;
 @dynamic postedToTwitter;
 @dynamic postedToMedable;
+@dynamic medableFeedType;
 
 @synthesize thumbnail = _thumbnail;
 

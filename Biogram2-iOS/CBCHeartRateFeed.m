@@ -398,6 +398,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
     event.postedToFacebook = @NO;
     event.postedToTwitter = @NO;
     event.postedToMedable = @NO;
+    event.medableFeedType = [NSNumber numberWithInteger:self.type];
 
     NSLog(@"## created event: %@ (temp)", event.objectID.URIRepresentation);
 
@@ -522,7 +523,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
 
     if (success)
     {
-        BOOL postToPublicFeed = (self.type != CBCFeedPrivate); // FOR NOW post new events to private feed only if current feed is private - later allow user to select
+        BOOL postToPublicFeed = ((CBCFeedType)heartRateEvent.medableFeedType.integerValue != CBCFeedPrivate);
         NSLog(@"## posting to Medable %s feed: %@", postToPublicFeed?"public":"private", heartRateEvent.objectID.URIRepresentation);
         [CBCSocialUtilities postToMedable:heartRateEvent postToPublicFeed:postToPublicFeed];
     }

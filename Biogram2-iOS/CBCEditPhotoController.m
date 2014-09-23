@@ -22,7 +22,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *overlayImageView;
 @property (weak, nonatomic) IBOutlet UITextField *captionTextField;
 @property (weak, nonatomic) IBOutlet UILabel *postToMedableLabel;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *postToMedableSegmented;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *feedTypeSegmented;
+
+- (IBAction)feedTypeChanged:(id)sender;
 
 @end
 
@@ -81,7 +83,16 @@
     // the feed changes, and any pending heart rate event is canceled anyway
     BOOL isLoggedIn = [[CBCMedable singleton] isLoggedIn];
     self.postToMedableLabel.enabled = isLoggedIn;
-    self.postToMedableSegmented.enabled = isLoggedIn;
+    self.feedTypeSegmented.enabled = isLoggedIn;
+
+    if (isLoggedIn)
+    {
+        self.feedTypeSegmented.selectedSegmentIndex = self.displayedEvent.medableFeedType.integerValue;
+    }
+    else
+    {
+        self.feedTypeSegmented.selectedSegmentIndex = 0;
+    }
 }
 
 - (void)medableLoggedInDidChange:(NSNotification *)notification
@@ -157,9 +168,11 @@
 
 #pragma mark - Post Private/Public
 
-- (IBAction)postToMedableSegmentedTouched:(id)sender
+- (IBAction)feedTypeChanged:(id)sender
 {
-    
+    CBCFeedType type = (CBCFeedType)self.feedTypeSegmented.selectedSegmentIndex;
+    self.displayedEvent.medableFeedType = [NSNumber numberWithInteger:type];
+    NSLog(@"]] changed Medable feed type to %@", [CBCFeed typeAsString:type]);
 }
 
 #pragma mark - Save Button
