@@ -14,6 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *accountCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *logInOutCell;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *logInOutActivitySpinner;
 
 @end
 
@@ -32,10 +33,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.logInOutActivitySpinner.hidesWhenStopped = YES;
+    [self.logInOutActivitySpinner stopAnimating];
 
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton:) name:kMDNotificationUserDidLogin object:nil];
     [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton:) name:kMDNotificationUserDidLogout object:nil];
+    [defaultCenter addObserver:self selector:@selector(activityDidStart:) name:kCBCActivityDidStart object:nil];
+    [defaultCenter addObserver:self selector:@selector(activityDidStop:) name:kCBCActivityDidStop object:nil];
 
     [self updateAccountDetailsButton:nil];
 }
@@ -52,13 +58,6 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [super viewWillDisappear:animated];
-}
-
 - (void)updateAccountDetailsButton:(NSNotification *)notification
 {
     // Grey out the Account cell if there's no account to view
@@ -69,6 +68,16 @@
     self.accountCell.detailTextLabel.enabled = loggedIn;
 
     self.logInOutCell.textLabel.text = NSLocalizedString(loggedIn ? @"Log Out" : @"Log In", nil);
+}
+
+- (void)activityDidStart:(NSNotification *)notification
+{
+    [self.logInOutActivitySpinner startAnimating];
+}
+
+- (void)activityDidStop:(NSNotification *)notification
+{
+    [self.logInOutActivitySpinner stopAnimating];
 }
 
 - (void)didReceiveMemoryWarning

@@ -51,12 +51,6 @@
     [self updateUI:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter removeObserver:self name:kCBCSocialPostDidComplete object:nil];
-}
-
 - (BOOL)shouldAutorotate
 {
     return NO;

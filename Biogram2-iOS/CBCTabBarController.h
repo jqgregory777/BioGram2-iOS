@@ -10,6 +10,7 @@
 
 @interface CBCTabBarController : UITabBarController
 
+- (void)resetFeedUIFlow;
 - (void)resetCreateHeartRateUIFlow:(UIViewController *)currentTopController;
 
 @end

@@ -14,13 +14,11 @@ typedef enum : NSInteger
     CBCFeedNone = -1,
     CBCFeedPrivate = 0,
     CBCFeedPublic,
-    CBCFeedCollective,
     CBCFeedLocal // used only in trial mode
 } CBCFeedType;
 
 extern NSString* const kCBCWillSwitchFeed;
 extern NSString* const kCBCDidSwitchFeed;
-extern NSString* const kCBCDidFinishSwitchingFeed;
 
 // ----------------------------------------------------------------------------------------------------------------------------
 // Abstract class for any type of feed (a local Core Data feed, or a Medable feed)

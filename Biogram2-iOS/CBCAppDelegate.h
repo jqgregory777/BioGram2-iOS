@@ -11,6 +11,9 @@
 #import "CBCHeartRateEvent.h"
 #import "AliveHMViewController.h"
 
+extern NSString* const kCBCActivityDidStart;
+extern NSString* const kCBCActivityDidStop;
+
 @interface CBCAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

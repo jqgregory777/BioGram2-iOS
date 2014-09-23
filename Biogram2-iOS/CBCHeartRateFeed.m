@@ -13,7 +13,6 @@
 
 NSString* const kCBCWillSwitchFeed = @"kCBCWillSwitchFeed";
 NSString* const kCBCDidSwitchFeed  = @"kCBCDidSwitchFeed";
-NSString* const kCBCDidFinishSwitchingFeed  = @"kCBCDidFinishSwitchingFeed";
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
@@ -23,8 +22,10 @@ NSString* const kCBCDidFinishSwitchingFeed  = @"kCBCDidFinishSwitchingFeed";
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext * managedObjectContext;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator * persistentStoreCoordinator;
+@property (nonatomic) NSInteger numInitialEvents;
 
 - (void)save;
+- (void)notifyDidSwitchFeed;
 
 @end
 
@@ -43,6 +44,7 @@ NSString* const kCBCDidFinishSwitchingFeed  = @"kCBCDidFinishSwitchingFeed";
 @property (strong, nonatomic) NSMutableDictionary * postFromEvent; // ability to look up an MDPost given the managed object id of an event
 
 - (CBCMedableFeed *)initWithType:(CBCFeedType)type;
+- (void)updateFeedFromMedable;
 - (CBCHeartRateEvent *) createHeartRateEventForPost:(MDPost *)post;
 - (void)createHeartRateEventsForPosts:(NSArray *)feed;
 
@@ -98,23 +100,21 @@ static NSUInteger const kMedableFeedPageSize = 20;
         {
             case CBCFeedLocal:
                 _currentFeed = [[CBCLocalFeed alloc] init];
+                [_currentFeed notifyDidSwitchFeed];
                 break;
             case CBCFeedPrivate:
             case CBCFeedPublic:
-            case CBCFeedCollective:
-                _currentFeed = [[CBCMedableFeed alloc] initWithType:type];
+                {
+                    CBCMedableFeed * feed = [[CBCMedableFeed alloc] initWithType:type];
+                    _currentFeed = feed;
+                    [feed updateFeedFromMedable];
+                }
                 break;
             default:
                 NSAssert(NO, @"invalid feed type");
                 break;
         }
         NSAssert(_currentFeed.type == type, @"feed type mismatch");
-        
-        {
-            NSDictionary * userInfo = @{ @"OldFeedType" : [NSNumber numberWithInt:oldFeedType],
-                                         @"NewFeedType" : [NSNumber numberWithInt:type] };
-            [[NSNotificationCenter defaultCenter] postNotificationName:kCBCDidSwitchFeed object:nil userInfo:userInfo];
-        }
     }
     
     return _currentFeed;
@@ -154,6 +154,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
 {
     self = [super init];
     _type = type;
+    _numInitialEvents = 0;
     return self;
 }
 
@@ -169,7 +170,6 @@ static NSUInteger const kMedableFeedPageSize = 20;
         case CBCFeedLocal:      return @"CBCFeedLocal";
         case CBCFeedPrivate:    return @"CBCFeedPrivate";
         case CBCFeedPublic:     return @"CBCFeedPublic";
-        case CBCFeedCollective: return @"CBCFeedCollective";
         default:                return @"CBCFeedNone";
     }
 }
@@ -194,6 +194,13 @@ static NSUInteger const kMedableFeedPageSize = 20;
             }
         }
     }
+}
+
+- (void)notifyDidSwitchFeed
+{
+    NSDictionary * userInfo = @{ @"NewFeedType" : [NSNumber numberWithInt:self.type],
+                                 @"Count" : [NSNumber numberWithInt:self.numInitialEvents] };
+    [[NSNotificationCenter defaultCenter] postNotificationName:kCBCDidSwitchFeed object:nil userInfo:userInfo];
 }
 
 - (void)willRetire
@@ -505,8 +512,6 @@ static NSUInteger const kMedableFeedPageSize = 20;
     [self save]; // establish connection to Core Data
     
     self.postFromEvent = [[NSMutableDictionary alloc] init];
-
-    [self updateFeedFromMedable];
     
     return self;
 }
@@ -590,10 +595,6 @@ static NSUInteger const kMedableFeedPageSize = 20;
             [self updateFeedFromPublic:YES];
             break;
             
-        case CBCFeedCollective:
-            //[self updateFeedFromCollective];
-            break;
-            
         default:
             NSAssert(NO, @"invalid feed type");
             break;
@@ -632,6 +633,10 @@ static NSUInteger const kMedableFeedPageSize = 20;
                 {
                     [wSelf.postFromEvent removeAllObjects];
                     [wSelf createHeartRateEventsForPosts:feed];
+                }
+                else
+                {
+                    [wSelf notifyDidSwitchFeed];
                 }
             }
         ];
@@ -715,11 +720,8 @@ static NSUInteger const kMedableFeedPageSize = 20;
         }
     }
 
-    {
-        NSDictionary * userInfo = @{ @"NewFeedType" : [NSNumber numberWithInt:self.type],
-                                           @"Count" : [NSNumber numberWithInt:feed.count] };
-        [[NSNotificationCenter defaultCenter] postNotificationName:kCBCDidFinishSwitchingFeed object:nil userInfo:userInfo];
-    }
+    self.numInitialEvents = feed.count;
+    [self notifyDidSwitchFeed];
 }
 
 #pragma mark - Medable callback

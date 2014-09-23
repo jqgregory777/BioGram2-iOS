@@ -39,6 +39,10 @@
 
 - (void)willSwitchFeed:(NSNotification *)notification
 {
+    // whenever the feed changes, make sure that any detail event that might
+    // be shown is popped off the nav controller's view stack
+    [self resetFeedUIFlow];
+    
     // whenever the feed changes, any pending heart rate event is canceled,
     // so reset our UI flow to the start of the event creation sequence
     [self resetCreateHeartRateUIFlow:nil];
@@ -75,6 +79,12 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return [[self.viewControllers lastObject] preferredInterfaceOrientationForPresentation];
+}
+
+- (void)resetFeedUIFlow
+{
+    UINavigationController * navController = self.viewControllers[0];
+    [navController popToRootViewControllerAnimated:NO];
 }
 
 - (void)resetCreateHeartRateUIFlow:(UIViewController *)currentTopController

@@ -86,7 +86,6 @@
     [defaultCenter addObserver:self selector:@selector(medableLoggedInDidChange:) name:kMDNotificationUserDidLogout object:nil];
     [defaultCenter addObserver:self selector:@selector(willSwitchFeed:) name:kCBCWillSwitchFeed object:nil];
     [defaultCenter addObserver:self selector:@selector(didSwitchFeed:) name:kCBCDidSwitchFeed object:nil];
-    [defaultCenter addObserver:self selector:@selector(didFinishSwitchingFeed:) name:kCBCDidFinishSwitchingFeed object:nil];
     
     [self medableLoggedInDidChange:nil]; // OK - the NSNotification is not used anyway
 }
@@ -220,6 +219,26 @@
     }
 }
 
+- (void)setActivityInProgress:(BOOL)inProgress
+{
+    if (inProgress)
+    {
+        self.feedFilterControl.enabled = NO;
+        self.tabBarController.tabBar.userInteractionEnabled = NO;
+        [self.spinner startAnimating];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCBCActivityDidStart object:nil userInfo:nil];
+    }
+    else
+    {
+        self.feedFilterControl.enabled = YES;
+        self.tabBarController.tabBar.userInteractionEnabled = YES;
+        [self.spinner stopAnimating];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCBCActivityDidStop object:nil userInfo:nil];
+}
+}
+
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     NSLog(@">> controllerDidChangeContent:\n");
@@ -228,9 +247,7 @@
     
     if (self.hasPendingEvents && self.pendingEventCount == 0)
     {
-        self.feedFilterControl.enabled = YES;
-        self.tabBarController.tabBar.userInteractionEnabled = YES;
-        [self.spinner stopAnimating];
+        [self setActivityInProgress:NO];
         
         self.hasPendingEvents = NO;
         self.pendingEventCount = 0;
@@ -514,25 +531,31 @@
 
 - (void)willSwitchFeed:(NSNotification *)notification
 {
-    NSLog(@">> willSwitchFeed");
-    self.feedFilterControl.enabled = NO; // disable switching feeds again until we're done switching
-    self.tabBarController.tabBar.userInteractionEnabled = NO;
-    [self.spinner startAnimating];
+    NSNumber * newFeedTypeNum = [notification.userInfo objectForKey:@"NewFeedType"];
+    CBCFeedType newFeedType = (CBCFeedType)newFeedTypeNum.intValue;
+    
+    NSLog(@">> willSwitchFeed to %@", [CBCFeed typeAsString:newFeedType]);
+    
+    [self setActivityInProgress:YES];
 }
 
 - (void)didSwitchFeed:(NSNotification *)notification
 {
-    NSLog(@">> didSwitchFeed");
+    NSNumber * count = [notification.userInfo objectForKey:@"Count"];
+
+    NSNumber * newFeedTypeNum = [notification.userInfo objectForKey:@"NewFeedType"];
+    CBCFeedType newFeedType = (CBCFeedType)newFeedTypeNum.intValue;
+    
+    NSLog(@">> didSwitchFeed to %@ count = %d", [CBCFeed typeAsString:newFeedType], count.intValue);
+
     self.fetchedResultsController.delegate = self;
     [self.tableView reloadData];
-}
-
-- (void)didFinishSwitchingFeed:(NSNotification *)notification
-{
-    NSNumber * count = [notification.userInfo objectForKey:@"Count"];
-    NSLog(@">> didFinishSwitchingFeed count = %d", count.intValue);
+    
     self.pendingEventCount = count.intValue;
-    self.hasPendingEvents = YES;
+    self.hasPendingEvents = (count.intValue > 0);
+    
+    if (!self.hasPendingEvents)
+        [self setActivityInProgress:NO];
 }
 
 #pragma mark - Medable feed

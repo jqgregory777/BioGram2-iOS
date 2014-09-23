@@ -14,6 +14,9 @@
 #import <iOSMedableSDK/AFNetworkActivityLogger.h>
 #import <iOSMedableSDK/AFNetworkActivityIndicatorManager.h>
 
+NSString* const kCBCActivityDidStart = @"kCBCActivityDidStart";
+NSString* const kCBCActivityDidStop = @"kCBCActivityDidStop";
+
 @interface CBCAppDelegate ()
 
 - (void)medableUserDidLogIn:(NSNotification *)notification;
