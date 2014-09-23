@@ -55,6 +55,7 @@ NSString* const kCBCDidFinishSwitchingFeed  = @"kCBCDidFinishSwitchingFeed";
 @implementation CBCFeedManager
 
 static CBCFeedManager * _feedManager = nil;
+static NSUInteger const kMedableFeedPageSize = 20;
 
 + (CBCFeedManager *)singleton
 {
@@ -590,7 +591,7 @@ static CBCFeedManager * _feedManager = nil;
             break;
             
         case CBCFeedCollective:
-            [self updateFeedFromCollective];
+            //[self updateFeedFromCollective];
             break;
             
         default:
@@ -611,14 +612,15 @@ static CBCFeedManager * _feedManager = nil;
         MDAPIParameters* parameters = nil;
         if (publicFeed)
         {
-            //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPublicFeedKey] excludePostTypes:@[kPrivateFeedKey]]; // WORK AROUND API BUG
-            parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,-privateHeartrate" }];
+            parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPublicFeedKey] excludePostTypes:@[kPrivateFeedKey]];
         }
         else
         {
-            //parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]]; // WORK AROUND API BUG
-            parameters = [MDAPIParameterFactory parametersWithCustomParameters:@{ @"postTypes" : @"publicHeartrate,privateHeartrate" }];
+            parameters = [MDAPIParameterFactory parametersWithIncludePostTypes:@[kPrivateFeedKey] excludePostTypes:@[kPublicFeedKey]];
         }
+        
+        [parameters addParametersWithParameters:[MDAPIParameterFactory
+                                                 parametersWithLimitResultsTo:kMedableFeedPageSize]];
         
         [[MDAPIClient sharedClient]
          listFeedWithBiogramId:biogramId
@@ -633,58 +635,6 @@ static CBCFeedManager * _feedManager = nil;
                 }
             }
         ];
-    }
-}
-
-- (void)updateFeedFromCollective
-{
-    __weak typeof (self) wSelf = self;
-    
-    MDAPIClient* apiClient = [MDAPIClient sharedClient];
-    
-    // Current account
-    MDAccount* currentAccount = apiClient.localUser;
-    if (currentAccount)
-    {
-        // i.e. First Page
-        // GET /feed/biogram/53e29340247fdb7b5c00010e?contexts[]=biogram&postTypes=heartrate&filterCaller=true&limit=2
-        
-        MDAPIParameters* contextsParameter = [MDAPIParameterFactory parametersWithContexts:@[ kBiogramKey ]];
-        MDAPIParameters* postTypeParameter = [MDAPIParameterFactory parametersWithIncludePostTypes:@[ kHeartrateKey ] excludePostTypes:nil];
-        MDAPIParameters* filterCallerParameter = [MDAPIParameterFactory parametersWithFilterCaller:YES];
-        MDAPIParameters* limitParameter = [MDAPIParameterFactory parametersWithLimitResultsTo:2];
-        
-        MDAPIParameters* parameters = [MDAPIParameterFactory parametersWithParameters:
-                                       contextsParameter,
-                                       postTypeParameter,
-                                       filterCallerParameter,
-                                       limitParameter,
-                                       nil];
-        
-        [self.postFromEvent removeAllObjects];
-
-        // GET /feed?contexts[]=biogram&postTypes=heartrate&filterCaller=true
-        [[MDAPIClient sharedClient]
-         listFeedWithBiogramId:[currentAccount biogramId]
-         parameters:parameters
-         callback:^(NSArray *feed, MDFault *fault)
-         {
-             if (!fault)
-             {
-                 [wSelf createHeartRateEventsForPosts:feed];
-             }
-         }];
-        
-        
-        [[MDAPIClient sharedClient]
-         listPublicBiogramObjectsWithParameters:parameters
-         callback:^(NSArray* feed, MDFault *fault)
-         {
-             if (!fault)
-             {
-                 [wSelf createHeartRateEventsForPosts:feed];
-             }
-         }];
     }
 }
 

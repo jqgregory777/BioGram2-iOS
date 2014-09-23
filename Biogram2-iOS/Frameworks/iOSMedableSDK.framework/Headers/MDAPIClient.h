@@ -849,6 +849,7 @@
  */
 - (void)postHeartbeatWithBiogramId:(NSString*)biogramObjectId
                          heartbeat:(NSUInteger)heartbeat
+                              text:(NSString*)text
                   postToPublicFeed:(BOOL)postToPublicFeed
                              image:(UIImage*)image
                            overlay:(UIImage*)overlay

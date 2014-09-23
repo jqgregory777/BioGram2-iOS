@@ -443,7 +443,10 @@
     self.medableLoggedInButton.enabled = loggedIn;
     
     if (inTrialMode || self.feedFilterControl.selectedSegmentIndex < 0)
+    {
         self.feedFilterControl.selectedSegmentIndex = CBCFeedPrivate;
+    }
+    
     [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPrivate];
     [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPublic];
     
@@ -514,6 +517,7 @@
     NSLog(@">> willSwitchFeed");
     self.feedFilterControl.enabled = NO; // disable switching feeds again until we're done switching
     self.tabBarController.tabBar.userInteractionEnabled = NO;
+    [self.spinner startAnimating];
 }
 
 - (void)didSwitchFeed:(NSNotification *)notification
@@ -529,8 +533,6 @@
     NSLog(@">> didFinishSwitchingFeed count = %d", count.intValue);
     self.pendingEventCount = count.intValue;
     self.hasPendingEvents = YES;
-
-    [self.spinner startAnimating];
 }
 
 #pragma mark - Medable feed
