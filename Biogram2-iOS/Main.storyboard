@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="F4O-v4-iYn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="F4O-v4-iYn">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment defaultVersion="1808" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
         <!--Tab Bar Controller-->
@@ -25,7 +25,7 @@
             </objects>
             <point key="canvasLocation" x="-247" y="1026"/>
         </scene>
-        <!--Table View Controller - Settings-->
+        <!--Settings-->
         <scene sceneID="eYC-PU-Znn">
             <objects>
                 <tableViewController id="TR0-Xh-Nxg" customClass="CBCTableViewController" sceneMemberID="viewController">
@@ -90,7 +90,7 @@
             </objects>
             <point key="canvasLocation" x="735" y="2581"/>
         </scene>
-        <!--Medable Create Account Controller - Create Account-->
+        <!--Create Account-->
         <scene sceneID="H8R-ao-kDb">
             <objects>
                 <tableViewController id="7qv-Mf-Z8e" customClass="CBCMedableCreateAccountController" sceneMemberID="viewController">
@@ -335,7 +335,7 @@
             </objects>
             <point key="canvasLocation" x="1908" y="3560"/>
         </scene>
-        <!--Medable View Account Controller - Account-->
+        <!--Account-->
         <scene sceneID="ugq-BD-9Qj">
             <objects>
                 <tableViewController id="gfp-C6-iL1" customClass="CBCMedableViewAccountController" sceneMemberID="viewController">
@@ -514,7 +514,7 @@
             </objects>
             <point key="canvasLocation" x="1908" y="2899"/>
         </scene>
-        <!--Medable Settings Controller - Settings-->
+        <!--Settings-->
         <scene sceneID="3jT-Ko-MCr">
             <objects>
                 <tableViewController id="pN6-HL-aB4" customClass="CBCMedableSettingsController" sceneMemberID="viewController">
@@ -547,14 +547,12 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ujd-gB-2sN">
                                                     <rect key="frame" x="251" y="6" width="51" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
                                                         <action selector="switchDidChange:" destination="pN6-HL-aB4" eventType="valueChanged" id="SGk-qe-bUs"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Remember Email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yrx-lv-F0b">
                                                     <rect key="frame" x="20" y="11" width="132" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -571,14 +569,12 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QBJ-7Z-4TM">
                                                     <rect key="frame" x="251" y="6" width="51" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
                                                         <action selector="switchDidChange:" destination="pN6-HL-aB4" eventType="valueChanged" id="kGp-ci-6Kq"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Remember Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uGa-mK-zpC">
                                                     <rect key="frame" x="20" y="11" width="165" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -595,14 +591,12 @@
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="huZ-qB-fNg">
                                                     <rect key="frame" x="251" y="6" width="51" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
                                                         <action selector="switchDidChange:" destination="pN6-HL-aB4" eventType="valueChanged" id="pKU-aI-trb"/>
                                                     </connections>
                                                 </switch>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Automatically Log In" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="haP-g8-Ja9">
                                                     <rect key="frame" x="20" y="11" width="157" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -629,7 +623,7 @@
             </objects>
             <point key="canvasLocation" x="1908" y="2226"/>
         </scene>
-        <!--Medable Main Table View Controller - Medable-->
+        <!--Medable-->
         <scene sceneID="MIy-YY-k3S">
             <objects>
                 <tableViewController storyboardIdentifier="medableMainTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="z2H-gV-BAV" customClass="CBCMedableMainTableViewController" sceneMemberID="viewController">
@@ -748,7 +742,7 @@
             </objects>
             <point key="canvasLocation" x="1348" y="2893"/>
         </scene>
-        <!--Table View Controller - About-->
+        <!--About-->
         <scene sceneID="pNp-pn-iJn">
             <objects>
                 <tableViewController id="LyE-Tp-Rki" customClass="CBCTableViewController" sceneMemberID="viewController">
@@ -834,7 +828,7 @@
             </objects>
             <point key="canvasLocation" x="1348" y="2180"/>
         </scene>
-        <!--Feed View Controller - Feed-->
+        <!--Feed-->
         <scene sceneID="3tq-By-vgp">
             <objects>
                 <viewController id="Z6i-6r-adS" customClass="CBCFeedViewController" sceneMemberID="viewController">
@@ -847,21 +841,20 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo_biogram-2" translatesAutoresizingMaskIntoConstraints="NO" id="u3P-VY-IkX">
-                                <rect key="frame" x="75" y="66" width="170" height="128"/>
+                                <rect key="frame" x="75" y="63" width="170" height="128"/>
                             </imageView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
-                                <rect key="frame" x="20" y="196" width="243" height="29"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uZQ-D2-eX5">
+                                <rect key="frame" x="57" y="193" width="206" height="29"/>
                                 <segments>
                                     <segment title="Private"/>
                                     <segment title="Public"/>
-                                    <segment title="Collective"/>
                                 </segments>
                                 <connections>
                                     <action selector="feedFilterChanged:" destination="Z6i-6r-adS" eventType="valueChanged" id="sMY-GZ-YGo"/>
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PtP-Or-cTL">
-                                <rect key="frame" x="0.0" y="245" width="320" height="273"/>
+                                <rect key="frame" x="0.0" y="257" width="320" height="261"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="feedProtoCell" textLabel="dvw-M4-0xM" imageView="qEX-KC-8bt" style="IBUITableViewCellStyleDefault" id="c8h-ZL-8yH">
@@ -895,8 +888,7 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PlN-lC-s3P">
-                                <rect key="frame" x="270" y="196" width="29" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="270" y="193" width="29" height="29"/>
                                 <state key="normal" backgroundImage="logo_medable">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -906,7 +898,6 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="pg4-7B-00C">
                                 <rect key="frame" x="2" y="75" width="65" height="53"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Reset Trial Mode"/>
                                 <connections>
@@ -914,8 +905,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N4q-NS-rBR">
-                                <rect key="frame" x="263" y="190" width="42" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="263" y="187" width="42" height="42"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -924,8 +914,7 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6t-IA-ZC2">
-                                <rect key="frame" x="20" y="188" width="280" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="20" y="187" width="280" height="42"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -933,6 +922,9 @@
                                     <action selector="medableInfoTouched:" destination="Z6i-6r-adS" eventType="touchUpInside" id="bS2-HN-YRc"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oiG-uQ-JFn">
+                                <rect key="frame" x="150" y="229" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -951,6 +943,7 @@
                         <outlet property="medableInfoButton" destination="P6t-IA-ZC2" id="4A9-6f-h6Q"/>
                         <outlet property="medableLoggedInButton" destination="PlN-lC-s3P" id="Ibr-KQ-StN"/>
                         <outlet property="resetTrialModeButton" destination="pg4-7B-00C" id="gRG-1Y-zae"/>
+                        <outlet property="spinner" destination="oiG-uQ-JFn" id="290-ps-pjO"/>
                         <outlet property="tableView" destination="PtP-Or-cTL" id="nGX-Z4-xDP"/>
                     </connections>
                 </viewController>
@@ -958,10 +951,10 @@
             </objects>
             <point key="canvasLocation" x="735" y="306"/>
         </scene>
-        <!--Create Heart Rate Event Controller - Heart Rate-->
+        <!--Heart Rate-->
         <scene sceneID="ooV-ya-6v2">
             <objects>
-                <tableViewController id="uBd-wk-R0G" customClass="CBCCreateHeartRateEventController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="rootCreateHeartRateController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uBd-wk-R0G" customClass="CBCCreateHeartRateEventController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="irT-Ob-uRp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1046,7 +1039,7 @@
             </objects>
             <point key="canvasLocation" x="735" y="1026"/>
         </scene>
-        <!--Manual Heart Rate Controller - Manual-->
+        <!--Manual-->
         <scene sceneID="NkH-Sw-0gp">
             <objects>
                 <viewController id="jMW-ng-OLr" customClass="CBCManualHeartRateController" sceneMemberID="viewController">
@@ -1149,7 +1142,6 @@
                             </imageView>
                             <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VgI-xc-4kC">
                                 <rect key="frame" x="0.0" y="20" width="568" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <navigationItem title="AliveCor" id="QNd-on-iws">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="bhB-kz-Nil">
@@ -1167,7 +1159,6 @@
                             </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
@@ -1184,7 +1175,7 @@
             </objects>
             <point key="canvasLocation" x="1231" y="1701"/>
         </scene>
-        <!--Select Photo Controller - Photo-->
+        <!--Photo-->
         <scene sceneID="cvp-uQ-GEo">
             <objects>
                 <viewController title="Photo" id="l3R-YC-rtF" customClass="CBCSelectPhotoController" sceneMemberID="viewController">
@@ -1238,7 +1229,7 @@
             </objects>
             <point key="canvasLocation" x="1920" y="1026"/>
         </scene>
-        <!--Edit Photo Controller - Edit-->
+        <!--Edit-->
         <scene sceneID="2Qt-FI-Q5l">
             <objects>
                 <viewController title="Edit" automaticallyAdjustsScrollViewInsets="NO" id="zxF-Qw-ZDf" customClass="CBCEditPhotoController" sceneMemberID="viewController">
@@ -1258,7 +1249,7 @@
                                     <constraint firstAttribute="width" constant="306" id="5qO-c5-Rdy"/>
                                 </constraints>
                             </imageView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
                                 <rect key="frame" x="201" y="289" width="77" height="77"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -1269,6 +1260,24 @@
                                     <outletCollection property="gestureRecognizers" destination="JcC-He-ztI" appends="YES" id="oc6-GC-41a"/>
                                 </connections>
                             </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time Stamp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOa-c3-2hN">
+                                <rect key="frame" x="43" y="75" width="235" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NAa-dh-UCb">
+                                <rect key="frame" x="173" y="469" width="137" height="29"/>
+                                <segments>
+                                    <segment title="Private"/>
+                                    <segment title="Public"/>
+                                </segments>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Post to Medable as" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avJ-KK-u23">
+                                <rect key="frame" x="16" y="472" width="149" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a caption here" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="85k-mv-ey0">
                                 <rect key="frame" x="10" y="422" width="300" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1277,11 +1286,6 @@
                                     <action selector="keyboardDoneButtonTouched:" destination="zxF-Qw-ZDf" eventType="editingDidEndOnExit" id="308-9p-5ID"/>
                                 </connections>
                             </textField>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time Stamp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOa-c3-2hN">
-                                <rect key="frame" x="43" y="75" width="235" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1297,6 +1301,8 @@
                         <outlet property="captionTextField" destination="85k-mv-ey0" id="c7d-SH-kDl"/>
                         <outlet property="overlayImageView" destination="4ec-IW-9dL" id="dqX-gY-s9f"/>
                         <outlet property="photoImageView" destination="2QY-zH-bEp" id="XUR-FA-d7c"/>
+                        <outlet property="postToMedableLabel" destination="avJ-KK-u23" id="EUn-n3-Tq9"/>
+                        <outlet property="postToMedableSegmented" destination="NAa-dh-UCb" id="GVz-FV-lti"/>
                         <outlet property="scrollView" destination="Akc-3V-7Zv" id="F8R-gb-ATA"/>
                         <outlet property="timeStampLabel" destination="nOa-c3-2hN" id="ExA-3U-16w"/>
                         <segue destination="Fb1-fe-rON" kind="unwind" identifier="unwindToCreateHeartRateEventSegue" unwindAction="unwindToCreateHeartRateEvent:" id="fSi-iM-HtI"/>
@@ -1312,7 +1318,7 @@
             </objects>
             <point key="canvasLocation" x="2331" y="1026"/>
         </scene>
-        <!--Detail View Controller - Detail-->
+        <!--Detail-->
         <scene sceneID="GsL-c2-qbE">
             <objects>
                 <viewController id="yeV-0U-bxB" customClass="CBCDetailViewController" sceneMemberID="viewController">
@@ -1391,7 +1397,7 @@
             </objects>
             <point key="canvasLocation" x="1177" y="306"/>
         </scene>
-        <!--Navigation Controller - Settings-->
+        <!--Settings-->
         <scene sceneID="9Hj-8y-L1Z">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="otJ-aZ-jq9" customClass="CBCNavigationController" sceneMemberID="viewController">
@@ -1410,7 +1416,7 @@
             </objects>
             <point key="canvasLocation" x="305" y="2581"/>
         </scene>
-        <!--Navigation Controller - Feed-->
+        <!--Feed-->
         <scene sceneID="uF0-qe-2Eb">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2xh-t7-SiL" customClass="CBCNavigationController" sceneMemberID="viewController">
@@ -1429,7 +1435,7 @@
             </objects>
             <point key="canvasLocation" x="305" y="306"/>
         </scene>
-        <!--Navigation Controller - Heart Rate-->
+        <!--Heart Rate-->
         <scene sceneID="ysp-LL-IDn">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nLi-rV-jeS" customClass="CBCNavigationController" sceneMemberID="viewController">
@@ -1448,7 +1454,7 @@
             </objects>
             <point key="canvasLocation" x="305" y="1026"/>
         </scene>
-        <!--Share Event Controller - Share-->
+        <!--Share-->
         <scene sceneID="4Wg-e1-Om1">
             <objects>
                 <viewController title="Share" automaticallyAdjustsScrollViewInsets="NO" id="4s8-If-xKu" customClass="CBCShareEventController" sceneMemberID="viewController">
@@ -1565,6 +1571,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="C7n-Hc-6L0"/>
+        <segue reference="7Dt-TR-Q38"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *goToMedableButton;
 @property (weak, nonatomic) IBOutlet UIButton *medableInfoButton;
 @property (weak, nonatomic) IBOutlet UIButton *resetTrialModeButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
 
@@ -76,6 +77,9 @@
     self.resetTrialModeButton.hidden = YES;
     self.resetTrialModeButton.userInteractionEnabled = NO;
 #endif
+    
+    self.spinner.hidesWhenStopped = YES;
+    [self.spinner stopAnimating];
     
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(medableLoggedInDidChange:) name:kMDNotificationUserDidLogin object:nil];
@@ -225,11 +229,13 @@
     if (self.hasPendingEvents && self.pendingEventCount == 0)
     {
         self.feedFilterControl.enabled = YES;
+        self.tabBarController.tabBar.userInteractionEnabled = YES;
+        [self.spinner stopAnimating];
+        
         self.hasPendingEvents = NO;
         self.pendingEventCount = 0;
     }
 }
-
 
 #pragma mark - Table view data source
 
@@ -440,7 +446,6 @@
         self.feedFilterControl.selectedSegmentIndex = CBCFeedPrivate;
     [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPrivate];
     [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPublic];
-    [self.feedFilterControl setEnabled:NO/*!inTrialMode*/ forSegmentAtIndex:CBCFeedCollective]; // FIXME -- this crashes right now
     
     // when in trial mode, the medableInfoButton brings up info on medable
     // when in full medable mode, the goToMedableButton takes the user directly
@@ -508,6 +513,7 @@
 {
     NSLog(@">> willSwitchFeed");
     self.feedFilterControl.enabled = NO; // disable switching feeds again until we're done switching
+    self.tabBarController.tabBar.userInteractionEnabled = NO;
 }
 
 - (void)didSwitchFeed:(NSNotification *)notification
@@ -523,6 +529,8 @@
     NSLog(@">> didFinishSwitchingFeed count = %d", count.intValue);
     self.pendingEventCount = count.intValue;
     self.hasPendingEvents = YES;
+
+    [self.spinner startAnimating];
 }
 
 #pragma mark - Medable feed

@@ -21,6 +21,8 @@
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *overlayImageView;
 @property (weak, nonatomic) IBOutlet UITextField *captionTextField;
+@property (weak, nonatomic) IBOutlet UILabel *postToMedableLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *postToMedableSegmented;
 
 @end
 
@@ -35,7 +37,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
-    
 }
 
 - (void)viewDidLoad
@@ -74,6 +75,17 @@
 
     self.displayedEvent = pendingEvent;
     NSLog(@"CBCEditPhotoController: viewDidLoad: pendingEvent.heartRate = %@", pendingEvent.heartRate);
+    
+    // update UI based on whether user is logged in to Medable or not
+    // we don't need an NSNotification because if the user logs in or out,
+    // the feed changes, and any pending heart rate event is canceled anyway
+    BOOL isLoggedIn = [[CBCMedable singleton] isLoggedIn];
+    self.postToMedableLabel.enabled = isLoggedIn;
+    self.postToMedableSegmented.enabled = isLoggedIn;
+}
+
+- (void)medableLoggedInDidChange:(NSNotification *)notification
+{
 }
 
 - (void)didReceiveMemoryWarning
@@ -143,7 +155,12 @@
     [sender resignFirstResponder];
 }
 
-#pragma mark - Posting (aka Sharing)
+#pragma mark - Post Private/Public
+
+- (IBAction)postToMedableSegmentedTouched:(id)sender
+{
+    
+}
 
 #pragma mark - Save Button
 

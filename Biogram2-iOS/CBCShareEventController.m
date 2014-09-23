@@ -12,14 +12,13 @@
 #import "CBCHeartRateFeed.h"
 #import "CBCImageUtilities.h"
 #import "CBCSocialUtilities.h"
+#import "CBCTabBarController.h"
 
 #import <Social/Social.h>
 
 @interface CBCShareEventController ()
 
 @property (strong, nonatomic) UIViewController * originalRootController;
-
-- (void)willSwitchFeed:(NSNotification *)notification;
 
 @end
 
@@ -28,9 +27,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(willSwitchFeed:) name:kCBCWillSwitchFeed object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -46,23 +42,16 @@
     [self.navigationController setViewControllers:newControllers animated:NO];
 }
 
-- (void)resetUIFlow
-{
-    // Put the original root controller back into the stack.
-    NSArray * newControllers = [NSArray arrayWithObjects:self.originalRootController, self, nil];
-    [self.navigationController setViewControllers:newControllers animated:NO];
-    
-    // Jump back to start of the "create heart rate event" page sequence.
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    //[self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
-}
-
-- (void)willSwitchFeed:(NSNotification *)notification
-{
-    // whenever the feed changes, any pending heart rate event is canceled,
-    // so reset our UI flow to the start of the event creation sequence
-    [self resetUIFlow];
-}
+//- (void)resetUIFlow
+//{
+//    // Put the original root controller back into the stack.
+//    NSArray * newControllers = [NSArray arrayWithObjects:self.originalRootController, self, nil];
+//    [self.navigationController setViewControllers:newControllers animated:NO];
+//    
+//    // Jump back to start of the "create heart rate event" page sequence.
+//    [self.navigationController popToRootViewControllerAnimated:NO];
+//    //[self performSegueWithIdentifier:@"unwindToCreateHeartRateEventSegue" sender:self];
+//}
 
 - (IBAction)doneButtonTouched:(id)sender
 {
@@ -70,7 +59,8 @@
     self.tabBarController.selectedIndex = 0;
 
     // Reset to start of the "create heart rate event" page sequence.
-    [self resetUIFlow];
+    CBCTabBarController * tabBarController = (CBCTabBarController *)self.tabBarController;
+    [tabBarController resetCreateHeartRateUIFlow:self];
 }
 
 @end

@@ -32,8 +32,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton:) name:kMDNotificationUserDidLogin object:nil];
+    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton:) name:kMDNotificationUserDidLogout object:nil];
+
     [self updateAccountDetailsButton:nil];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -46,10 +50,6 @@
         // another controller must have been popped off
         [self updateAccountDetailsButton:nil];
     }
-
-    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton:) name:kMDNotificationUserDidLogin object:nil];
-    [defaultCenter addObserver:self selector:@selector(updateAccountDetailsButton:) name:kMDNotificationUserDidLogout object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -22,6 +22,9 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
 
 + (void)postDidComplete:(SocialServiceID)serviceId forEvent:(CBCHeartRateEvent *)heartRateEvent withPost:(MDPost *)post
 {
+    if (heartRateEvent == nil || [heartRateEvent isFault])
+        return;
+    
     CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
 
     switch (serviceId)

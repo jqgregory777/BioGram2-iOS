@@ -31,6 +31,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(updateUI:) name:kCBCSocialPostDidComplete object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -44,9 +47,6 @@
         self.displayedEvent = [feed pendingHeartRateEvent];
     }
     NSAssert(self.displayedEvent != nil, @"CBCDetailViewController: self.displayedEvent == nil");
-    
-    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-    [defaultCenter addObserver:self selector:@selector(updateUI:) name:kCBCSocialPostDidComplete object:nil];
     
     [self updateUI:nil];
 }
