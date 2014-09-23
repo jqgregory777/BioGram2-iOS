@@ -7,6 +7,7 @@
 //
 
 #import "CBCMedable.h"
+#import "CBCTabBarController.h"
 
 static CBCMedable * _medableSingleton = nil;
 
@@ -16,6 +17,7 @@ static CBCMedable * _medableSingleton = nil;
 @property (nonatomic, strong) NSString* password;
 @property (nonatomic, strong) NSString* verificationToken;
 @property (nonatomic, strong) UIAlertView* loginDialog;
+@property (nonatomic, weak) UIViewController* alertViewRequester;
 
 @end
 
@@ -67,6 +69,20 @@ static CBCMedable * _medableSingleton = nil;
             break;
         }
             
+        case UIAlertViewStyleDefault:
+        {
+            if (buttonIndex == 0)
+            {
+                CBCTabBarController * tabBarCtrl = (CBCTabBarController *)self.alertViewRequester.tabBarController;
+                [tabBarCtrl goToMedableSettings];
+            }
+            else
+            {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.medable.com/about.html"]];
+            }
+            break;
+        }
+            
         default:
             break;
     }
@@ -74,6 +90,7 @@ static CBCMedable * _medableSingleton = nil;
     if (alertView == self.loginDialog)
     {
         self.loginDialog = nil;
+        self.alertViewRequester = nil;
     }
 }
 
@@ -172,13 +189,13 @@ static CBCMedable * _medableSingleton = nil;
     return ([[MDAPIClient sharedClient] localUser] != nil);
 }
 
-- (void)showLoginDialog
+- (void)showLoginDialogWithCaption:(NSString *)caption
 {
     if (!self.loginDialog)
     {
         self.loginDialog = [[UIAlertView alloc]
                                    initWithTitle:NSLocalizedString(@"Medable Login", nil)
-                                   message:NSLocalizedString(@"Enter your credentials", nil)
+                                   message:NSLocalizedString(caption, nil)
                                    delegate:self
                                    cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                    otherButtonTitles:NSLocalizedString(@"Login", nil), nil];
@@ -209,6 +226,29 @@ static CBCMedable * _medableSingleton = nil;
         
         [self.loginDialog show];
     }
+}
+
+- (void)showLoginDialog
+{
+    [self showLoginDialogWithCaption:@"Enter your credentials."];
+}
+
+- (void)showMedableInfoDialog:(id)sender
+{
+    NSString * message = [NSString stringWithCString:
+                          "Protect your heart rate data with Medable, the world’s first HIPAA-compliant medical data service. "
+                          "Create an account and log in to unlock all of the features of Biogram."
+                                            encoding:NSUTF8StringEncoding];
+    
+    self.alertViewRequester = sender;
+    
+    UIAlertView* alert = [[UIAlertView alloc]
+                          initWithTitle:@"Medable"
+                          message:NSLocalizedString(message, nil)
+                          delegate:self
+                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                          otherButtonTitles:NSLocalizedString(@"www.medable.com", nil), nil];
+    [alert show];
 }
 
 - (void)displayAlertWithFault:(MDFault*)fault

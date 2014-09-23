@@ -7,8 +7,15 @@
 //
 
 #import "CBCNavigationController.h"
+#import "CBCShareEventController.h"
 
 @implementation CBCNavigationController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.delegate = self;
+}
 
 -(BOOL)shouldAutorotate
 {
@@ -23,6 +30,15 @@
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     return [[self.viewControllers lastObject] preferredInterfaceOrientationForPresentation];
+}
+
+- (void)navigationController:(UINavigationController *)navCtrl didShowViewController:(UIViewController*)viewCtrl animated:(BOOL)animated
+{
+    if ([viewCtrl isKindOfClass:[CBCShareEventController class]])
+    {
+        CBCShareEventController * shareEventCtrl = (CBCShareEventController*)viewCtrl;
+        [shareEventCtrl makeOnlyViewInNavigationStack];
+    }
 }
 
 @end

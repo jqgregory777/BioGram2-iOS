@@ -12,5 +12,6 @@
 
 - (void)resetFeedUIFlow;
 - (void)resetCreateHeartRateUIFlow:(UIViewController *)currentTopController;
+- (void)goToMedableSettings;
 
 @end

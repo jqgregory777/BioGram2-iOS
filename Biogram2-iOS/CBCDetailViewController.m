@@ -51,6 +51,11 @@
     [self updateUI:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;

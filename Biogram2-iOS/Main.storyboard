@@ -963,7 +963,7 @@
                         <sections>
                             <tableViewSection headerTitle="    " id="ZC3-sP-mvR">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="cgU-je-qGP" detailTextLabel="NGs-Ya-ZZX" imageView="pr5-3s-6db" rowHeight="120" style="IBUITableViewCellStyleSubtitle" id="3Wd-Hu-Iur">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="cgU-je-qGP" detailTextLabel="NGs-Ya-ZZX" imageView="pr5-3s-6db" rowHeight="120" style="IBUITableViewCellStyleSubtitle" id="3Wd-Hu-Iur">
                                         <rect key="frame" x="0.0" y="86" width="320" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Wd-Hu-Iur" id="Zb1-aQ-bEy">
@@ -990,11 +990,8 @@
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="jMW-ng-OLr" kind="push" id="vnO-ZC-J5g"/>
-                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="w5b-Bz-gMk" detailTextLabel="Jxc-z8-4tI" imageView="4Ah-J9-Qpu" rowHeight="120" style="IBUITableViewCellStyleSubtitle" id="hX0-jf-eem">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="w5b-Bz-gMk" detailTextLabel="Jxc-z8-4tI" imageView="4Ah-J9-Qpu" rowHeight="120" style="IBUITableViewCellStyleSubtitle" id="hX0-jf-eem">
                                         <rect key="frame" x="0.0" y="206" width="320" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hX0-jf-eem" id="Swu-l6-cgr">
@@ -1034,6 +1031,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <segue destination="l3R-YC-rtF" kind="push" identifier="aliveCorNextSegue" id="7Dt-TR-Q38"/>
+                        <segue destination="jMW-ng-OLr" kind="push" identifier="manualNextSegue" id="eVS-9H-d3j"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pj7-og-HCD" userLabel="First Responder" sceneMemberID="firstResponder"/>

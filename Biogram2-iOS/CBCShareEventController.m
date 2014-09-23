@@ -29,9 +29,21 @@
     [super viewDidLoad];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"CBCShareEventController viewDidAppear:%s", animated?"YES":"NO");
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"CBCShareEventController viewDidAppear:%s", animated?"YES":"NO");
+    [super viewDidAppear:animated];
+}
+
+- (void)makeOnlyViewInNavigationStack
+{
+    NSLog(@"CBCShareEventController makeOnlyViewInNavigationStack");
     NSArray * existingControllers = self.navigationController.viewControllers;
     if ([existingControllers lastObject] == self)
         NSLog(@"As I thought!");

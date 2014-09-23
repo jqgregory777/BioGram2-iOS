@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCFeedViewController.m"
-            timestampString = "433146945.174298"
+            filePath = "Biogram2-iOS/CBCCreateHeartRateEventController.m"
+            timestampString = "433155757.500299"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "539"
-            endingLineNumber = "539"
-            landmarkName = "-willSwitchFeed:"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCFeedViewController.m"
-            timestampString = "433146945.174298"
+            filePath = "Biogram2-iOS/CBCMedable.m"
+            timestampString = "433157085.582613"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "551"
-            endingLineNumber = "551"
-            landmarkName = "-didSwitchFeed:"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Biogram2-iOS/CBCHeartRateFeed.m"
-            timestampString = "433149124.465711"
+            filePath = "Biogram2-iOS/CBCTabBarController.m"
+            timestampString = "433157566.325065"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "528"
-            endingLineNumber = "528"
-            landmarkName = "-saveHeartRateEvent:"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "-tabBar:didSelectItem:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

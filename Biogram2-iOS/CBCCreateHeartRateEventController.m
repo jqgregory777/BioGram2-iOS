@@ -8,6 +8,7 @@
 
 #import "CBCCreateHeartRateEventController.h"
 #import "CBCAppDelegate.h"
+#import "CBCMedable.h"
 #import "CBCHeartRateEvent.h"
 #import "CBCHearTRateFeed.h"
 #import "AliveHMViewController.h"
@@ -56,25 +57,45 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    BOOL isLoggedIn = [[CBCMedable singleton] isLoggedIn];
+    int trialEventCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"TrialEventCount"];
+    BOOL allowEventCreation = (isLoggedIn || trialEventCount < 4);
+    
     switch(indexPath.row)
     {
-        case 1:
-        {
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            AliveHMViewController *aliveController = [storyboard instantiateViewControllerWithIdentifier:@"aliveController"];
-
-            //
-            // Create a new pending heart rate event (for manual entry)
-            //
-            
-            CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
-            [feed createPendingHeartRateEvent];
-            
-            // Now fake a segue to the view (needed to keep the landscape orientation)
-            [aliveController setDelegate:self];
-            [self presentViewController:aliveController animated:YES completion:nil];
+        case 0:
+            if (allowEventCreation)
+            {
+                [self performSegueWithIdentifier:@"manualNextSegue" sender:self];
+            }
+            else
+            {
+                [[CBCMedable singleton] showMedableInfoDialog:self];
+            }
             break;
-        }
+            
+        case 1:
+            if (allowEventCreation)
+            {
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                AliveHMViewController *aliveController = [storyboard instantiateViewControllerWithIdentifier:@"aliveController"];
+
+                //
+                // Create a new pending heart rate event (for manual entry)
+                //
+                
+                CBCFeed * feed = [[CBCFeedManager singleton] currentFeed];
+                [feed createPendingHeartRateEvent];
+                
+                // Now fake a segue to the view (needed to keep the landscape orientation)
+                [aliveController setDelegate:self];
+                [self presentViewController:aliveController animated:YES completion:nil];
+            }
+            else
+            {
+                [[CBCMedable singleton] showMedableInfoDialog:self];
+            }
+            break;
     }
 }
 

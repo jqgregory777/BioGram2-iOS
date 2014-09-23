@@ -11,4 +11,6 @@
 
 @interface CBCShareEventController : CBCDetailViewController
 
+- (void)makeOnlyViewInNavigationStack;
+
 @end

@@ -493,6 +493,19 @@ static NSUInteger const kMedableFeedPageSize = 20;
     return self;
 }
 
+- (BOOL)saveHeartRateEvent:(CBCHeartRateEvent *)heartRateEvent
+{
+    BOOL success = [super saveHeartRateEvent:heartRateEvent];
+    
+    if (success)
+    {
+        int trialEventCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"TrialEventCount"];
+        [[NSUserDefaults standardUserDefaults] setInteger:(trialEventCount + 1) forKey:@"TrialEventCount"];
+    }
+    
+    return success;
+}
+
 @end
 
 // ----------------------------------------------------------------------------------------------------------------------------

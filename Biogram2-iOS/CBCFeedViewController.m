@@ -14,6 +14,7 @@
 #import "CBCImageUtilities.h"
 #import "CBCDetailViewController.h"
 #import "CBCSocialUtilities.h"
+#import "CBCTabBarController.h"
 
 
 @interface CBCFeedViewController ()
@@ -371,69 +372,19 @@
 #ifdef DEBUG
     // reset the number of events created to extend the trial period
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"TrialEventCount"];
+    self.resetTrialModeButton.enabled = NO;
 #endif
 }
 
 - (IBAction)medableInfoTouched:(id)sender
 {
-    NSLog(@"medableInfoTouched:");
-
-    NSString * message = [NSString stringWithCString:
-        "Protect your heart rate data with Medable, the world’s first HIPAA-compliant medical data service. "
-        "Create an account and log in to unlock all of the features of Biogram."
-        encoding:NSUTF8StringEncoding];
-    
-    UIAlertView* alert = [[UIAlertView alloc]
-                          initWithTitle:@"Medable"
-                          message:NSLocalizedString(message, nil)
-                          delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                          otherButtonTitles:NSLocalizedString(@"www.medable.com", nil), nil];
-    [alert show];
+    [[CBCMedable singleton] showMedableInfoDialog:self];
 }
 
 - (IBAction)goToMedableTouched:(id)sender
 {
-    NSLog(@"goToMedableTouched:");
-    
-    // go to settings tab
-    self.tabBarController.selectedIndex = 2;
-    
-    // go to medable settings page
-    UINavigationController * settingsNavControl = self.tabBarController.viewControllers[2];
-    NSArray * presentedSettingsControllers = settingsNavControl.viewControllers;
-    
-    BOOL foundMedableController = NO;
-    int count = presentedSettingsControllers.count;
-    for (int i = 0; i < count; i++)
-    {
-        UIViewController * controller = [presentedSettingsControllers objectAtIndex:i];
-        if ([controller.restorationIdentifier isEqualToString:@"medableMainTableViewController"])
-        {
-            foundMedableController = YES;
-            break;
-        }
-    }
-    
-    if (!foundMedableController)
-    {
-        UIViewController * settingsViewControl = settingsNavControl.childViewControllers[0];
-        [settingsViewControl performSegueWithIdentifier:@"goToMedableSettingsSegue" sender:self];
-    }
-}
-
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0)
-    {
-        [self goToMedableTouched:self];
-    }
-    else
-    {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.medable.com/about.html"]];
-    }
+    CBCTabBarController * tabBarController = (CBCTabBarController *)self.tabBarController;
+    [tabBarController goToMedableSettings];
 }
 
 #pragma mark - Segmented controls

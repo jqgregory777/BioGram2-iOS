@@ -59,6 +59,7 @@
     
     // also reset the heart rate creation UI flow, but ONLY if we're currently displaying the
     // special CBCShareEventController... otherwise it's unnecessary
+    navController = self.viewControllers[1];
     UIViewController * viewController = [navController.viewControllers lastObject];
     if (viewController != nil && [viewController isKindOfClass:[CBCShareEventController class]])
     {
@@ -109,6 +110,36 @@
     
     // Jump back to start of the "create heart rate event" page sequence.
     [navController popToRootViewControllerAnimated:NO];
+}
+
+- (void)goToMedableSettings
+{
+    NSLog(@"goToMedableSettings");
+    
+    // go to settings tab
+    self.selectedIndex = 2;
+    
+    // go to medable settings page
+    UINavigationController * settingsNavControl = self.viewControllers[2];
+    NSArray * presentedSettingsControllers = settingsNavControl.viewControllers;
+    
+    BOOL foundMedableController = NO;
+    int count = presentedSettingsControllers.count;
+    for (int i = 0; i < count; i++)
+    {
+        UIViewController * controller = [presentedSettingsControllers objectAtIndex:i];
+        if ([controller.restorationIdentifier isEqualToString:@"medableMainTableViewController"])
+        {
+            foundMedableController = YES;
+            break;
+        }
+    }
+    
+    if (!foundMedableController)
+    {
+        UIViewController * settingsViewControl = settingsNavControl.childViewControllers[0];
+        [settingsViewControl performSegueWithIdentifier:@"goToMedableSettingsSegue" sender:self];
+    }
 }
 
 @end

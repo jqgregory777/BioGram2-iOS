@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CBCNavigationController : UINavigationController
+@interface CBCNavigationController : UINavigationController <UINavigationControllerDelegate>
 
 @end
