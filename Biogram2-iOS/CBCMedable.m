@@ -11,13 +11,37 @@
 
 static CBCMedable * _medableSingleton = nil;
 
+typedef enum : NSInteger
+{
+    CBCMedableAlertViewLogin,       // username, password login dialog
+    CBCMedableAlertViewPin,         // enter your verification PIN code
+    CBCMedableAlertViewLoginFault,  // error logging in (e.g. pw is incorrect)
+    CBCMedableAlertViewFault,       // general Medable error
+    CBCMedableAlertViewInfo         // show info about Medable then take the user to the Medable Settings view
+} CBCMedableAlertViewType;
+
+// -------------------------------------------------------------------------------------------------------------------
+
+@interface CBCMedableAlertView : UIAlertView
+
+@property (nonatomic) CBCMedableAlertViewType type;
+@property (nonatomic, weak) UIViewController* requester;
+
+@end
+
+@implementation CBCMedableAlertView
+
+@end
+
+// -------------------------------------------------------------------------------------------------------------------
+
 @interface CBCMedable ()
 
-@property (nonatomic, strong) NSString* email;
-@property (nonatomic, strong) NSString* password;
-@property (nonatomic, strong) NSString* verificationToken;
-@property (nonatomic, strong) UIAlertView* loginDialog;
-@property (nonatomic, weak) UIViewController* alertViewRequester;
+@property (nonatomic, strong) NSString * email;
+@property (nonatomic, strong) NSString * password;
+@property (nonatomic, strong) NSString * verificationToken;
+@property (nonatomic, strong) CBCMedableAlertView * loginAlertView;
+@property (nonatomic, strong) CBCMedableAlertView * alertView;
 
 @end
 
@@ -35,45 +59,53 @@ static CBCMedable * _medableSingleton = nil;
 
 #pragma mark - UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView *)rawAlertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    switch (alertView.alertViewStyle)
+    CBCMedableAlertView * alertView = (CBCMedableAlertView *)rawAlertView;
+    
+    switch (alertView.type)
     {
-        case UIAlertViewStyleLoginAndPasswordInput:
+        case CBCMedableAlertViewLogin:
         {
             if (buttonIndex == 1)
             {
                 UITextField* emailTextField = [alertView textFieldAtIndex:0];
-                self.email = emailTextField.text;
-                
                 UITextField* passwordTextField = [alertView textFieldAtIndex:1];
-                self.password = passwordTextField.text;
                 
-                [self loginWithEmail:self.email
-                                   password:self.password
-                          verificationToken:self.verificationToken];
+                [self loginWithEmail:emailTextField.text
+                            password:passwordTextField.text
+                   verificationToken:self.verificationToken];
             }
             
             break;
         }
             
-        case UIAlertViewStylePlainTextInput:
+        case CBCMedableAlertViewPin:
         {
             UITextField* codeTextField = [alertView textFieldAtIndex:0];
             self.verificationToken = codeTextField.text;
             
             [self loginWithEmail:self.email
-                               password:self.password
-                      verificationToken:self.verificationToken];
+                        password:self.password
+               verificationToken:self.verificationToken];
             
             break;
         }
             
-        case UIAlertViewStyleDefault:
+        case CBCMedableAlertViewLoginFault:
+        {
+            [self showLoginDialog];
+            break;
+        }
+            
+        case CBCMedableAlertViewFault:
+            break;
+
+        case CBCMedableAlertViewInfo:
         {
             if (buttonIndex == 0)
             {
-                CBCTabBarController * tabBarCtrl = (CBCTabBarController *)self.alertViewRequester.tabBarController;
+                CBCTabBarController * tabBarCtrl = (CBCTabBarController *)alertView.requester.tabBarController;
                 [tabBarCtrl goToMedableSettings];
             }
             else
@@ -87,10 +119,13 @@ static CBCMedable * _medableSingleton = nil;
             break;
     }
     
-    if (alertView == self.loginDialog)
+    if (alertView == self.loginAlertView)
     {
-        self.loginDialog = nil;
-        self.alertViewRequester = nil;
+        self.loginAlertView = nil;
+    }
+    if (alertView == self.alertView)
+    {
+        self.alertView = nil;
     }
 }
 
@@ -110,11 +145,11 @@ static CBCMedable * _medableSingleton = nil;
                 NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
                 if ([userDefaults boolForKey:@"MedableAutoLogin"])
                 {
-                    wSelf.email = [userDefaults stringForKey:@"MedableLoginEmail"];
-                    wSelf.password = [userDefaults stringForKey:@"MedableLoginPassword"];
+                    NSString * email = [userDefaults stringForKey:@"MedableLoginEmail"];
+                    NSString * password = [userDefaults stringForKey:@"MedableLoginPassword"];
                     
-                    [wSelf loginWithEmail:wSelf.email
-                                 password:wSelf.password
+                    [wSelf loginWithEmail:email
+                                 password:password
                         verificationToken:wSelf.verificationToken];
                 }
                 else
@@ -126,49 +161,53 @@ static CBCMedable * _medableSingleton = nil;
     ];
 }
 
+- (void)cacheCredentials
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginEmail"])
+        [[NSUserDefaults standardUserDefaults] setObject:self.email forKey:@"MedableLoginEmail"];
+    else
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"MedableLoginEmail"];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginPassword"])
+        [[NSUserDefaults standardUserDefaults] setObject:self.password forKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
+    else
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"MedableLoginPassword"];
+}
+
 - (void)loginWithEmail:(NSString*)email password:(NSString*)password verificationToken:(NSString*)verificationToken
 {
-    if (email.length && password.length)
-    {
-        __weak typeof (self) wSelf = self;
-        
-        [[MDAPIClient sharedClient]
-         authenticateSessionWithEmail:email
-         password:password
-         verificationToken:verificationToken
-         singleUse:NO
-         callback:
-             ^(MDAccount *localUser, MDFault *fault)
+    // not sure if this is necessary, but Fer had it guarded against empty username and/or password so do this
+    if (email == nil || email.length == 0)
+        email = @" ";
+    if (password == nil || password.length == 0)
+        password = @" ";
+
+    self.email = email;
+    self.password = password;
+    
+    __weak typeof (self) wSelf = self;
+    
+    NSLog(@")) medable login '%@' pw '%@'", email, password);
+    
+    [[MDAPIClient sharedClient]
+     authenticateSessionWithEmail:email
+     password:password
+     verificationToken:verificationToken
+     singleUse:NO
+     callback:
+         ^(MDAccount *localUser, MDFault *fault)
+         {
+             // cache the login credentials if the user allows it
+             [self cacheCredentials];
+             
+             NSLog(@")) medable login complete: fault = %@ (%@)", fault, (fault != nil) ? fault.text : @"");
+
+             if (fault != nil)
              {
-                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginEmail"])
-                     [[NSUserDefaults standardUserDefaults] setObject:email forKey:@"MedableLoginEmail"];
-                 else
-                     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"MedableLoginEmail"];
-                 
-                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginPassword"])
-                     [[NSUserDefaults standardUserDefaults] setObject:password forKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
-                 else
-                     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
-                 
-                 if (fault)
-                 {
-                     if ([fault.code isEqualToString:kMDAPIErrorUnverifiedLocation] ||
-                         [fault.code isEqualToString:kMDAPIErrorNewLocation])
-                     {
-                         [wSelf displayAlertWithFault:fault];
-                     }
-                     else if ([fault.code isEqualToString:@"kInvalidCredentials"])
-                     {
-                         [wSelf showLoginDialog];
-                     }
-                     else
-                     {
-                         [wSelf displayAlertWithMessage:fault.text];
-                     }
-                 }
+                 [wSelf displayAlertWithLoginFault:fault];
              }
-         ];
-    }
+         }
+     ];
 }
 
 - (void)logout
@@ -189,18 +228,18 @@ static CBCMedable * _medableSingleton = nil;
     return ([[MDAPIClient sharedClient] localUser] != nil);
 }
 
-- (void)showLoginDialogWithCaption:(NSString *)caption
+- (void)showLoginDialog
 {
-    if (!self.loginDialog)
+    if (!self.loginAlertView && !self.alertView)
     {
-        self.loginDialog = [[UIAlertView alloc]
+        self.loginAlertView = [[CBCMedableAlertView alloc]
                                    initWithTitle:NSLocalizedString(@"Medable Login", nil)
-                                   message:NSLocalizedString(caption, nil)
+                                   message:NSLocalizedString(@"Enter your credentials.", nil)
                                    delegate:self
                                    cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                    otherButtonTitles:NSLocalizedString(@"Login", nil), nil];
         
-        self.loginDialog.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+        self.loginAlertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginEmail"])
         {
@@ -209,8 +248,8 @@ static CBCMedable * _medableSingleton = nil;
             NSString * email = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginEmail"];
             if (email != nil)
             {
-                [self.loginDialog textFieldAtIndex:0].text = email;
-                [[self.loginDialog textFieldAtIndex:1] becomeFirstResponder]; // sadly this doesn't work, need to do it in the UIAlertView's viewWillAppear: method...
+                [self.loginAlertView textFieldAtIndex:0].text = email;
+                [[self.loginAlertView textFieldAtIndex:1] becomeFirstResponder]; // sadly this doesn't work, need to do it in the UIAlertView's viewWillAppear: method...
             }
         }
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"CacheMedableLoginPassword"])
@@ -220,65 +259,91 @@ static CBCMedable * _medableSingleton = nil;
             NSString * password = [[NSUserDefaults standardUserDefaults] stringForKey:@"MedableLoginPassword"]; // TO DO: does Medable support an encrypted password?
             if (password != nil)
             {
-                [self.loginDialog textFieldAtIndex:1].text = password;
+                [self.loginAlertView textFieldAtIndex:1].text = password;
             }
         }
         
-        [self.loginDialog show];
+        [self.loginAlertView show];
     }
-}
-
-- (void)showLoginDialog
-{
-    [self showLoginDialogWithCaption:@"Enter your credentials."];
 }
 
 - (void)showMedableInfoDialog:(id)sender
 {
-    NSString * message = [NSString stringWithCString:
-                          "Protect your heart rate data with Medable, the world’s first HIPAA-compliant medical data service. "
-                          "Create an account and log in to unlock all of the features of Biogram."
-                                            encoding:NSUTF8StringEncoding];
-    
-    self.alertViewRequester = sender;
-    
-    UIAlertView* alert = [[UIAlertView alloc]
-                          initWithTitle:@"Medable"
-                          message:NSLocalizedString(message, nil)
-                          delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                          otherButtonTitles:NSLocalizedString(@"www.medable.com", nil), nil];
-    [alert show];
+    if (!self.alertView)
+    {
+        NSString * message = [NSString stringWithCString:
+                              "Protect your heart rate data with Medable, the world’s first HIPAA-compliant medical data service. "
+                              "Create an account and log in to unlock all of the features of Biogram."
+                                                encoding:NSUTF8StringEncoding];
+        
+        self.alertView = [[CBCMedableAlertView alloc]
+                              initWithTitle:@"Medable"
+                              message:NSLocalizedString(message, nil)
+                              delegate:self
+                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                              otherButtonTitles:NSLocalizedString(@"www.medable.com", nil), nil];
+        
+        self.alertView.type = CBCMedableAlertViewInfo;
+        self.alertView.requester = sender;
+
+        [self.alertView show];
+    }
+}
+
+- (void)displayAlertWithLoginFault:(MDFault*)fault
+{
+    if (!self.alertView)
+    {
+        self.alertView = [[CBCMedableAlertView alloc]
+                              initWithTitle:NSLocalizedString(@"Login Failed", nil)
+                              message:fault.text
+                              delegate:self
+                              cancelButtonTitle:NSLocalizedString(@"Ok", nil)
+                              otherButtonTitles:nil];
+        
+        self.alertView.type = CBCMedableAlertViewLoginFault;
+        self.alertView.requester = nil;
+        
+        // Received error on first login with no verification token
+        if ([fault.code isEqualToString:kMDAPIErrorUnverifiedLocation] ||
+            [fault.code isEqualToString:kMDAPIErrorNewLocation])
+        {
+            self.alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+            self.alertView.message = [self.alertView.message stringByAppendingString:@"\nPlease enter verfication code:"];
+            self.alertView.type = CBCMedableAlertViewPin;
+            self.alertView.title = NSLocalizedString(@"Medable", nil);
+        }
+        
+        [self.alertView show];
+    }
 }
 
 - (void)displayAlertWithFault:(MDFault*)fault
 {
-    UIAlertView* alert = [[UIAlertView alloc]
-                          initWithTitle:[@"Error: " stringByAppendingString:fault.code]
+    if (!self.alertView)
+    {
+        self.alertView = [[CBCMedableAlertView alloc]
+                          initWithTitle:NSLocalizedString(@"Medable Error", nil)
                           message:fault.text
                           delegate:self
                           cancelButtonTitle:NSLocalizedString(@"Ok", nil)
                           otherButtonTitles:nil];
-    
-    // Received error on first login with no verification token
-    if ([fault.code isEqualToString:kMDAPIErrorUnverifiedLocation] ||
-        [fault.code isEqualToString:kMDAPIErrorNewLocation])
-    {
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        alert.message = [alert.message stringByAppendingString:@"\nPlease enter verfication code:"];
+        
+        self.alertView.type = CBCMedableAlertViewFault;
+        self.alertView.requester = nil;
+        
+        // Received error on first login with no verification token
+        if ([fault.code isEqualToString:kMDAPIErrorUnverifiedLocation] ||
+            [fault.code isEqualToString:kMDAPIErrorNewLocation])
+        {
+            self.alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+            self.alertView.message = [self.alertView.message stringByAppendingString:@"\nPlease enter verfication code:"];
+            self.alertView.type = CBCMedableAlertViewPin;
+            self.alertView.title = NSLocalizedString(@"Medable", nil);
+        }
+        
+        [self.alertView show];
     }
-    
-    [alert show];
-}
-
-- (void)displayAlertWithMessage:(NSString*)message
-{
-    [[[UIAlertView alloc]
-      initWithTitle:nil
-      message:message
-      delegate:nil
-      cancelButtonTitle:NSLocalizedString(@"Ok", nil)
-      otherButtonTitles:nil] show];
 }
 
 @end

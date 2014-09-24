@@ -18,6 +18,7 @@
 - (void)logout;
 - (BOOL)isLoggedIn;
 - (void)checkForValidSession;
+- (void)cacheCredentials;
 - (void)displayAlertWithFault:(MDFault*)fault;
 
 @end

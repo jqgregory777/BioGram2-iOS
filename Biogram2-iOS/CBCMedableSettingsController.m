@@ -10,6 +10,7 @@
 #import "CBCAppDelegate.h"
 #import "EXTPhoneNumberFormatter.h"
 #import "CBCMedableMainTableViewController.h"
+#import "CBCMedable.h"
 
 
 @interface CBCMedableSettingsController ()
@@ -67,14 +68,7 @@
     [defaults setBool:cacheLoginPassword forKey:@"CacheMedableLoginPassword"];
     [defaults setBool:autoLogin forKey:@"MedableAutoLogin"];
 
-    if (!cacheLoginEmail)
-    {
-        [defaults setObject:nil forKey:@"MedableLoginEmail"];
-    }
-    if (!cacheLoginPassword)
-    {
-        [defaults setObject:nil forKey:@"MedableLoginPassword"];
-    }
+    [[CBCMedable singleton] cacheCredentials];
 }
 
 - (void)displayValidationErrorsWithArray:(NSArray*)invalidMessages
