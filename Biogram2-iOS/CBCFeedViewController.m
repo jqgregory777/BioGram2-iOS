@@ -497,7 +497,6 @@
     
     NSLog(@">> didSwitchFeed to %@ count = %d", [CBCFeed typeAsString:newFeedType], count);
 
-    self.fetchedResultsController.delegate = self;
     [self.tableView reloadData];
     
     self.pendingEventCount = count;

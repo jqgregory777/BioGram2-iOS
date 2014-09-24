@@ -25,6 +25,25 @@
 
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(willSwitchFeed:) name:kCBCWillSwitchFeed object:nil];
+    
+    /*
+    static NSString* s_tabBarImages[3] =
+    {
+        @"tabbar_feed",
+        @"tabbar_heartrate",
+        @"tabbar_settings"
+    };
+    for (int i = 0; i < 3; ++i)
+    {
+        UITabBarItem *tabBarItem = [self.tabBar.items objectAtIndex:i];
+        
+        UIImage *unselectedImage = [UIImage imageNamed:s_tabBarImages[i]];
+        UIImage *selectedImage = [UIImage imageNamed:s_tabBarImages[i]];
+        
+        [tabBarItem setImage: [unselectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [tabBarItem setSelectedImage: selectedImage];
+    }
+     */
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -717,6 +717,8 @@ static NSUInteger const kMedableFeedPageSize = 20;
     event.thumbnail = nil;
     event.postedToMedable = @YES;
     
+    NSLog(@"&& createHeartRateEventForPost: %@", post.text);
+    
     [post postPicsWithUpdateBlock:
         ^BOOL(NSString *imageId, UIImage *image, BOOL lastImage)
         {
@@ -724,6 +726,8 @@ static NSUInteger const kMedableFeedPageSize = 20;
                 ^
                 {
                     NSData * photoData = UIImagePNGRepresentation(image);
+                    NSLog(@"  && image = %p", image);
+                    NSLog(@"  && photoData = %p", photoData);
                     event.photo = photoData;
                 }
             );
@@ -752,6 +756,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
         }
     }
     
+    NSLog(@"&& saving to core data");
     [self save]; // commit the new objects to give them *permanent* object IDs
     
     for (MDPost* post in feed)
@@ -762,7 +767,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
             if (event != nil)
             {
                 NSURL * eventKey = event.objectID.URIRepresentation;
-                NSLog(@"## found event: %@ (perm) for post: %@", eventKey, post);
+                NSLog(@"&& found event: %@ (perm) for post: %@", eventKey, post);
                 [self.postFromEvent setObject:post forKey:eventKey];
             }
         }
