@@ -28,8 +28,10 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
+@property (strong, nonatomic) NSTimer *timer;
 
 @property (nonatomic) BOOL hasPendingEvents;
+@property (nonatomic) BOOL hasReachedWillChangeContent;
 @property (nonatomic) NSInteger pendingEventCount;
 
 - (IBAction)editList:(id)sender;
@@ -43,7 +45,6 @@
 
 - (void)medableLoggedInDidChange:(NSNotification *)notification;
 - (void)didSwitchFeed:(NSNotification *)notification;
-- (void)didFinishSwitchingFeed:(NSNotification *)notification;
 
 @end
 
@@ -67,6 +68,7 @@
     [super viewDidLoad];
     
     self.hasPendingEvents = NO;
+    self.hasReachedWillChangeContent = NO;
     self.pendingEventCount = 0;
 
 #ifdef DEBUG
@@ -152,6 +154,8 @@
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     NSLog(@">> controllerWillChangeContent:\n");
+    if (self.hasPendingEvents)
+        self.hasReachedWillChangeContent = YES;
     [self.tableView beginUpdates];
 }
 
@@ -192,7 +196,10 @@
     UITableView *tableView = self.tableView;
     
     if (self.pendingEventCount > 0)
+    {
         self.pendingEventCount = self.pendingEventCount - 1;
+        NSLog(@"  >> count = %d\n", self.pendingEventCount);
+    }
     
     switch(type)
     {
@@ -222,6 +229,7 @@
 
 - (void)setActivityInProgress:(BOOL)inProgress
 {
+    NSLog(@">> [self setActivityInProgress:%s]\n", inProgress?"YES":"NO");
     if (inProgress)
     {
         self.feedFilterControl.enabled = NO;
@@ -236,8 +244,12 @@
         self.tabBarController.tabBar.userInteractionEnabled = YES;
         [self.spinner stopAnimating];
 
+        self.hasPendingEvents = NO;
+        self.hasReachedWillChangeContent = NO;
+        self.pendingEventCount = 0;
+
         [[NSNotificationCenter defaultCenter] postNotificationName:kCBCActivityDidStop object:nil userInfo:nil];
-}
+    }
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
@@ -249,9 +261,6 @@
     if (self.hasPendingEvents && self.pendingEventCount == 0)
     {
         [self setActivityInProgress:NO];
-        
-        self.hasPendingEvents = NO;
-        self.pendingEventCount = 0;
     }
 }
 
@@ -492,21 +501,38 @@
 
 - (void)didSwitchFeed:(NSNotification *)notification
 {
-    NSNumber * count = [notification.userInfo objectForKey:@"Count"];
+    NSInteger count = [[notification.userInfo objectForKey:@"Count"] intValue];
 
     NSNumber * newFeedTypeNum = [notification.userInfo objectForKey:@"NewFeedType"];
     CBCFeedType newFeedType = (CBCFeedType)newFeedTypeNum.intValue;
     
-    NSLog(@">> didSwitchFeed to %@ count = %d", [CBCFeed typeAsString:newFeedType], count.intValue);
+    NSLog(@">> didSwitchFeed to %@ count = %d", [CBCFeed typeAsString:newFeedType], count);
 
     self.fetchedResultsController.delegate = self;
     [self.tableView reloadData];
     
-    self.pendingEventCount = count.intValue;
-    self.hasPendingEvents = (count.intValue > 0);
-    
+    self.pendingEventCount = count;
+    self.hasPendingEvents = (count > 0);
+    self.hasReachedWillChangeContent = NO;
+
     if (!self.hasPendingEvents)
         [self setActivityInProgress:NO];
+    else
+    {
+        NSLog(@">> starting timer...");
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:NO];
+    }
+}
+
+- (void)timerFireMethod:(NSTimer *)timer
+{
+    NSLog(@">> timer fired");
+    if (self.hasPendingEvents && !self.hasReachedWillChangeContent)
+    {
+        NSLog(@">> timer had unprocessed pending events!");
+        [self setActivityInProgress:NO];
+    }
+    self.timer = nil;
 }
 
 #pragma mark - Medable feed

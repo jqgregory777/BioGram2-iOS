@@ -232,7 +232,8 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
         NSString* biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
-        NSString* message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        NSString* description = (heartRateEvent.eventDescription != nil) ? heartRateEvent.eventDescription : @"";
+        NSString* message = [NSString stringWithFormat:@"%@\n%@", description, biogramTagLine];
         UIImage* photo = [UIImage imageWithData:heartRateEvent.photo];
         
         [CBCSocialUtilities
@@ -367,7 +368,8 @@ NSString* const kCBCSocialPostDidComplete = @"kCBCSocialPostDidComplete";
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
         NSString* biogramTagLine = [NSString stringWithCString:g_biogramTagLine encoding:NSUTF8StringEncoding];
-        NSString* message = [NSString stringWithFormat:@"%@\n%@", heartRateEvent.eventDescription, biogramTagLine];
+        NSString* description = (heartRateEvent.eventDescription != nil) ? heartRateEvent.eventDescription : @"";
+        NSString* message = [NSString stringWithFormat:@"%@\n%@", description, biogramTagLine];
         UIImage* photo = [UIImage imageWithData:heartRateEvent.photo];
         
         [CBCSocialUtilities
