@@ -61,7 +61,9 @@ NSString* const kCBCActivityDidStop = @"kCBCActivityDidStop";
                                     @"LoggedInToMedable" : @NO,
                                     @"TrialEventCount" : @0 };
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
-    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"MaxTrialEventCount"];
+    
+    // The user can create up to this many events in trial mode before having to log in.
+    [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"MaxTrialEventCount"];
 
     // Initialize Medable's assets manager
     [MDAssetManager sharedManager];
