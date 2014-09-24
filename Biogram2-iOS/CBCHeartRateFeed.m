@@ -104,6 +104,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
                 break;
             case CBCFeedPrivate:
             case CBCFeedPublic:
+            case CBCFeedGlobal:
                 {
                     CBCMedableFeed * feed = [[CBCMedableFeed alloc] initWithType:type];
                     _currentFeed = feed;
@@ -170,6 +171,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
         case CBCFeedLocal:      return @"CBCFeedLocal";
         case CBCFeedPrivate:    return @"CBCFeedPrivate";
         case CBCFeedPublic:     return @"CBCFeedPublic";
+        case CBCFeedGlobal:     return @"CBCFeedGlobal";
         default:                return @"CBCFeedNone";
     }
 }
@@ -607,9 +609,12 @@ static NSUInteger const kMedableFeedPageSize = 20;
             
         case CBCFeedPublic:
             [self updateFeedFromPublic:YES];
-            //[self updateFeedFromGlobal];
             break;
             
+        case CBCFeedGlobal:
+            [self updateFeedFromGlobal];
+            break;
+
         default:
             NSAssert(NO, @"invalid feed type");
             break;

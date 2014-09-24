@@ -59,7 +59,8 @@
 {
     BOOL isLoggedIn = [[CBCMedable singleton] isLoggedIn];
     int trialEventCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"TrialEventCount"];
-    BOOL allowEventCreation = (isLoggedIn || trialEventCount < 4);
+    int maxTrialEventCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"MaxTrialEventCount"];
+    BOOL allowEventCreation = (isLoggedIn || trialEventCount < maxTrialEventCount);
     
     switch(indexPath.row)
     {

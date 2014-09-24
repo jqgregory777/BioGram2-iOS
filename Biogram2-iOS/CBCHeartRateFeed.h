@@ -14,6 +14,7 @@ typedef enum : NSInteger
     CBCFeedNone = -1,
     CBCFeedPrivate = 0,
     CBCFeedPublic,
+    CBCFeedGlobal,
     CBCFeedLocal // used only in trial mode
 } CBCFeedType;
 

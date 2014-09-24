@@ -24,8 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *medableLoggedInButton;
 @property (weak, nonatomic) IBOutlet UIButton *goToMedableButton;
 @property (weak, nonatomic) IBOutlet UIButton *medableInfoButton;
-@property (weak, nonatomic) IBOutlet UIButton *resetTrialModeButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
+@property (weak, nonatomic) IBOutlet UIButton *resetTrialModeButton;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *feedFilterControl;
 @property (strong, nonatomic) NSTimer *timer;
@@ -70,16 +70,8 @@
     self.hasPendingEvents = NO;
     self.hasReachedWillChangeContent = NO;
     self.pendingEventCount = 0;
-
-#ifdef DEBUG
     self.resetTrialModeButton.enabled = YES;
     self.resetTrialModeButton.hidden = NO;
-    self.resetTrialModeButton.userInteractionEnabled = YES;
-#else
-    self.resetTrialModeButton.enabled = NO;
-    self.resetTrialModeButton.hidden = YES;
-    self.resetTrialModeButton.userInteractionEnabled = NO;
-#endif
     
     self.spinner.hidesWhenStopped = YES;
     [self.spinner stopAnimating];
@@ -240,7 +232,10 @@
     }
     else
     {
-        self.feedFilterControl.enabled = YES;
+        BOOL loggedIn = [[CBCMedable singleton] isLoggedIn];
+        BOOL inTrialMode = !loggedIn;
+
+        self.feedFilterControl.enabled = !inTrialMode;
         self.tabBarController.tabBar.userInteractionEnabled = YES;
         [self.spinner stopAnimating];
 
@@ -381,7 +376,6 @@
 #ifdef DEBUG
     // reset the number of events created to extend the trial period
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"TrialEventCount"];
-    self.resetTrialModeButton.enabled = NO;
 #endif
 }
 
@@ -424,8 +418,7 @@
         self.feedFilterControl.selectedSegmentIndex = CBCFeedPrivate;
     }
     
-    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPrivate];
-    [self.feedFilterControl setEnabled:!inTrialMode forSegmentAtIndex:CBCFeedPublic];
+    self.feedFilterControl.enabled = !inTrialMode;
     
     // when in trial mode, the medableInfoButton brings up info on medable
     // when in full medable mode, the goToMedableButton takes the user directly
@@ -436,10 +429,6 @@
     self.medableInfoButton.userInteractionEnabled = inTrialMode;
     self.medableInfoButton.hidden = !inTrialMode;
     
-#ifdef DEBUG
-    self.resetTrialModeButton.enabled = ([[NSUserDefaults standardUserDefaults] integerForKey:@"TrialEventCount"] != 0);
-#endif
-
     if (!loggedIn)
     {
         [[CBCFeedManager singleton] switchToFeed:CBCFeedLocal];
