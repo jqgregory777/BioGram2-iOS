@@ -71,6 +71,11 @@ NSString* const kCBCActivityDidStop = @"kCBCActivityDidStop";
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(medableUserDidLogIn:) name:kMDNotificationUserDidLogin object:nil];
     [defaultCenter addObserver:self selector:@selector(medableUserDidLogOut:) name:kMDNotificationUserDidLogout object:nil];
+    
+    [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UITabBar appearance] setSelectedImageTintColor: [UIColor blackColor]];
+    
+    [[UIView appearance] setTintColor:[UIColor blackColor]];
 
     return YES;
 }
