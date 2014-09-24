@@ -168,6 +168,8 @@
     
     if (accountInfoIsValid)
     {
+        __weak typeof (self) wSelf = self;
+        
         MDProfileInfo* profileInfo = [MDProfileInfo
                                       patientProfileWithGender:accountValidator.gender
                                       dob:accountValidator.dateOfBirth];
@@ -185,7 +187,7 @@
          callback:
             ^(NSDictionary *result, MDFault *fault)
             {
-                void (^completion)() = nil;
+                //void (^completion)() = nil;
                 
                 if (fault)
                 {
@@ -197,12 +199,14 @@
                 }
                 else
                 {
-                    completion = ^{
-                        [(CBCMedableMainTableViewController*)self.presentingViewController updateAccountDetailsButton:nil];
-                    };
+                    // there's no presentingViewController since this view controller wasn't presented as modal VC
+//                    completion = ^{
+//                        [(CBCMedableMainTableViewController*)self.presentingViewController updateAccountDetailsButton:nil];
+//                    };
                 }
                 
-                [self dismissViewControllerAnimated:YES completion:completion];
+                //[wSelf dismissViewControllerAnimated:YES completion:completion];
+                [wSelf.navigationController popViewControllerAnimated:YES];
             }
         ];
     }
