@@ -716,6 +716,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
     event.overlayImage = nil;
     event.thumbnail = nil;
     event.postedToMedable = @YES;
+    event.creatorAccountId = post.creatorId;
     
     NSLog(@"&& createHeartRateEventForPost: %@", post.text);
     

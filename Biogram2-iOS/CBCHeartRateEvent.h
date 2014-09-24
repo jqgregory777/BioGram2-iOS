@@ -25,6 +25,7 @@
 
 // transient properties (not even part of the data model actually)
 @property (nonatomic, strong) UIImage * thumbnail;
+@property (nonatomic, strong) NSString* creatorAccountId;
 
 - (NSString *)timeStampAsString;
 

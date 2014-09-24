@@ -18,6 +18,7 @@
 
 
 @interface CBCFeedViewController ()
+<UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITabBarDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
@@ -335,6 +336,24 @@
     [self updateEditButton];
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CBCHeartRateEvent* event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSString* eventCreatorId = event.creatorAccountId;
+    NSString* currentUserId = [[[MDAPIClient sharedClient] localUser] Id];
+    
+    // Created by current account
+    if ([currentUserId isEqualToString:eventCreatorId])
+    {
+        return YES;
+    }
+    else
+    {
+        // Not ours, can't edit/delete event/post
+        return NO;
+    }
+}
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -520,6 +539,8 @@
         NSLog(@">> timer had unprocessed pending events!");
         [self setActivityInProgress:NO];
     }
+    
+    [self.timer invalidate];
     self.timer = nil;
 }
 

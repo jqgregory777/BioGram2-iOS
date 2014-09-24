@@ -23,6 +23,7 @@
 @dynamic medableFeedType;
 
 @synthesize thumbnail = _thumbnail;
+@synthesize creatorAccountId;
 
 - (NSString *)timeStampAsString
 {

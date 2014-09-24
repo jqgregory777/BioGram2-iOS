@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CBCFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UITabBarDelegate, UIAlertViewDelegate>
-
+@interface CBCFeedViewController : UIViewController
 - (void)stopEditingTableView;
-
 @end
