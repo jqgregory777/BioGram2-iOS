@@ -607,6 +607,7 @@ static NSUInteger const kMedableFeedPageSize = 20;
             
         case CBCFeedPublic:
             [self updateFeedFromPublic:YES];
+            //[self updateFeedFromGlobal];
             break;
             
         default:
@@ -654,6 +655,34 @@ static NSUInteger const kMedableFeedPageSize = 20;
                 }
             }
         ];
+    }
+}
+
+- (void)updateFeedFromGlobal
+{
+    __weak typeof (self) wSelf = self;
+    
+    MDAccount* currentAccount = [MDAPIClient sharedClient].localUser;
+    if (currentAccount)
+    {
+        MDAPIParameters* parameters = [MDAPIParameterFactory parametersWithParameters:
+                                       [MDAPIParameterFactory parametersWithIncludePostTypes:nil excludePostTypes:@[kPrivateFeedKey]],
+                                       [MDAPIParameterFactory parametersWithLimitResultsTo:kMedableFeedPageSize], nil];
+        
+        [[MDAPIClient sharedClient]
+         listGlobalBiogramFeedWithParameters:parameters
+         callback:^(NSArray* feed, MDFault* fault)
+         {
+             if (!fault)
+             {
+                 [wSelf.postFromEvent removeAllObjects];
+                 [wSelf createHeartRateEventsForPosts:feed];
+             }
+             else
+             {
+                 [wSelf notifyDidSwitchFeed];
+             }
+         }];
     }
 }
 

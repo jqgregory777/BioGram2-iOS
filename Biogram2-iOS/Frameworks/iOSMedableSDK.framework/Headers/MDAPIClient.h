@@ -857,10 +857,9 @@
                        finishBlock:(void (^)(MDPost* post, MDFault* fault))finishBlock;
 
 /**
- *  Biogram objects
- *  Gets a paginated list of public biogram objects
+ *  Gets Biogram global feed
  */
-- (void)listPublicBiogramObjectsWithParameters:(MDAPIParameters*)parameters
-                                      callback:(void (^)(NSArray* objects, MDFault* fault))callback;
+- (void)listGlobalBiogramFeedWithParameters:(MDAPIParameters*)parameters
+                                   callback:(void (^)(NSArray* objects, MDFault* fault))callback;
 
 @end
