@@ -30,7 +30,7 @@
 		<key>3C4EF12C2569876A3D91E7408C934C5F97EF0A40</key>
 		<string>../../../BioGram-iOS</string>
 		<key>E1BEE495E5F231EC246717D8CDA767F2681B9E88</key>
-		<string>../../../../Projects/Medable/iOSSDK</string>
+		<string>../../../Projects/Medable/iOSSDK</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:jqgregory777/BioGram2-iOS.git</string>
