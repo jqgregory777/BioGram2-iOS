@@ -72,6 +72,15 @@
     
     self.overlayImageView.image = watermarkImage;
     self.photoImageView.image = backgroundImage;
+    
+    // Overlay initial position and size
+    NSUInteger overlaySquareSideSize = 77;
+    NSUInteger overlayOffsetFromPicture = 10;
+    
+    self.overlayImageView.frame = CGRectMake(self.photoImageView.frame.origin.x + self.photoImageView.frame.size.width - (overlaySquareSideSize + overlayOffsetFromPicture),
+                                             self.photoImageView.frame.origin.y + self.photoImageView.frame.size.height - (overlaySquareSideSize + overlayOffsetFromPicture),
+                                             overlaySquareSideSize,
+                                             overlaySquareSideSize);
 
     self.timeStampLabel.text = [pendingEvent timeStampAsString];
 
@@ -105,26 +114,29 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark - Pan Gesture Recognizer
 
 - (IBAction)handlePan:(id)sender
 {
-    UIPanGestureRecognizer *recognizer = (UIPanGestureRecognizer *)sender;
+    UIPanGestureRecognizer* recognizer = (UIPanGestureRecognizer*)sender;
     
-    CGPoint translation = [recognizer translationInView:self.view];
-    CGPoint currentPoint = self.overlayImageView.center;
+    CGPoint touchLocation = [recognizer locationInView:self.view];
     
-    currentPoint.x += translation.x;
-    currentPoint.y += translation.y;
+    CGRect bounds = CGRectMake(self.photoImageView.frame.origin.x + self.overlayImageView.frame.size.width/2,
+                               self.photoImageView.frame.origin.y + self.overlayImageView.frame.size.height/2,
+                               self.photoImageView.frame.size.width - self.overlayImageView.frame.size.width,
+                               self.photoImageView.frame.size.height - self.overlayImageView.frame.size.height);
     
-    CGRect bounds = CGRectMake(self.photoImageView.frame.origin.x + self.overlayImageView.frame.size.width/2,self.photoImageView.frame.origin.y + self.overlayImageView.frame.size.height/2,self.photoImageView.frame.size.width - self.overlayImageView.frame.size.width,self.photoImageView.frame.size.height - self.overlayImageView.frame.size.height);
-    
-    if (CGRectContainsPoint(bounds, currentPoint)) {
-        // Point lies inside the bounds
-        self.overlayImageView.center = currentPoint;
+    if (CGRectContainsPoint(bounds, touchLocation))
+    {
+        CGPoint touchTranslatedToUpperLeftCorner = CGPointMake(touchLocation.x - self.overlayImageView.frame.size.width/2,
+                                                               touchLocation.y - self.overlayImageView.frame.size.height/2);
+        
+        CGRect overlayFrame = self.overlayImageView.frame;
+        overlayFrame.origin = touchTranslatedToUpperLeftCorner;
+        self.overlayImageView.frame = overlayFrame;
     }
-    
-    [recognizer setTranslation:CGPointZero inView:self.view];
 }
 
 #pragma mark - Keyboard/View Management

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="F4O-v4-iYn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="F4O-v4-iYn">
     <dependencies>
-        <deployment defaultVersion="1808" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -1440,19 +1440,10 @@
                                 <rect key="frame" x="10" y="104" width="300" height="300"/>
                                 <gestureRecognizers/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="TpO-Oe-nGc"/>
                                     <constraint firstAttribute="width" secondItem="2QY-zH-bEp" secondAttribute="height" multiplier="1:1" id="YVS-bB-TaA"/>
+                                    <constraint firstAttribute="width" constant="300" id="gV5-Y4-ag9"/>
                                 </constraints>
-                            </imageView>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
-                                <rect key="frame" x="201" y="289" width="77" height="77"/>
-                                <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="77" id="3dT-HS-aAX"/>
-                                    <constraint firstAttribute="width" constant="77" id="4EM-tS-cje"/>
-                                </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="JcC-He-ztI" appends="YES" id="oc6-GC-41a"/>
-                                </connections>
                             </imageView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NAa-dh-UCb">
                                 <rect key="frame" x="173" y="469" width="137" height="29"/>
@@ -1493,6 +1484,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-IW-9dL" userLabel="Image View - Watermark">
+                                <rect key="frame" x="217" y="310" width="77" height="77"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="JcC-He-ztI" appends="YES" id="oc6-GC-41a"/>
+                                </connections>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -1503,14 +1501,12 @@
                             <constraint firstItem="avJ-KK-u23" firstAttribute="top" secondItem="85k-mv-ey0" secondAttribute="bottom" constant="20" id="PrQ-au-crQ"/>
                             <constraint firstAttribute="trailing" secondItem="85k-mv-ey0" secondAttribute="trailing" constant="10" id="W4c-9b-MIH"/>
                             <constraint firstItem="NAa-dh-UCb" firstAttribute="leading" secondItem="avJ-KK-u23" secondAttribute="trailing" constant="8" id="aro-XW-rW2"/>
-                            <constraint firstItem="4ec-IW-9dL" firstAttribute="top" secondItem="2QY-zH-bEp" secondAttribute="bottom" constant="-115" id="c6L-5A-JSU"/>
                             <constraint firstItem="nOa-c3-2hN" firstAttribute="top" secondItem="Akc-3V-7Zv" secondAttribute="top" constant="75" id="cO2-Zz-SzO"/>
                             <constraint firstAttribute="centerX" secondItem="nOa-c3-2hN" secondAttribute="centerX" id="h9E-gb-Wx2"/>
                             <constraint firstAttribute="centerX" secondItem="85k-mv-ey0" secondAttribute="centerX" id="lcw-0C-hjI"/>
                             <constraint firstItem="2QY-zH-bEp" firstAttribute="top" secondItem="nOa-c3-2hN" secondAttribute="bottom" constant="8" id="mfw-IM-RNS"/>
                             <constraint firstItem="avJ-KK-u23" firstAttribute="leading" secondItem="Akc-3V-7Zv" secondAttribute="leading" constant="16" id="qge-Rc-FlY"/>
                             <constraint firstItem="NAa-dh-UCb" firstAttribute="top" secondItem="avJ-KK-u23" secondAttribute="bottom" constant="-24" id="vPW-uN-uyD"/>
-                            <constraint firstItem="4ec-IW-9dL" firstAttribute="leading" secondItem="2QY-zH-bEp" secondAttribute="trailing" constant="-109" id="wl6-Yi-PFY"/>
                             <constraint firstAttribute="trailing" secondItem="NAa-dh-UCb" secondAttribute="trailing" constant="10" id="zpm-cX-BQK"/>
                         </constraints>
                     </view>
@@ -1795,6 +1791,19 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vxZ-7x-rjC">
+                                <rect key="frame" x="59" y="459" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="c4s-gl-s2j"/>
+                                    <constraint firstAttribute="width" constant="50" id="vg0-qW-3I7"/>
+                                </constraints>
+                                <state key="normal" title="Facebook" image="logo_facebook">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postToFacebookTouched:" destination="4s8-If-xKu" eventType="touchUpInside" id="zso-x9-ZLX"/>
+                                </connections>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="is0-DL-6Kz">
                                 <rect key="frame" x="94" y="446" width="32" height="32"/>
                                 <constraints>
@@ -1816,19 +1825,6 @@
                                     <constraint firstAttribute="height" constant="32" id="oFt-kY-pg2"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vxZ-7x-rjC">
-                                <rect key="frame" x="59" y="459" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="c4s-gl-s2j"/>
-                                    <constraint firstAttribute="width" constant="50" id="vg0-qW-3I7"/>
-                                </constraints>
-                                <state key="normal" title="Facebook" image="logo_facebook">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="postToFacebookTouched:" destination="4s8-If-xKu" eventType="touchUpInside" id="zso-x9-ZLX"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
