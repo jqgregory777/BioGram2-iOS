@@ -76,6 +76,11 @@ typedef enum : NSInteger
                             password:passwordTextField.text
                    verificationToken:self.verificationToken];
             }
+            else if (buttonIndex == 2)
+            {
+                CBCTabBarController * tabBarCtrl = (CBCTabBarController *)alertView.requester.tabBarController;
+                [tabBarCtrl goToMedableSettings];
+            }
             
             break;
         }
@@ -107,10 +112,6 @@ typedef enum : NSInteger
             {
                 CBCTabBarController * tabBarCtrl = (CBCTabBarController *)alertView.requester.tabBarController;
                 [tabBarCtrl goToMedableSettings];
-            }
-            else
-            {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://www.medable.com/about.html"]];
             }
             break;
         }
@@ -237,7 +238,7 @@ typedef enum : NSInteger
                                    message:NSLocalizedString(@"Enter your credentials.", nil)
                                    delegate:self
                                    cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                   otherButtonTitles:NSLocalizedString(@"Login", nil), nil];
+                                   otherButtonTitles:NSLocalizedString(@"Login", nil), NSLocalizedString(@"Sign Up", nil), nil];
         
         self.loginAlertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
         
@@ -280,8 +281,8 @@ typedef enum : NSInteger
                               initWithTitle:@"Medable"
                               message:NSLocalizedString(message, nil)
                               delegate:self
-                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                              otherButtonTitles:NSLocalizedString(@"www.medable.com", nil), nil];
+                              cancelButtonTitle:NSLocalizedString(@"Sign Up", nil)
+                              otherButtonTitles:NSLocalizedString(@"Cancel", nil), nil];
         
         self.alertView.type = CBCMedableAlertViewInfo;
         self.alertView.requester = sender;
